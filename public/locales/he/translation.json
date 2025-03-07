@@ -5,13 +5,36 @@
         "home": "בית",
         "title": "מנט\"ר"
     },
+    "buttons": {
+        "next": "הבא",
+        "createData": "חילול נתונים",
+        "edit": "עריכה",
+        "submit": "אישור",
+        "add": "הוסף"
+    },
+    "startPage": {
+        "openEvent": "פתיחת אירוע",
+        "eventsHistory": "היסטוריית אירועים",
+        "manageNatars": "ניהול נט\"רים",
+        "manageStaff": "ניהול אנשי צוות",
+        "synchronize": "סנכרון",
+        "settings": "הגדרות"
+    },
     "newEvent": {
         "create": "יצירת אירוע {{type}} חדש",
         "earthquakeMagnitude": "עוצמת הרעש",
         "earthquakeTime": "מועד הרעש"
     },
-    "buttons": {
-        "next": "הבא",
-        "createData": "חילול נתונים"
+    "DestructionSites": {
+        "input": "הזנת אתרי הרס",
+        "sites": "אתרי הרס",
+        "newSite": "אתר הרס חדש",
+        "street": "רחוב",
+        "chooseStreet": "בחר שם רחוב",
+        "streetNumber": "מספר",
+        "numberOfCasualties": "מספר נפגעים מדווח",
+        "getRecommendation": "קבלת המלצה",
+        "approveSites": "האם לאשר את אתרי ההרס ולעבור להמלצה?",
+        "addressExists": "כתובת זו כבר קיימת"
     }
 }
