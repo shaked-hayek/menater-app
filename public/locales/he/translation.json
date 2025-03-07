@@ -1,5 +1,17 @@
 {
+    "trial": "תרגול",
+    "emergency": "חירום",
     "header": {
-        "home": "בית"
+        "home": "בית",
+        "title": "מנט\"ר"
+    },
+    "newEvent": {
+        "create": "יצירת אירוע {{type}} חדש",
+        "earthquakeMagnitude": "עוצמת הרעש",
+        "earthquakeTime": "מועד הרעש"
+    },
+    "buttons": {
+        "next": "הבא",
+        "createData": "חילול נתונים"
     }
 }

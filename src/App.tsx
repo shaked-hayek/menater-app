@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Box } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import Header from './components/Header'; 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import StartPage from 'pages/StartPage';
+import Layout from 'components/Layout';
+import NewEvent from 'pages/NewEvent';
 
-const headerHeight = '5vh';
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -17,11 +17,13 @@ const App = () => {
 
   return (
     <Router>
-      <Box>
-        <Box height={headerHeight} display="flex">
-          <Header />
-        </Box>
-      </Box>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<StartPage />} />
+          <Route path="newEvent" element={<NewEvent />} />
+          {/* <Route path="destructionSites" element={<DestructionSites />} /> */}
+        </Route>
+      </Routes>
     </Router>
   );
 };
