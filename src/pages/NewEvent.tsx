@@ -6,7 +6,7 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function NewEvent() {
+const NewEvent = () => {
   let { state } = useLocation();
   state = state || {};
   const navigate = useNavigate();
@@ -82,6 +82,6 @@ function NewEvent() {
       </Container>
     </>
   );
-}
+};
 
 export default NewEvent;
