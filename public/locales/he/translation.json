@@ -13,7 +13,11 @@
         "add": "הוסף"
     },
     "startPage": {
+        "title": "ברוכים הבאים למערכת המנט\"ר!",
         "openEvent": "פתיחת אירוע",
+        "chooseEventType": "בחרו את סוג האירוע",
+        "emergencyEvent": "אירוע חירום",
+        "trialEvent": "אירוע תרגול",
         "eventsHistory": "היסטוריית אירועים",
         "manageNatars": "ניהול נט\"רים",
         "manageStaff": "ניהול אנשי צוות",

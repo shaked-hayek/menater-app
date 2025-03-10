@@ -1,29 +1,38 @@
-import { Button } from '@mui/material';
-import { darkTextColor, lightTextColor, mainButtonColor, seconderyButtonColor } from 'style/colors';
+import { Button, ButtonProps } from "@mui/material";
+import { darkTextColor, lightTextColor, mainButtonColor, seconderyButtonColor } from "style/colors";
 
-interface buttonProps {
-    // buttonText: string,
-    children?: string,
+// Extend ButtonProps to support all MUI button attributes
+interface CustomButtonProps extends ButtonProps {
+  children?: React.ReactNode;
 }
 
-export const MainButton = ({ children }: buttonProps) => {
-    return (
-        <Button sx={{
-            bgcolor: mainButtonColor,
-            fontStyle: { 
-                color: lightTextColor, 
-            },
-        }}>{children}</Button>
-    );
+export const MainButton = ({ children, ...props }: CustomButtonProps) => {
+  return (
+    <Button
+      {...props}
+      sx={{
+        bgcolor: mainButtonColor,
+        color: lightTextColor,
+      }}
+    >
+      {children}
+    </Button>
+  );
 };
 
-export const SeconderyButton = ({ children }: buttonProps) => {
-    return (
-        <Button sx={{
-            bgcolor: seconderyButtonColor,
-            fontStyle: { 
-                color: darkTextColor, 
-            },
-        }}>{children}</Button>
-    );
+export const SeconderyButton = ({ children, ...props }: CustomButtonProps) => {
+  return (
+    <Button
+      {...props}
+      sx={{
+        bgcolor: seconderyButtonColor,
+        color: darkTextColor,
+        "&:hover": {
+          bgcolor: seconderyButtonColor,
+        },
+      }}
+    >
+      {children}
+    </Button>
+  );
 };

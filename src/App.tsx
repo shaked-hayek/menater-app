@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+
 import StartPage from 'pages/StartPage';
 import Layout from 'components/Layout';
 import NewEvent from 'pages/NewEvent';
+import theme from 'style/theme';
 
 
 const App = () => {
   const { i18n } = useTranslation();
-
   const appDir = i18n.dir();
 
   useEffect(() => {
@@ -16,15 +18,17 @@ const App = () => {
   }, [i18n, appDir]);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<StartPage />} />
-          <Route path="newEvent" element={<NewEvent />} />
-          {/* <Route path="destructionSites" element={<DestructionSites />} /> */}
-        </Route>
-      </Routes>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<StartPage />} />
+            <Route path="newEvent" element={<NewEvent />} />
+            {/* <Route path="destructionSites" element={<DestructionSites />} /> */}
+          </Route>
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 };
 
