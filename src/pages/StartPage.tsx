@@ -6,12 +6,23 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
 import { MainButton, SeconderyButton } from "components/atoms/Buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setMode } from "store/store";
+import { MODE } from "consts/mode.const";
 
 const StartPage = () => {
     const [showNewEvent, setShowNewEvent] = useState(false);
     const handleClose = () => setShowNewEvent(false);
+    const handleEventChoice = (mode: MODE) => {
+        dispatch(setMode(MODE.TRIAL));
+        handleClose();
+        // redirect
+    };
     const handleShow = () => setShowNewEvent(true);
+    
     const { t } = useTranslation();
+    const mode = useSelector((state: RootState) => state.mode.mode);
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -49,10 +60,9 @@ const StartPage = () => {
                     variant="danger"
                     className="me-3"
                     size="lg"
-                    onClick={handleClose}
+                    onClick={() => handleEventChoice(MODE.EMERGENCY)}
                     // as={Link}
                     // to="/newEvent"
-                    // state={{ isDummy: false }}
                 >
                     {t('startPage.emergencyEvent')}
                 </Button>
@@ -60,10 +70,9 @@ const StartPage = () => {
                     variant="secondary"
                     className="me-3"
                     size="lg"
-                    onClick={handleClose}
+                    onClick={() => handleEventChoice(MODE.TRIAL)}
                     // as={Link}
                     // to="/newEvent"
-                    // state={{ isDummy: true }}
                 >
                     {t('startPage.trialEvent')}
                 </Button>
