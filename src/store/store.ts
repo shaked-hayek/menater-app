@@ -1,12 +1,12 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import { MODE } from "consts/mode.const";
+import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit';
+import { MODE } from 'consts/mode.const';
 
 interface ModeState {
     mode: MODE;
 }
 
 const modeSlice = createSlice({
-  name: "mode",
+  name: 'mode',
   initialState: { mode: MODE.TRIAL } as ModeState,
   reducers: {
     setMode: (state, action: PayloadAction<MODE>) => {

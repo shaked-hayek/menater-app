@@ -24,10 +24,10 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
-            <Route path="/" element={<Layout />}>
+            <Route path='/' element={<Layout />}>
               <Route index element={<StartPage />} />
-              <Route path="newEvent" element={<NewEvent />} />
-              {/* <Route path="destructionSites" element={<DestructionSites />} /> */}
+              <Route path='newEvent' element={<NewEvent />} />
+              {/* <Route path='destructionSites' element={<DestructionSites />} /> */}
             </Route>
           </Routes>
         </Router>

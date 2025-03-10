@@ -1,27 +1,42 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { useTranslation } from "react-i18next";
-import { MainButton, SeconderyButton } from "components/atoms/Buttons";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, setMode } from "store/store";
-import { MODE } from "consts/mode.const";
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import { useTranslation } from 'react-i18next';
+import { MainButton, SeconderyButton } from 'components/atoms/Buttons';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMode } from 'store/store';
+import { MODE } from 'consts/mode.const';
+import { Box, Modal, Typography } from '@mui/material';
+
+const modalStyle = {
+    position: "absolute" as const,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+    textAlign: "center",
+  };
+
 
 const StartPage = () => {
     const [showNewEvent, setShowNewEvent] = useState(false);
+    const navigate = useNavigate();
+
     const handleClose = () => setShowNewEvent(false);
     const handleEventChoice = (mode: MODE) => {
-        dispatch(setMode(MODE.TRIAL));
+        dispatch(setMode(mode));
         handleClose();
-        // redirect
+        navigate('/newEvent')
     };
     const handleShow = () => setShowNewEvent(true);
     
     const { t } = useTranslation();
-    const mode = useSelector((state: RootState) => state.mode.mode);
     const dispatch = useDispatch();
 
     return (
@@ -29,8 +44,8 @@ const StartPage = () => {
             <Container>
                 <h1>{t('startPage.title')}</h1>
             </Container>
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-                <div className="d-flex flex-column me-5">
+            <Container className='d-flex justify-content-center align-items-center vh-100'>
+                <div className='d-flex flex-column me-5'>
                 <SeconderyButton>
                     {t('startPage.eventsHistory')}
                 </SeconderyButton>
@@ -51,32 +66,16 @@ const StartPage = () => {
                     {t('startPage.openEvent')}
                 </MainButton>
             </Container>
-            <Modal show={showNewEvent} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                <Modal.Title>{t('startPage.chooseEventType')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="d-flex justify-content-center">
-                <Button
-                    variant="danger"
-                    className="me-3"
-                    size="lg"
-                    onClick={() => handleEventChoice(MODE.EMERGENCY)}
-                    // as={Link}
-                    // to="/newEvent"
-                >
-                    {t('startPage.emergencyEvent')}
-                </Button>
-                <Button
-                    variant="secondary"
-                    className="me-3"
-                    size="lg"
-                    onClick={() => handleEventChoice(MODE.TRIAL)}
-                    // as={Link}
-                    // to="/newEvent"
-                >
-                    {t('startPage.trialEvent')}
-                </Button>
-                </Modal.Body>
+            <Modal open={showNewEvent} onClose={handleClose}>
+                <Box sx={modalStyle}>
+                    <Typography variant='h5'>{t('startPage.chooseEventType')}</Typography>
+                    <Button onClick={() => handleEventChoice(MODE.EMERGENCY)}>
+                        {t('startPage.emergencyEvent')}
+                    </Button>
+                    <Button onClick={() => handleEventChoice(MODE.TRIAL)}>
+                        {t('startPage.trialEvent')}
+                    </Button>
+                </Box>
             </Modal>
         </>
     );

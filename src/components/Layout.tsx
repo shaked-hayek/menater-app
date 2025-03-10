@@ -8,7 +8,7 @@ const Layout = () => {
 
     return (
         <>
-            <Box height={headerHeight} display="flex">
+            <Box height={headerHeight} display='flex'>
                 <Header />
             </Box>
             <Outlet />

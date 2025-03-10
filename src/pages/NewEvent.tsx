@@ -1,25 +1,27 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { MODE } from 'consts/mode.const';
+import { SeconderyButton, TrialButton } from 'components/atoms/Buttons';
 
 const NewEvent = () => {
-  let { state } = useLocation();
-  state = state || {};
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const mode = useSelector((state: RootState) => state.mode.mode);
 
   const [formValues, setFormValues] = useState({
-    intensity: "",
-    dateTime: "",
+    intensity: '',
+    dateTime: '',
   });
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    navigate("/destructionSites");
+    navigate('/destructionSites');
   };
 
   const generateRandomValues = () => {
@@ -39,15 +41,15 @@ const NewEvent = () => {
   return (
     <>
       <Container>
-        <h1>{t('newEvent.create', { type: state?.isDummy ? t('trial') : t('emergency') })}</h1>
+        <h1>{t('newEvent.create', { type: mode == MODE.TRIAL ? t('trial') : t('emergency') })}</h1>
       </Container>
-      <Container className="form-wrapper">
-        <Form className="centered-form" onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+      <Container className='form-wrapper'>
+        <Form className='centered-form' onSubmit={handleSubmit}>
+          <Form.Group className='mb-3'>
             <Form.Label>{t('newEvent.earthquakeMagnitude')}</Form.Label>
             <Form.Control
-              type="number"
-              step="0.1"
+              type='number'
+              step='0.1'
               value={formValues.intensity}
               onChange={(e) =>
                 setFormValues({ ...formValues, intensity: e.target.value })
@@ -55,29 +57,24 @@ const NewEvent = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>{t('newEvent.earthquakeTime')}</Form.Label>
             <Form.Control
-              type="datetime-local"
+              type='datetime-local'
               value={formValues.dateTime}
               onChange={(e) =>
                 setFormValues({ ...formValues, dateTime: e.target.value })
               }
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            {t('buttons.next')}
-          </Button>
-          {state.isDummy && (
-            <Button
-              variant="secondary"
-              type="button"
-              className="ms-2"
-              onClick={generateRandomValues}
-            >
+          {mode == MODE.TRIAL && (
+            <TrialButton onClick={generateRandomValues}>
               {t('buttons.createData')}
-            </Button>
+            </TrialButton>
           )}
+          <SeconderyButton>
+            {t('buttons.next')}
+          </SeconderyButton>
         </Form>
       </Container>
     </>
