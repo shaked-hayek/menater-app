@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
-import { MainButton, SeconderyButton } from 'components/atoms/Buttons';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, Modal, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+
+import { EmergencyButton, MainButton, SeconderyButton, TrialButton } from 'components/atoms/Buttons';
 import { setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
-import { Box, Modal, Typography } from '@mui/material';
+
 
 const modalStyle = {
     position: "absolute" as const,
@@ -39,42 +38,45 @@ const StartPage = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
+    const logo = require("../assets/Logo.png");
+
     return (
         <>
-            <Container>
-                <h1>{t('startPage.title')}</h1>
-            </Container>
-            <Container className='d-flex justify-content-center align-items-center vh-100'>
-                <div className='d-flex flex-column me-5'>
-                <SeconderyButton>
-                    {t('startPage.eventsHistory')}
-                </SeconderyButton>
-                <SeconderyButton>
-                    {t('startPage.manageNatars')}
-                </SeconderyButton>
-                <SeconderyButton>
-                    {t('startPage.manageStaff')}
-                </SeconderyButton>
-                <SeconderyButton>
-                    {t('startPage.synchronize')}
-                </SeconderyButton>
-                <SeconderyButton>
-                    {t('startPage.settings')}
-                </SeconderyButton>
-                </div>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                <img src={logo} alt='Logo' width={150} />
+                <Typography variant='h4'>{t('startPage.title')}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                <Box sx={{ p: 2, m: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <SeconderyButton>
+                        {t('startPage.eventsHistory')}
+                    </SeconderyButton>
+                    <SeconderyButton>
+                        {t('startPage.manageNatars')}
+                    </SeconderyButton>
+                    <SeconderyButton>
+                        {t('startPage.manageStaff')}
+                    </SeconderyButton>
+                    <SeconderyButton>
+                        {t('startPage.synchronize')}
+                    </SeconderyButton>
+                    <SeconderyButton>
+                        {t('startPage.settings')}
+                    </SeconderyButton>
+                </Box>
                 <MainButton onClick={handleShow}>
                     {t('startPage.openEvent')}
                 </MainButton>
-            </Container>
+            </Box>
             <Modal open={showNewEvent} onClose={handleClose}>
                 <Box sx={modalStyle}>
                     <Typography variant='h5'>{t('startPage.chooseEventType')}</Typography>
-                    <Button onClick={() => handleEventChoice(MODE.EMERGENCY)}>
+                    <EmergencyButton onClick={() => handleEventChoice(MODE.EMERGENCY)}>
                         {t('startPage.emergencyEvent')}
-                    </Button>
-                    <Button onClick={() => handleEventChoice(MODE.TRIAL)}>
+                    </EmergencyButton>
+                    <TrialButton onClick={() => handleEventChoice(MODE.TRIAL)}>
                         {t('startPage.trialEvent')}
-                    </Button>
+                    </TrialButton>
                 </Box>
             </Modal>
         </>

@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
-import { SeconderyButton, TrialButton } from 'components/atoms/Buttons';
+import { SeconderyButton, CreateDataButton } from 'components/atoms/Buttons';
 
 const NewEvent = () => {
   const navigate = useNavigate();
@@ -68,9 +68,9 @@ const NewEvent = () => {
             />
           </Form.Group>
           {mode == MODE.TRIAL && (
-            <TrialButton onClick={generateRandomValues}>
+            <CreateDataButton onClick={generateRandomValues}>
               {t('buttons.createData')}
-            </TrialButton>
+            </CreateDataButton>
           )}
           <SeconderyButton>
             {t('buttons.next')}

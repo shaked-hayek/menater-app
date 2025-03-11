@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from '@mui/material';
-import { darkTextColor, lightBgColor, lightTextColor, mainButtonColor, seconderyButtonColor } from 'style/colors';
+import { darkTextColor, lightBgColor, lightTextColor, mainButtonColor, seconderyButtonColor, themeColor, trialBgColor } from 'style/colors';
 
 // Extend ButtonProps to support all MUI button attributes
 interface CustomButtonProps extends ButtonProps {
@@ -13,6 +13,10 @@ export const MainButton = ({ children, ...props }: CustomButtonProps) => {
       sx={{
         bgcolor: mainButtonColor,
         color: lightTextColor,
+        flex: 1, 
+        height: '80px', 
+        maxWidth: '200px', 
+        fontSize: '1.2rem', 
       }}
     >
       {children}
@@ -35,12 +39,40 @@ export const SeconderyButton = ({ children, ...props }: CustomButtonProps) => {
 };
 
 
-export const TrialButton = ({ children, ...props }: CustomButtonProps) => {
+export const CreateDataButton = ({ children, ...props }: CustomButtonProps) => {
     return (
       <Button
         {...props}
         sx={{
           bgcolor: lightBgColor,
+          color: lightTextColor,
+        }}
+      >
+        {children}
+      </Button>
+    );
+  };
+
+  export const EmergencyButton = ({ children, ...props }: CustomButtonProps) => {
+    return (
+      <Button
+        {...props}
+        sx={{
+          bgcolor: themeColor,
+          color: lightTextColor,
+        }}
+      >
+        {children}
+      </Button>
+    );
+  };
+
+  export const TrialButton = ({ children, ...props }: CustomButtonProps) => {
+    return (
+      <Button
+        {...props}
+        sx={{
+          bgcolor: trialBgColor,
           color: lightTextColor,
         }}
       >
