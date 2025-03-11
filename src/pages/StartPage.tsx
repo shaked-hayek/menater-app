@@ -71,12 +71,14 @@ const StartPage = () => {
             <Modal open={showNewEvent} onClose={handleClose}>
                 <Box sx={modalStyle}>
                     <Typography variant='h5'>{t('startPage.chooseEventType')}</Typography>
-                    <EmergencyButton onClick={() => handleEventChoice(MODE.EMERGENCY)}>
-                        {t('startPage.emergencyEvent')}
-                    </EmergencyButton>
-                    <TrialButton onClick={() => handleEventChoice(MODE.TRIAL)}>
-                        {t('startPage.trialEvent')}
-                    </TrialButton>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-evenly'}}>
+                        <EmergencyButton onClick={() => handleEventChoice(MODE.EMERGENCY)}>
+                            {t('startPage.emergencyEvent')}
+                        </EmergencyButton>
+                        <TrialButton onClick={() => handleEventChoice(MODE.TRIAL)}>
+                            {t('startPage.trialEvent')}
+                        </TrialButton>
+                    </Box>
                 </Box>
             </Modal>
         </>
