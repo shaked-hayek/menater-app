@@ -17,12 +17,16 @@
     "vite": "^6.2.0"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.7",
+    "@mui/x-date-pickers": "^7.27.3",
     "@reduxjs/toolkit": "^2.6.1",
+    "dayjs": "^1.11.13",
     "i18next": "^23.2.3",
     "i18next-http-backend": "^3.0.2",
+    "jss-rtl": "^0.3.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.4.1",

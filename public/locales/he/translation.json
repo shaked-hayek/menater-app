@@ -3,7 +3,8 @@
     "emergency": "חירום",
     "header": {
         "home": "בית",
-        "title": "מנט\"ר"
+        "title": "מנט\"ר",
+        "timeSince": "זמן מהרעש:"
     },
     "buttons": {
         "next": "הבא",

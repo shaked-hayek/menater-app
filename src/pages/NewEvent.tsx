@@ -1,82 +1,117 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Box, TextField, Typography } from '@mui/material';
 
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import { useSelector } from 'react-redux';
+import { SeconderyButton, CreateDataButton } from 'components/atoms/Buttons';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
-import { SeconderyButton, CreateDataButton } from 'components/atoms/Buttons';
+import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
+import { LANGUAGES } from 'consts/languages.const';
+
+const rtlStyle = {
+  "& label": {
+    left: "unset",
+    right: "1.75rem",
+    transformOrigin: "right",
+  },
+  "& legend": {
+    textAlign: "right",
+  },
+}
+
+interface FormValues {
+  magnitude: number;
+  dateTime: string;
+}
+
 
 const NewEvent = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const mode = useSelector((state: RootState) => state.mode.mode);
+  const dispatch = useDispatch();
+  const mode = useSelector((state: RootState) => state.appState.mode);
 
-  const [formValues, setFormValues] = useState({
-    intensity: '',
-    dateTime: '',
+  const dateToString = (date: Date) => {
+    return date.toLocaleString(LANGUAGES.HE);
+  };
+
+  const [formValues, setFormValues] = useState<FormValues>({
+    magnitude: 0,
+    dateTime: dateToString(new Date(Date.now())),
   });
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    dispatch(setEarthquakeMagnitude(formValues.magnitude));
+    dispatch(setEarthquakeTime(new Date(formValues.dateTime)));
     navigate('/destructionSites');
   };
 
   const generateRandomValues = () => {
-    const randomIntensity = (Math.random() * 10).toFixed(1);
-    const randomDateTime = new Date(
+    const randomIntensity = parseFloat((Math.random() * 10).toFixed(1));
+    const randomDateTime = dateToString(new Date(
       Date.now() + Math.floor(Math.random() * 10000000000)
-    )
-      .toISOString()
-      .slice(0, 16);
+    ));
 
     setFormValues({
-      intensity: randomIntensity,
+      magnitude: randomIntensity,
       dateTime: randomDateTime,
     });
   };
 
   return (
     <>
-      <Container>
-        <h1>{t('newEvent.create', { type: mode == MODE.TRIAL ? t('trial') : t('emergency') })}</h1>
-      </Container>
-      <Container className='form-wrapper'>
-        <Form className='centered-form' onSubmit={handleSubmit}>
-          <Form.Group className='mb-3'>
-            <Form.Label>{t('newEvent.earthquakeMagnitude')}</Form.Label>
-            <Form.Control
-              type='number'
-              step='0.1'
-              value={formValues.intensity}
-              onChange={(e) =>
-                setFormValues({ ...formValues, intensity: e.target.value })
-              }
-            />
-          </Form.Group>
+      <Box>
+        <Typography variant='h4'>
+          {t('newEvent.create', { type: mode == MODE.TRIAL ? t('trial') : t('emergency') })}
+        </Typography>
+      </Box>
+      <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'flex-start', 
+          p: '2rem', 
+          gap: '1rem'
+        }}>
 
-          <Form.Group className='mb-3'>
-            <Form.Label>{t('newEvent.earthquakeTime')}</Form.Label>
-            <Form.Control
-              type='datetime-local'
-              value={formValues.dateTime}
-              onChange={(e) =>
-                setFormValues({ ...formValues, dateTime: e.target.value })
-              }
-            />
-          </Form.Group>
+        {/* Earthquake Magnitude */}
+        <TextField
+          variant="filled"
+          label={t('newEvent.earthquakeMagnitude')}
+          type='number'
+          value={formValues.magnitude}
+          onChange={(v) => setFormValues({ ...formValues, magnitude: parseFloat(v.target.value) })}
+          fullWidth
+          slotProps={{ 
+            htmlInput: { step: 0.1 }, 
+          }}
+          sx={rtlStyle}
+        />
+
+        {/* Earthquake Time */}
+        <TextField
+          variant="filled"
+          label={t('newEvent.earthquakeTime')}
+          type='datetime-local'
+          value={formValues.dateTime}
+          onChange={(v) => setFormValues({ ...formValues, dateTime: v.target.value })}
+          fullWidth
+          sx={rtlStyle}
+        />
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingTop: '1rem' }}>
           {mode == MODE.TRIAL && (
             <CreateDataButton onClick={generateRandomValues}>
               {t('buttons.createData')}
             </CreateDataButton>
           )}
-          <SeconderyButton>
+          <SeconderyButton onClick={handleSubmit}>
             {t('buttons.next')}
           </SeconderyButton>
-        </Form>
-      </Container>
+        </Box>
+      </Box>
     </>
   );
 };

@@ -9,9 +9,7 @@ import './services/i18n.service';
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
-    <ThemeProvider dir="rtl">
-      <App />
-    </ThemeProvider>
+    <App />
   </React.StrictMode>
 );
 

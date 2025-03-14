@@ -1,39 +1,41 @@
-import React from 'react';
 import { useState } from 'react';
-import { Outlet, Link } from 'react-router';
-
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const Header = () => {
     const { t } = useTranslation();
-    const [ timeString, setTimeString ] = useState('');
+    const [ currentTimeString, setCurrentTimeString ] = useState('');
+    const [ timeSinceQuakeString, setTimeSinceQuakeString ] = useState('');
+    const earthquakeTime = useSelector((state: RootState) => state.appState.earthquakeTime);
 
     const updateTime = () => {
-        setTimeString(new Date().toLocaleTimeString('en-GB'));
+        setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
+        if (earthquakeTime) {
+            setTimeSinceQuakeString(earthquakeTime.toLocaleTimeString('en-GB')); // FIX
+        }
     };
     setInterval(updateTime);
 
     return (
-        <Box>
-            <Navbar expand='lg' className='bg-body-tertiary'>
-                <Container>
-                <Navbar.Brand>{t('header.title')}</Navbar.Brand>
-                <Navbar.Toggle />
-                <Navbar.Collapse>
-                    <Nav className='me-auto'>
-                    <Nav.Link as={Link} to='/'>
+        <AppBar position='static'>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Typography variant='h6'>{t('header.title')}</Typography>
+                    <Button color='inherit' component={Link} to='/'>
                         {t('header.home')}
-                    </Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-                <Navbar.Collapse className='justify-content-end'>
-                    <Navbar.Text>{timeString}</Navbar.Text>
-                </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        </Box>
+                    </Button>
+                </Box>
+
+                { earthquakeTime && (
+                    <Typography variant='body2'>{t('header.timeSince')} {timeSinceQuakeString}</Typography>
+                )}
+
+                <Typography variant='body2'>{currentTimeString}</Typography>
+            </Toolbar>
+        </AppBar>
     );
 };
 

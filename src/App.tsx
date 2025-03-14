@@ -9,6 +9,7 @@ import Layout from 'components/Layout';
 import NewEvent from 'pages/NewEvent';
 import theme from 'style/theme';
 import { store } from 'store/store';
+import DestructionSites from 'pages/DestructionSites';
 
 
 const App = () => {
@@ -17,7 +18,8 @@ const App = () => {
 
   useEffect(() => {
     document.body.dir = appDir;
-  }, [i18n, appDir]);
+    theme.direction = appDir;
+  }, [i18n, theme, theme.direction, appDir]);
 
   return (
     <Provider store={store}>
@@ -27,7 +29,7 @@ const App = () => {
             <Route path='/' element={<Layout />}>
               <Route index element={<StartPage />} />
               <Route path='newEvent' element={<NewEvent />} />
-              {/* <Route path='destructionSites' element={<DestructionSites />} /> */}
+              <Route path='destructionSites' element={<DestructionSites />} />
             </Route>
           </Routes>
         </Router>
