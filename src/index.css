@@ -53,3 +53,9 @@ svg {
 .recharts-legend-item-text {
   padding-right: 5px;
 }
+
+[dir="rtl"] .MuiAutocomplete-endAdornment {
+  position: absolute;
+  left: 0;
+  right: auto !important;
+}

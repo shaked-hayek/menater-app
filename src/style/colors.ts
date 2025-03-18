@@ -1,5 +1,6 @@
 
 export const backgroundColor = '#d4d4d4';
+export const secondaryBackgroundColor = '#d8e0d8';
 export const themeColor = '#c42413';
 export const trialColor = '#f5ba3e';
 

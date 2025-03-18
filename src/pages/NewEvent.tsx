@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Typography, TextField } from '@mui/material';
-import { DateTimeField, DateTimePicker } from '@mui/x-date-pickers';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { SeconderyButton, CreateDataButton } from 'components/atoms/Buttons';
@@ -12,17 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
-
-const rtlStyle = {
-  '& label': {
-    left: 'unset',
-    right: '1.75rem',
-    transformOrigin: 'right',
-  },
-  '& legend': {
-    textAlign: 'right',
-  },
-};
+import { formStyle, rtlStyle } from 'style/muiStyles';
 
 interface FormValues {
   magnitude: number;
@@ -74,15 +62,7 @@ const NewEvent = () => {
           {t('newEvent.create', { type: mode == MODE.TRIAL ? t('trial') : t('emergency') })}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          p: '2rem',
-          gap: '1rem',
-        }}
-      >
+      <Box sx={formStyle}>
         {/* Earthquake Magnitude */}
         <Typography sx={{ fontWeight: 'bold' }}>{t('newEvent.earthquakeMagnitude')}</Typography>
         <TextField
@@ -101,7 +81,8 @@ const NewEvent = () => {
           onChange={(newValue) => setFormValues({ ...formValues, dateTime: newValue })}
         />
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingTop: '1rem' }}>
+        {/* Buttons */}
+        <Box sx={{ display: 'flex', justifyContent: mode == MODE.TRIAL ? 'space-between' : 'flex-end', width: '100%' }}>
           {mode == MODE.TRIAL && (
             <CreateDataButton onClick={generateRandomValues}>{t('buttons.createData')}</CreateDataButton>
           )}

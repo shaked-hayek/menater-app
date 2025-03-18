@@ -4,9 +4,10 @@ import { darkTextColor, lightBgColor, lightTextColor, mainButtonColor, secondery
 // Extend ButtonProps to support all MUI button attributes
 interface CustomButtonProps extends ButtonProps {
   children?: React.ReactNode;
+  height?: string | number;
 }
 
-export const MainButton = ({ children, ...props }: CustomButtonProps) => {
+export const MainButton = ({ children, height = '80px', ...props }: CustomButtonProps) => {
   return (
     <Button
       {...props}
@@ -14,7 +15,7 @@ export const MainButton = ({ children, ...props }: CustomButtonProps) => {
         bgcolor: mainButtonColor,
         color: lightTextColor,
         flex: 1, 
-        height: '80px', 
+        height,
         maxWidth: '200px', 
         fontSize: '1.2rem', 
       }}

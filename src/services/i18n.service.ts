@@ -1,13 +1,13 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import HttpApi from 'i18next-http-backend';
+import { LANGUAGES } from 'consts/languages.const';
 
-const HEBREW = 'he';
 const options = {
-  fallbackLng: HEBREW,
-  supportedLngs: [HEBREW],
+  fallbackLng: LANGUAGES.HE,
+  supportedLngs: [LANGUAGES.HE],
   debug: true,
-  lng: HEBREW,
+  lng: LANGUAGES.HE,
   interpolation: {
     escapeValue: false,
   },
