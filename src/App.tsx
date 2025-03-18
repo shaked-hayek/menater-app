@@ -13,6 +13,7 @@ import theme from 'style/theme';
 import { store } from 'store/store';
 import DestructionSites from 'pages/DestructionSites';
 import { LANGUAGES } from 'consts/languages.const';
+import 'dayjs/locale/he';
 
 
 const App = () => {

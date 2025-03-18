@@ -5,11 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import TimeSince from './atoms/Timer';
+import { MODE } from 'consts/mode.const';
+import { themeColor, trialColor } from 'style/colors';
 
 const Header = () => {
     const { t } = useTranslation();
     const [ currentTimeString, setCurrentTimeString ] = useState('');
-    const earthquakeTime = useSelector((state: RootState) => state.appState.earthquakeTime);
+    const { earthquakeTime, mode } = useSelector((state: RootState) => state.appState);
 
     const updateTime = () => {
         setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
@@ -33,7 +35,19 @@ const Header = () => {
                     </Box>
                 )}
 
-                <Typography variant='body2'>{currentTimeString}</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2}}>
+                    <Typography variant='body2'>{currentTimeString}</Typography>
+                    {mode && (
+                        mode == MODE.TRIAL ?
+                        (<Box sx={{backgroundColor: trialColor, borderRadius: '10%', p: 1}}>
+                            <Typography>{t('trial')}</Typography>
+                        </Box>)
+                        :
+                        (<Box sx={{backgroundColor: themeColor, borderRadius: '10%', p: 1}}>
+                            <Typography>{t('emergency')}</Typography>
+                        </Box>)
+                    )}
+                </Box>
             </Toolbar>
         </AppBar>
     );

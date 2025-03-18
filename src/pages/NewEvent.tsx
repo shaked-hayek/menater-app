@@ -44,7 +44,7 @@ const NewEvent = () => {
     e.preventDefault();
 
     if (!formValues.dateTime) {
-      console.error('DateTime is missing');
+      console.error('DateTime is missing'); // TODO: Show error
       return;
     }
 
