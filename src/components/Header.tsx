@@ -4,18 +4,15 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
+import TimeSince from './atoms/Timer';
 
 const Header = () => {
     const { t } = useTranslation();
     const [ currentTimeString, setCurrentTimeString ] = useState('');
-    const [ timeSinceQuakeString, setTimeSinceQuakeString ] = useState('');
     const earthquakeTime = useSelector((state: RootState) => state.appState.earthquakeTime);
 
     const updateTime = () => {
         setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
-        if (earthquakeTime) {
-            setTimeSinceQuakeString(earthquakeTime.toLocaleTimeString('en-GB')); // FIX
-        }
     };
     setInterval(updateTime);
 
@@ -29,8 +26,11 @@ const Header = () => {
                     </Button>
                 </Box>
 
-                { earthquakeTime && (
-                    <Typography variant='body2'>{t('header.timeSince')} {timeSinceQuakeString}</Typography>
+                {earthquakeTime && (
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
+                        <Typography variant='body1'>{t('header.timeSince')}</Typography>
+                        <TimeSince date={earthquakeTime} />
+                    </Box>
                 )}
 
                 <Typography variant='body2'>{currentTimeString}</Typography>
