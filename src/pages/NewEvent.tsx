@@ -1,31 +1,33 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Typography, TextField } from '@mui/material';
+import { DateTimeField, DateTimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { SeconderyButton, CreateDataButton } from 'components/atoms/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
-import { LANGUAGES } from 'consts/languages.const';
 
 const rtlStyle = {
-  "& label": {
-    left: "unset",
-    right: "1.75rem",
-    transformOrigin: "right",
+  '& label': {
+    left: 'unset',
+    right: '1.75rem',
+    transformOrigin: 'right',
   },
-  "& legend": {
-    textAlign: "right",
+  '& legend': {
+    textAlign: 'right',
   },
-}
+};
 
 interface FormValues {
   magnitude: number;
-  dateTime: string;
+  dateTime: Dayjs | null;
 }
-
 
 const NewEvent = () => {
   const navigate = useNavigate();
@@ -33,27 +35,31 @@ const NewEvent = () => {
   const dispatch = useDispatch();
   const mode = useSelector((state: RootState) => state.appState.mode);
 
-  const dateToString = (date: Date) => {
-    return date.toLocaleString(LANGUAGES.HE);
-  };
-
   const [formValues, setFormValues] = useState<FormValues>({
     magnitude: 0,
-    dateTime: dateToString(new Date(Date.now())),
+    dateTime: dayjs(),
   });
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    if (!formValues.dateTime) {
+      console.error('DateTime is missing');
+      return;
+    }
+
     dispatch(setEarthquakeMagnitude(formValues.magnitude));
-    dispatch(setEarthquakeTime(new Date(formValues.dateTime)));
+    dispatch(setEarthquakeTime(formValues.dateTime.toDate()));
     navigate('/destructionSites');
   };
 
   const generateRandomValues = () => {
     const randomIntensity = parseFloat((Math.random() * 10).toFixed(1));
-    const randomDateTime = dateToString(new Date(
-      Date.now() + Math.floor(Math.random() * 10000000000)
-    ));
+
+  const randomDateTime = dayjs()
+    .subtract(Math.floor(Math.random() * 10), 'day')
+    .subtract(Math.floor(Math.random() * 24), 'hour')
+    .subtract(Math.floor(Math.random() * 60), 'minute')
 
     setFormValues({
       magnitude: randomIntensity,
@@ -68,48 +74,38 @@ const NewEvent = () => {
           {t('newEvent.create', { type: mode == MODE.TRIAL ? t('trial') : t('emergency') })}
         </Typography>
       </Box>
-      <Box sx={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'flex-start', 
-          p: '2rem', 
-          gap: '1rem'
-        }}>
-
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          p: '2rem',
+          gap: '1rem',
+        }}
+      >
         {/* Earthquake Magnitude */}
+        <Typography sx={{ fontWeight: 'bold' }}>{t('newEvent.earthquakeMagnitude')}</Typography>
         <TextField
-          variant="filled"
-          label={t('newEvent.earthquakeMagnitude')}
+          variant='outlined'
           type='number'
           value={formValues.magnitude}
-          onChange={(v) => setFormValues({ ...formValues, magnitude: parseFloat(v.target.value) })}
+          onChange={(e) => setFormValues({ ...formValues, magnitude: parseFloat(e.target.value) })}
           fullWidth
-          slotProps={{ 
-            htmlInput: { step: 0.1 }, 
-          }}
           sx={rtlStyle}
         />
 
-        {/* Earthquake Time */}
-        <TextField
-          variant="filled"
-          label={t('newEvent.earthquakeTime')}
-          type='datetime-local'
+        {/* Earthquake Date & Time */}
+        <Typography sx={{ fontWeight: 'bold' }}>{t('newEvent.earthquakeTime')}</Typography>
+        <DateTimePicker
           value={formValues.dateTime}
-          onChange={(v) => setFormValues({ ...formValues, dateTime: v.target.value })}
-          fullWidth
-          sx={rtlStyle}
+          onChange={(newValue) => setFormValues({ ...formValues, dateTime: newValue })}
         />
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingTop: '1rem' }}>
           {mode == MODE.TRIAL && (
-            <CreateDataButton onClick={generateRandomValues}>
-              {t('buttons.createData')}
-            </CreateDataButton>
+            <CreateDataButton onClick={generateRandomValues}>{t('buttons.createData')}</CreateDataButton>
           )}
-          <SeconderyButton onClick={handleSubmit}>
-            {t('buttons.next')}
-          </SeconderyButton>
+          <SeconderyButton onClick={handleSubmit}>{t('buttons.next')}</SeconderyButton>
         </Box>
       </Box>
     </>
