@@ -11,11 +11,11 @@ const RecommendedNatars = () => {
     const { t } = useTranslation();
 
     const handleAddSite = () => {
-        // navigate(`/${PAGES.DESTRUCATION_SITES}`);
+        navigate(`/${PAGES.DESTRUCATION_SITES}`);
     };
 
     const handleSubmit = () => {
-        navigate(`/${PAGES.DESTRUCATION_SITES}`);
+        navigate(`/`);
     };
     
     return (

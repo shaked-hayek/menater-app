@@ -55,6 +55,9 @@
         "addDestructionSite": "הוספת אתר הרס"
     },
     "openNatar": {
+        "title": "נט\"ר {{type}}: {{name}}",
+        "main": "ראשי",
+        "secondary": "משני",
         "addStaff": "שיבוץ אנשי צוות",
         "staff": "אנשי צוות משובצים"
     }
