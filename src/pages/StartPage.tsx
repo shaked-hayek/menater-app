@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { EmergencyButton, MainButton, SeconderyButton, TrialButton } from 'components/atoms/Buttons';
 import { setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
+import { PAGES } from 'consts/pages.const';
 
 
 const modalStyle = {
@@ -31,7 +32,7 @@ const StartPage = () => {
     const handleEventChoice = (mode: MODE) => {
         dispatch(setMode(mode));
         handleClose();
-        navigate('/newEvent')
+        navigate(`/${PAGES.NEW_EVENT}`)
     };
     const handleShow = () => setShowNewEvent(true);
     

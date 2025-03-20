@@ -35,7 +35,7 @@
         "earthquakeMagnitude": "עוצמת הרעש",
         "earthquakeTime": "מועד הרעש"
     },
-    "DestructionSites": {
+    "destructionSites": {
         "input": "הזנת אתרי הרס",
         "sites": "אתרי הרס",
         "casualties": "נפגעים",
@@ -44,8 +44,18 @@
         "chooseStreet": "בחר שם רחוב",
         "streetNumber": "מספר",
         "numberOfCasualties": "מספר נפגעים מדווח",
+        "numberOfCasualtiesEst": "מספר נפגעים מוערך",
         "getRecommendation": "קבלת המלצה",
         "approveSites": "האם לאשר את אתרי ההרס ולעבור להמלצה?",
-        "addressExists": "כתובת זו כבר קיימת"
+        "addressExists": "כתובת זו כבר קיימת",
+        "emptySites": "יש להזין אתרי הרס"
+    },
+    "recommendedNatars": {
+        "title": "נט\"רים מומלצים לפתיחה",
+        "addDestructionSite": "הוספת אתר הרס"
+    },
+    "openNatar": {
+        "addStaff": "שיבוץ אנשי צוות",
+        "staff": "אנשי צוות משובצים"
     }
 }

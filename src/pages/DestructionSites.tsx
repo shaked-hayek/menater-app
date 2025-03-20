@@ -7,22 +7,38 @@ import { useTranslation } from 'react-i18next';
 import MapComponent, { DestructionSite } from 'components/DestractionSitesComp/DestructionSitesMap';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { MainButton, SeconderyButton } from 'components/atoms/Buttons';
-import { secondaryBackgroundColor } from 'style/colors';
+import ColoredSideBox from 'components/atoms/ColoredSideBox';
+import { useNavigate } from 'react-router';
+import { PAGES } from 'consts/pages.const';
 
 
 
 const DestructionSites = () => {
   const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
+  const [showEmptyPopup, setShowEmptyPopup] = useState(false);
   const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
   const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
-  const [streetNames, setStreetNames] = useState<string[]>([]);
+  const [streetNames, setStreetNames] = useState<string[]>(['ארלוזורוב']); //TODO: remove street
   const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
   const [siteNumber, setSiteNumber] = useState('');
   const [casualties, setCasualties] = useState('');
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const handleCloseRecommendation = () => setShowRecommendationPopup(false);
-  const handleShowRecommendation = () => setShowRecommendationPopup(true);
+  const handleCloseRecommendation = (isApprove: boolean = false) => {
+    setShowRecommendationPopup(false);
+    if (isApprove) {
+        // TODO: get recommendation 
+        navigate(`/${PAGES.RECOMMENDED_NATARS}`);
+    }
+  };
+  const handleShowRecommendation = () => {
+    if (destructionSites.length === 0) {
+        setShowEmptyPopup(true);
+        return;
+    }
+    setShowRecommendationPopup(true);
+  };
   const handleCloseDuplicatePopup = () => setShowDuplicatePopup(false);
 
   const addDestructionSite = () => {
@@ -48,26 +64,34 @@ const DestructionSites = () => {
 
   return (
     <Container>
-        <Typography variant='h4' gutterBottom>{t('DestructionSites.input')}</Typography>
+        <Typography variant='h4' gutterBottom>{t('destructionSites.input')}</Typography>
         <Grid container spacing={3}>
             <Grid size={3.6}>
-                <Box sx={{ bgcolor: secondaryBackgroundColor, height: '100%', borderRadius: '10%', p: 2 }}>
-                    <Typography variant='h6'>{t('DestructionSites.sites')}</Typography>
+                <ColoredSideBox>
+                    <Typography variant='h6'>{t('destructionSites.sites')}</Typography>
                     <List>
                         {destructionSites.map((site, index) => (
-                        <ListItem key={index} secondaryAction={
-                            <IconButton edge='end' onClick={() => deleteDestructionSite(index)}>
-                            <DeleteIcon color='error' />
-                            </IconButton>
-                        }>
-                            <ListItemText primary={`${site.street} ${site.number}`} secondary={`${t('DestructionSites.casualties')}: ${site.casualties}`} />
-                        </ListItem>
+                            <ListItem
+                                key={index}
+                                disableGutters
+                                secondaryAction={
+                                    <IconButton edge="start" onClick={() => deleteDestructionSite(index)}>
+                                        <DeleteIcon color="error" />
+                                    </IconButton>
+                                }
+                            >
+                                <ListItemText
+                                    primary={`${site.street} ${site.number}`}
+                                    secondary={`${t('destructionSites.casualties')}: ${site.casualties}`}
+                                    sx={{ textAlign: 'right' }}
+                                />
+                            </ListItem>
                         ))}
                     </List>
-                </Box>
+                </ColoredSideBox>
             </Grid>
             <Grid size={3.6}>
-                <Typography variant='h6'>{t('DestructionSites.newSite')}</Typography>
+                <Typography variant='h6'>{t('destructionSites.newSite')}</Typography>
                 <Box sx={formStyle}>
                     <Autocomplete
                         options={streetNames}
@@ -76,12 +100,12 @@ const DestructionSites = () => {
                         fullWidth
                         renderInput={(params) => <TextField
                             {...params}
-                            label={t('DestructionSites.street')}
+                            label={t('destructionSites.street')}
                             sx={rtlStyle}
                         />}
                     />
                     <TextField
-                        label={t('DestructionSites.streetNumber')}
+                        label={t('destructionSites.streetNumber')}
                         type='number'
                         value={siteNumber}
                         onChange={(e) => setSiteNumber(e.target.value)}
@@ -89,13 +113,17 @@ const DestructionSites = () => {
                         sx={rtlStyle}
                     />
                     <TextField
-                        label={t('DestructionSites.numberOfCasualties')}
+                        label={t('destructionSites.numberOfCasualties')}
                         type='number'
                         value={casualties}
                         onChange={(e) => setCasualties(e.target.value)}
                         fullWidth
                         sx={rtlStyle}
                     />
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <Typography>{t('destructionSites.numberOfCasualtiesEst')}</Typography>
+                        <Typography>30</Typography>
+                    </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                         <SeconderyButton variant='contained' color='primary' onClick={addDestructionSite}>
                             {t('buttons.add')}
@@ -116,20 +144,26 @@ const DestructionSites = () => {
         </Grid>
         <Box display='flex' justifyContent='center' mt={3}>
             <MainButton height={'40px'} onClick={handleShowRecommendation}>
-                {t('DestructionSites.getRecommendation')}
+                {t('destructionSites.getRecommendation')}
             </MainButton>
         </Box>
-        <Dialog open={showRecommendationPopup} onClose={handleCloseRecommendation}>
-            <DialogTitle>{t('DestructionSites.approveSites')}</DialogTitle>
+        <Dialog open={showEmptyPopup} onClose={() => setShowEmptyPopup(false)}>
+            <DialogTitle>{t('destructionSites.emptySites')}</DialogTitle>
             <DialogActions>
-            <Button onClick={handleCloseRecommendation} color='error'>{t('buttons.edit')}</Button>
-            <Button onClick={handleCloseRecommendation} color='primary'>{t('buttons.submit')}</Button>
+                <Button onClick={() => setShowEmptyPopup(false)} color='primary'>{t('buttons.submit')}</Button>
+            </DialogActions>
+        </Dialog>
+        <Dialog open={showRecommendationPopup} onClose={() => handleCloseRecommendation()}>
+            <DialogTitle>{t('destructionSites.approveSites')}</DialogTitle>
+            <DialogActions>
+                <Button onClick={() => handleCloseRecommendation()} color='error'>{t('buttons.edit')}</Button>
+                <Button onClick={() => handleCloseRecommendation(true)} color='primary'>{t('buttons.submit')}</Button>
             </DialogActions>
         </Dialog>
         <Dialog open={showDuplicatePopup} onClose={handleCloseDuplicatePopup}>
-            <DialogTitle>{t('DestructionSites.addressExists')}</DialogTitle>
+            <DialogTitle>{t('destructionSites.addressExists')}</DialogTitle>
             <DialogActions>
-            <Button onClick={handleCloseDuplicatePopup} color='primary'>{t('buttons.submit')}</Button>
+                <Button onClick={handleCloseDuplicatePopup} color='primary'>{t('buttons.submit')}</Button>
             </DialogActions>
         </Dialog>
     </Container>

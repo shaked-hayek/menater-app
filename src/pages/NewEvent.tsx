@@ -11,6 +11,7 @@ import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
 import { formStyle, rtlStyle } from 'style/muiStyles';
+import { PAGES } from 'consts/pages.const';
 
 interface FormValues {
   magnitude: number;
@@ -38,7 +39,7 @@ const NewEvent = () => {
 
     dispatch(setEarthquakeMagnitude(formValues.magnitude));
     dispatch(setEarthquakeTime(formValues.dateTime.toDate()));
-    navigate('/destructionSites');
+    navigate(`/${PAGES.DESTRUCATION_SITES}`);
   };
 
   const generateRandomValues = () => {

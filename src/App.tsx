@@ -15,6 +15,7 @@ import DestructionSites from 'pages/DestructionSites';
 import { LANGUAGES } from 'consts/languages.const';
 import 'dayjs/locale/he';
 import RecommendedNatars from 'pages/RecommendedNatars';
+import { PAGES } from 'consts/pages.const';
 
 
 const App = () => {
@@ -36,9 +37,9 @@ const App = () => {
             <Routes>
               <Route path='/' element={<Layout />}>
                 <Route index element={<StartPage />} />
-                <Route path='newEvent' element={<NewEvent />} />
-                <Route path='destructionSites' element={<DestructionSites />} />
-                <Route path='recommendedNatars' element={<RecommendedNatars />} />
+                <Route path={PAGES.NEW_EVENT} element={<NewEvent />} />
+                <Route path={PAGES.DESTRUCATION_SITES} element={<DestructionSites />} />
+                <Route path={PAGES.RECOMMENDED_NATARS} element={<RecommendedNatars />} />
               </Route>
             </Routes>
           </Router>
