@@ -20,7 +20,7 @@ const Header = () => {
 
     return (
         <AppBar position='static'>
-            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Typography variant='h6'>{t('header.title')}</Typography>
                     <Button color='inherit' component={Link} to='/'>

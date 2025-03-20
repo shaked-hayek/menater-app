@@ -14,6 +14,7 @@ import { store } from 'store/store';
 import DestructionSites from 'pages/DestructionSites';
 import { LANGUAGES } from 'consts/languages.const';
 import 'dayjs/locale/he';
+import RecommendedNatars from 'pages/RecommendedNatars';
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
   const currentLanguage = LANGUAGES.HE; // TODO: when adding more languages, move this to store
 
   useEffect(() => {
+    // https://material-ui.com/guides/right-to-left/
     document.body.dir = appDir;
     theme.direction = appDir;
   }, [i18n, theme, theme.direction, appDir]);
@@ -36,6 +38,7 @@ const App = () => {
                 <Route index element={<StartPage />} />
                 <Route path='newEvent' element={<NewEvent />} />
                 <Route path='destructionSites' element={<DestructionSites />} />
+                <Route path='recommendedNatars' element={<RecommendedNatars />} />
               </Route>
             </Routes>
           </Router>

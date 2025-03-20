@@ -5,7 +5,7 @@ import Header from './Header';
 import { backgroundColor, lightBgColor } from 'style/colors';
 
 const Layout = () => {
-    const headerHeight = '10vh';
+    const headerHeight = '6 rem';
 
     return (
         <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
