@@ -55,7 +55,7 @@ const StartPage = () => {
                     <SeconderyButton>
                         {t('startPage.manageNatars')}
                     </SeconderyButton>
-                    <SeconderyButton>
+                    <SeconderyButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>
                         {t('startPage.manageStaff')}
                     </SeconderyButton>
                     <SeconderyButton>

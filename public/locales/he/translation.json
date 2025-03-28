@@ -30,6 +30,11 @@
         "synchronize": "סנכרון",
         "settings": "הגדרות"
     },
+    "manageStaff": {
+        "existingStaff": "אנשי צוות קיימים",
+        "addStaffMember": "הוסף איש צוות",
+        "occupation": "הכשרה"
+    },
     "newEvent": {
         "create": "יצירת אירוע {{type}} חדש",
         "earthquakeMagnitude": "עוצמת הרעש",
