@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateStaffMember from 'components/Staff/CreateStaffMember';
-import { getStaffMembers } from 'actions/staff/staffActions';
+import { deleteStaffMemberAction, getStaffMembersAction } from 'actions/staff/staffActions';
 
 export interface StaffMember {
     name: string;
@@ -17,41 +18,56 @@ const ManageStaff = () => {
     // const navigate = useNavigate();
     const { t } = useTranslation();
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
+    const [isLoading, setIsLoading] = useState(false); // TODO: use
 
     useEffect(() => {
-        getStaffMembers(setStaffMembers);
+        getStaffMembersAction(setStaffMembers);
     }, []);
     
 
-    const deleteStaffMember = (index : number) => {
-
+    async function deleteStaffMember(staffMember : StaffMember) {
+        try {
+            await deleteStaffMemberAction(staffMember);
+        } catch (error) {
+            //handle error
+            return;
+        }
+        setStaffMembers(prev =>
+            prev.filter(member => member.name !== staffMember.name)
+        );
     }
 
     return (
         <>
-            <ColoredSideBox>
-                <Typography variant='h6'>{t('manageStaff.existingStaff')}</Typography>
-                    <List>
-                        {staffMembers.map((site, index) => (
-                            <ListItem
-                                key={index}
-                                disableGutters
-                                secondaryAction={
-                                    <IconButton edge="start" onClick={() => deleteStaffMember(index)}>
-                                        <DeleteIcon color="error" />
-                                    </IconButton>
-                                }
-                            >
-                                <ListItemText
-                                    primary={`${site.name}`}
-                                    secondary={`${t('manageStaff.occupation')}: ${site.occupation}`}
-                                    sx={{ textAlign: 'right' }}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-            </ColoredSideBox>
-            <CreateStaffMember/>
+            <Grid container spacing={3}>
+                <Grid size={6}>
+                    <ColoredSideBox>
+                        <Typography variant='h6'>{t('manageStaff.existingStaff')}</Typography>
+                        <List>
+                            {staffMembers.map((staff, index) => (
+                                <ListItem
+                                    key={index}
+                                    disableGutters
+                                    secondaryAction={
+                                        <IconButton edge="start" onClick={() => deleteStaffMember(staff)}>
+                                            <DeleteIcon color="error" />
+                                        </IconButton>
+                                    }
+                                >
+                                    <ListItemText
+                                        primary={`${staff.name}`}
+                                        secondary={`${t('manageStaff.occupation')}: ${staff.occupation}`}
+                                        sx={{ textAlign: 'right' }}
+                                    />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </ColoredSideBox>
+                </Grid>
+                <Grid size={6}>
+                    <CreateStaffMember/>
+                </Grid>
+            </Grid>
         </>
     );
 };
