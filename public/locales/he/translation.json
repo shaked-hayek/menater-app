@@ -33,7 +33,15 @@
     "manageStaff": {
         "existingStaff": "אנשי צוות קיימים",
         "addStaffMember": "הוסף איש צוות",
-        "occupation": "הכשרה"
+        "occupation": "הכשרה",
+        "occupationOptions": {
+            "doctor": "רופא/ה",
+            "paramedic": "פרמדיק/ית",
+            "assistant": "מסייע/ת"
+        },
+        "staffName": "שם מלא",
+        "staffOccupation": "הכשרה",
+        "staffPhone": "מספר טלפון"
     },
     "newEvent": {
         "create": "יצירת אירוע {{type}} חדש",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Container, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,12 @@ export interface StaffMember {
     occupation: string;
     status?: string
     phoneNumber?: string;
+}
+
+export enum StaffOccupation {
+    DOCTOR = 'doctor',
+    PARAMEDIC = 'paramedic',
+    ASSISTANT = 'assistant',
 }
 
 const ManageStaff = () => {
@@ -38,9 +44,9 @@ const ManageStaff = () => {
     }
 
     return (
-        <>
+        <Container sx={{ height: '100%', width: '100%' }}>
             <Grid container spacing={3}>
-                <Grid size={6}>
+                <Grid size={4}>
                     <ColoredSideBox>
                         <Typography variant='h6'>{t('manageStaff.existingStaff')}</Typography>
                         <List>
@@ -64,11 +70,11 @@ const ManageStaff = () => {
                         </List>
                     </ColoredSideBox>
                 </Grid>
-                <Grid size={6}>
+                <Grid size={8}>
                     <CreateStaffMember/>
                 </Grid>
             </Grid>
-        </>
+        </Container>
     );
 };
 
