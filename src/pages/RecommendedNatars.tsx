@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { MainButton, SeconderyButton } from 'components/atoms/Buttons';
+import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { PAGES } from 'consts/pages.const';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ const RecommendedNatars = () => {
                 <Grid size={8}></Grid>
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: 2 }}>
-                <SeconderyButton onClick={handleAddSite}>{t('recommendedNatars.addDestructionSite')}</SeconderyButton>
+                <SecondaryButton onClick={handleAddSite}>{t('recommendedNatars.addDestructionSite')}</SecondaryButton>
                 <MainButton height={'40px'} onClick={handleSubmit}>{t('buttons.submit')}</MainButton>
             </Box>
         </Container>

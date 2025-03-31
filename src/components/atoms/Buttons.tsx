@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from '@mui/material';
-import { darkTextColor, lightBgColor, lightTextColor, mainButtonColor, seconderyButtonColor, themeColor, trialBgColor } from 'style/colors';
+import { darkTextColor, lightBgColor, lightTextColor, mainButtonColor, secondaryButtonColor, themeColor, trialBgColor } from 'style/colors';
 
 // Extend ButtonProps to support all MUI button attributes
 interface CustomButtonProps extends ButtonProps {
@@ -25,12 +25,12 @@ export const MainButton = ({ children, height = '80px', ...props }: CustomButton
   );
 };
 
-export const SeconderyButton = ({ children, ...props }: CustomButtonProps) => {
+export const SecondaryButton = ({ children, ...props }: CustomButtonProps) => {
   return (
     <Button
       {...props}
       sx={{
-        bgcolor: seconderyButtonColor,
+        bgcolor: secondaryButtonColor,
         color: darkTextColor,
       }}
     >

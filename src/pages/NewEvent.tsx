@@ -5,7 +5,7 @@ import { Box, Typography, TextField } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 
-import { SeconderyButton, CreateDataButton } from 'components/atoms/Buttons';
+import { SecondaryButton, CreateDataButton } from 'components/atoms/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
@@ -87,7 +87,7 @@ const NewEvent = () => {
           {mode == MODE.TRIAL && (
             <CreateDataButton onClick={generateRandomValues}>{t('buttons.createData')}</CreateDataButton>
           )}
-          <SeconderyButton onClick={handleSubmit}>{t('buttons.next')}</SeconderyButton>
+          <SecondaryButton onClick={handleSubmit}>{t('buttons.next')}</SecondaryButton>
         </Box>
       </Box>
     </>

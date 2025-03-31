@@ -6,7 +6,7 @@ import { Autocomplete } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import MapComponent, { DestructionSite } from 'components/DestractionSitesComp/DestructionSitesMap';
 import { formStyle, rtlStyle } from 'style/muiStyles';
-import { MainButton, SeconderyButton } from 'components/atoms/Buttons';
+import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
@@ -125,9 +125,9 @@ const DestructionSites = () => {
                         <Typography>30</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                        <SeconderyButton variant='contained' color='primary' onClick={addDestructionSite}>
+                        <SecondaryButton variant='contained' color='primary' onClick={addDestructionSite}>
                             {t('buttons.add')}
-                        </SeconderyButton>
+                        </SecondaryButton>
                     </Box>
                 </Box>
             </Grid>

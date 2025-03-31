@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Modal, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import { EmergencyButton, MainButton, SeconderyButton, TrialButton } from 'components/atoms/Buttons';
+import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'components/atoms/Buttons';
 import { setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
@@ -49,21 +49,21 @@ const StartPage = () => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                 <Box sx={{ p: 2, m: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <SeconderyButton>
+                    <SecondaryButton>
                         {t('startPage.eventsHistory')}
-                    </SeconderyButton>
-                    <SeconderyButton>
+                    </SecondaryButton>
+                    <SecondaryButton>
                         {t('startPage.manageNatars')}
-                    </SeconderyButton>
-                    <SeconderyButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>
+                    </SecondaryButton>
+                    <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>
                         {t('startPage.manageStaff')}
-                    </SeconderyButton>
-                    <SeconderyButton>
+                    </SecondaryButton>
+                    <SecondaryButton>
                         {t('startPage.synchronize')}
-                    </SeconderyButton>
-                    <SeconderyButton>
+                    </SecondaryButton>
+                    <SecondaryButton>
                         {t('startPage.settings')}
-                    </SeconderyButton>
+                    </SecondaryButton>
                 </Box>
                 <MainButton onClick={handleShow}>
                     {t('startPage.openEvent')}
