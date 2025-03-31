@@ -34,6 +34,7 @@
         "existingStaff": "אנשי צוות קיימים",
         "addStaffMember": "הוסף איש צוות",
         "occupation": "הכשרה",
+        "phone": "טלפון",
         "occupationOptions": {
             "doctor": "רופא/ה",
             "paramedic": "פרמדיק/ית",

@@ -14,7 +14,7 @@ import { formStyle, rtlStyle } from 'style/muiStyles';
 import { PAGES } from 'consts/pages.const';
 
 interface FormValues {
-  magnitude: number;
+  magnitude: number | null;
   dateTime: Dayjs | null;
 }
 
@@ -25,15 +25,15 @@ const NewEvent = () => {
   const mode = useSelector((state: RootState) => state.appState.mode);
 
   const [formValues, setFormValues] = useState<FormValues>({
-    magnitude: 0,
+    magnitude: null,
     dateTime: dayjs(),
   });
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (!formValues.dateTime) {
-      console.error('DateTime is missing'); // TODO: Show error
+    if (!formValues.magnitude || !formValues.dateTime) {
+      console.error('DateTime or magnitude are missing'); // TODO: Show error
       return;
     }
 

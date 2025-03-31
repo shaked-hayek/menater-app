@@ -23,6 +23,6 @@ export const formStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    p: '2rem',
+    p: '1rem',
     gap: '1rem',
 };

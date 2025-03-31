@@ -62,7 +62,11 @@ const ManageStaff = () => {
                                 >
                                     <ListItemText
                                         primary={`${staff.name}`}
-                                        secondary={`${t('manageStaff.occupation')}: ${staff.occupation}`}
+                                        secondary={
+                                            `${t('manageStaff.occupation')}: ${staff.occupation}` +
+                                            (staff.phoneNumber ? (
+                                                `, ${t('manageStaff.phone')}: ${staff.phoneNumber}`
+                                            ) : '')}
                                         sx={{ textAlign: 'right' }}
                                     />
                                 </ListItem>

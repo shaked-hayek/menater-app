@@ -52,7 +52,7 @@ const CreateStaffMember = () => {
             name: formValues.name, 
             occupation: formValues.occupation,
             status: 'null', // TODO: change
-            phoneNumber: formValues.phoneNumber,
+            phoneNumber: formValues.phoneNumber ?? '',
         };
         await addStaffMemberAction(staffMember as StaffMember);
         window.location.reload();    
@@ -112,8 +112,8 @@ const CreateStaffMember = () => {
             </Box>
 
             {/* Buttons */}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                <SecondaryButton onClick={handleSubmit}>{t('buttons.submit')}</SecondaryButton>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <SecondaryButton onClick={handleSubmit}>{t('buttons.add')}</SecondaryButton>
             </Box>
         </Container>
     );
