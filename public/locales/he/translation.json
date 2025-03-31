@@ -42,7 +42,11 @@
         },
         "staffName": "שם מלא",
         "staffOccupation": "הכשרה",
-        "staffPhone": "מספר טלפון"
+        "staffPhone": "מספר טלפון",
+        "errorMsgs": {
+            "fieldMissing": "יש למלא שם מלא והכשרה",
+            "phoneError": "מספר טלפון אינו תקין"
+        }
     },
     "newEvent": {
         "create": "יצירת אירוע {{type}} חדש",

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Container, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogActions, DialogTitle, MenuItem, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { formStyle, rtlStyle } from "style/muiStyles";
 import { StaffOccupation, StaffMember } from 'pages/ManageStaff';
@@ -27,6 +27,9 @@ const textFieldTypographyStyle = {
 
 const CreateStaffMember = () => {
     const { t } = useTranslation();
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const [formValues, setFormValues] = useState<FormValues>({
         name: null,
         occupation: null,
@@ -40,14 +43,19 @@ const CreateStaffMember = () => {
     ];
 
     async function handleSubmit(e: { preventDefault: () => void }) {
-        console.log(formValues);
         e.preventDefault();
 
         if (!formValues.name || !formValues.occupation) {
-            console.error('Name or Occupation is missing'); // TODO: Show error
+            setErrorMessage(t('manageStaff.errorMsgs.fieldMissing'));
+            setShowErrorPopup(true);
             return;
         }
-        // TODO: Verify phone number
+        if (formValues.phoneNumber && !Number.isInteger(formValues.phoneNumber)) {
+            setErrorMessage(t('manageStaff.errorMsgs.phoneError'));
+            setShowErrorPopup(true);
+            return;
+        }
+
         const staffMember = {
             name: formValues.name, 
             occupation: formValues.occupation,
@@ -115,6 +123,16 @@ const CreateStaffMember = () => {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <SecondaryButton onClick={handleSubmit}>{t('buttons.add')}</SecondaryButton>
             </Box>
+            
+            {/* Error Dialog */}
+            <Dialog open={showErrorPopup} onClose={() => setShowErrorPopup(false)}>
+                <DialogTitle>{errorMessage}</DialogTitle>
+                <DialogActions>
+                    <Button onClick={() => setShowErrorPopup(false)} color='primary'>
+                        {t('buttons.submit')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     );
 };
