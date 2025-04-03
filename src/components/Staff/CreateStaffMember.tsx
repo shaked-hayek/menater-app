@@ -5,6 +5,7 @@ import { formStyle, rtlStyle } from "style/muiStyles";
 import { StaffOccupation, StaffMember } from 'pages/ManageStaff';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { addStaffMemberAction } from 'actions/staff/staffActions';
+import ErrorPopup from 'components/atoms/ErrorPopup';
 
 interface FormValues {
     name: string | null;
@@ -124,15 +125,7 @@ const CreateStaffMember = () => {
                 <SecondaryButton onClick={handleSubmit}>{t('buttons.add')}</SecondaryButton>
             </Box>
             
-            {/* Error Dialog */}
-            <Dialog open={showErrorPopup} onClose={() => setShowErrorPopup(false)}>
-                <DialogTitle>{errorMessage}</DialogTitle>
-                <DialogActions>
-                    <Button onClick={() => setShowErrorPopup(false)} color='primary'>
-                        {t('buttons.submit')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </Container>
     );
 };

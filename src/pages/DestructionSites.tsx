@@ -10,7 +10,7 @@ import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
-
+import ErrorPopup from 'components/atoms/ErrorPopup';
 
 
 const DestructionSites = () => {
@@ -28,10 +28,11 @@ const DestructionSites = () => {
   const handleCloseRecommendation = (isApprove: boolean = false) => {
     setShowRecommendationPopup(false);
     if (isApprove) {
-        // TODO: get recommendation 
-        navigate(`/${PAGES.RECOMMENDED_NATARS}`);
-    }
-  };
+            // TODO: get recommendation 
+            navigate(`/${PAGES.RECOMMENDED_NATARS}`);
+        }
+    };
+
   const handleShowRecommendation = () => {
     if (destructionSites.length === 0) {
         setShowEmptyPopup(true);
@@ -39,11 +40,10 @@ const DestructionSites = () => {
     }
     setShowRecommendationPopup(true);
   };
-  const handleCloseDuplicatePopup = () => setShowDuplicatePopup(false);
-
+  
   const addDestructionSite = () => {
     if (!selectedStreet || !siteNumber) return;
-    
+
     const isDuplicate = destructionSites.some(
       (site) => site.street === selectedStreet && site.number === siteNumber
     );
@@ -147,23 +147,15 @@ const DestructionSites = () => {
                 {t('destructionSites.getRecommendation')}
             </MainButton>
         </Box>
-        <Dialog open={showEmptyPopup} onClose={() => setShowEmptyPopup(false)}>
-            <DialogTitle>{t('destructionSites.emptySites')}</DialogTitle>
-            <DialogActions>
-                <Button onClick={() => setShowEmptyPopup(false)} color='primary'>{t('buttons.submit')}</Button>
-            </DialogActions>
-        </Dialog>
+
+        <ErrorPopup errorMessage={t('destructionSites.emptySites')} showErrorPopup={showEmptyPopup} setShowErrorPopup={setShowEmptyPopup} />
+        <ErrorPopup errorMessage={t('destructionSites.addressExists')} showErrorPopup={showDuplicatePopup} setShowErrorPopup={setShowDuplicatePopup} />
+
         <Dialog open={showRecommendationPopup} onClose={() => handleCloseRecommendation()}>
             <DialogTitle>{t('destructionSites.approveSites')}</DialogTitle>
             <DialogActions>
                 <Button onClick={() => handleCloseRecommendation()} color='error'>{t('buttons.edit')}</Button>
                 <Button onClick={() => handleCloseRecommendation(true)} color='primary'>{t('buttons.submit')}</Button>
-            </DialogActions>
-        </Dialog>
-        <Dialog open={showDuplicatePopup} onClose={handleCloseDuplicatePopup}>
-            <DialogTitle>{t('destructionSites.addressExists')}</DialogTitle>
-            <DialogActions>
-                <Button onClick={handleCloseDuplicatePopup} color='primary'>{t('buttons.submit')}</Button>
             </DialogActions>
         </Dialog>
     </Container>

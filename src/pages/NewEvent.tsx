@@ -12,6 +12,7 @@ import { MODE } from 'consts/mode.const';
 import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { PAGES } from 'consts/pages.const';
+import ErrorPopup from 'components/atoms/ErrorPopup';
 
 interface FormValues {
   magnitude: number | null;
@@ -23,6 +24,7 @@ const NewEvent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const mode = useSelector((state: RootState) => state.appState.mode);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const [formValues, setFormValues] = useState<FormValues>({
     magnitude: null,
@@ -33,7 +35,7 @@ const NewEvent = () => {
     e.preventDefault();
 
     if (!formValues.magnitude || !formValues.dateTime) {
-      console.error('DateTime or magnitude are missing'); // TODO: Show error
+      setShowErrorPopup(true);
       return;
     }
 
@@ -90,6 +92,8 @@ const NewEvent = () => {
           <SecondaryButton onClick={handleSubmit}>{t('buttons.next')}</SecondaryButton>
         </Box>
       </Box>
+
+      <ErrorPopup errorMessage={t('newEvent.invalidInput')} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
     </>
   );
 };

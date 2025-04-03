@@ -51,7 +51,8 @@
     "newEvent": {
         "create": "יצירת אירוע {{type}} חדש",
         "earthquakeMagnitude": "עוצמת הרעש",
-        "earthquakeTime": "מועד הרעש"
+        "earthquakeTime": "מועד הרעש",
+        "invalidInput": "עוצמת או מועד הרעש חסרים"
     },
     "destructionSites": {
         "input": "הזנת אתרי הרס",
