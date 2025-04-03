@@ -12,7 +12,7 @@ import { MODE } from 'consts/mode.const';
 import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { PAGES } from 'consts/pages.const';
-import ErrorPopup from 'components/atoms/ErrorPopup';
+import { ErrorPopup } from 'components/atoms/Popups';
 
 interface FormValues {
   magnitude: number | null;

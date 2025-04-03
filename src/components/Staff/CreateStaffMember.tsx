@@ -5,7 +5,7 @@ import { formStyle, rtlStyle } from "style/muiStyles";
 import { StaffOccupation, StaffMember } from 'pages/ManageStaff';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { addStaffMemberAction } from 'actions/staff/staffActions';
-import ErrorPopup from 'components/atoms/ErrorPopup';
+import { ErrorPopup } from 'components/atoms/Popups';
 
 interface FormValues {
     name: string | null;

@@ -10,7 +10,7 @@ import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
-import ErrorPopup from 'components/atoms/ErrorPopup';
+import { ApprovePopup, ErrorPopup } from 'components/atoms/Popups';
 
 
 const DestructionSites = () => {
@@ -25,12 +25,10 @@ const DestructionSites = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const handleCloseRecommendation = (isApprove: boolean = false) => {
-    setShowRecommendationPopup(false);
-    if (isApprove) {
-            // TODO: get recommendation 
-            navigate(`/${PAGES.RECOMMENDED_NATARS}`);
-        }
+  const handleApproveSitesChoice = () => {
+        setShowRecommendationPopup(false);
+        // TODO: get recommendation
+        navigate(`/${PAGES.RECOMMENDED_NATARS}`);
     };
 
   const handleShowRecommendation = () => {
@@ -150,14 +148,13 @@ const DestructionSites = () => {
 
         <ErrorPopup errorMessage={t('destructionSites.emptySites')} showErrorPopup={showEmptyPopup} setShowErrorPopup={setShowEmptyPopup} />
         <ErrorPopup errorMessage={t('destructionSites.addressExists')} showErrorPopup={showDuplicatePopup} setShowErrorPopup={setShowDuplicatePopup} />
-
-        <Dialog open={showRecommendationPopup} onClose={() => handleCloseRecommendation()}>
-            <DialogTitle>{t('destructionSites.approveSites')}</DialogTitle>
-            <DialogActions>
-                <Button onClick={() => handleCloseRecommendation()} color='error'>{t('buttons.edit')}</Button>
-                <Button onClick={() => handleCloseRecommendation(true)} color='primary'>{t('buttons.submit')}</Button>
-            </DialogActions>
-        </Dialog>
+        <ApprovePopup
+            message={t('destructionSites.approveSites')}
+            showPopup={showRecommendationPopup}
+            setShowPopup={setShowRecommendationPopup}
+            onApprove={handleApproveSitesChoice}
+            onReject={() => setShowRecommendationPopup(false)}
+        />
     </Container>
   );
 };
