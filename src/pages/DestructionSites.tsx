@@ -65,8 +65,7 @@ const DestructionSites = () => {
         <Typography variant='h4' gutterBottom>{t('destructionSites.input')}</Typography>
         <Grid container spacing={3}>
             <Grid size={3.6}>
-                <ColoredSideBox>
-                    <Typography variant='h6'>{t('destructionSites.sites')}</Typography>
+                <ColoredSideBox title={t('destructionSites.sites')} >
                     <List>
                         {destructionSites.map((site, index) => (
                             <ListItem

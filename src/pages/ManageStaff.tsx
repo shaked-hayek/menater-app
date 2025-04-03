@@ -47,8 +47,7 @@ const ManageStaff = () => {
         <Container sx={{ height: '100%', width: '100%' }}>
             <Grid container spacing={3}>
                 <Grid size={4}>
-                    <ColoredSideBox>
-                        <Typography variant='h6'>{t('manageStaff.existingStaff')}</Typography>
+                    <ColoredSideBox title={t('manageStaff.existingStaff')} >
                         <List>
                             {staffMembers.map((staff, index) => (
                                 <ListItem

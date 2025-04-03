@@ -1,26 +1,43 @@
-import { Box, BoxProps } from "@mui/material"
-import { secondaryBackgroundColor } from "style/colors";
+import { Box, BoxProps, Typography } from "@mui/material"
+import { scrollColor, scrollBackgroundColor, secondaryBackgroundColor } from "style/colors";
 
 interface CustomBoxProps extends BoxProps {
+    title?: string;
     children?: React.ReactNode;
     bgColor?: string;
   }
 
-const ColoredSideBox = ({ children, bgColor = secondaryBackgroundColor, ...props }: CustomBoxProps) => {
+const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, ...props }: CustomBoxProps) => {
     return (
         <Box 
             {...props}
-            sx={{ 
+            sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
-                bgcolor: bgColor, 
-                height: '100%', 
-                borderRadius: '10%', 
-                p: 2 }}
+                bgcolor: bgColor,
+                height: 'calc(100vh - 125px)',
+                borderRadius: '10%',
+                p: 2,
+            }}
         >
-            {children}
+            {title && <Typography variant='h6' sx={{m: 1}}>{title}</Typography>}
+            <Box sx={{
+                overflowY: 'auto',
+                width: '100%',
+                flexGrow: 1,
+                '&::-webkit-scrollbar-track': {
+                    background: scrollBackgroundColor,
+                    borderRadius: '6px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: scrollColor,
+                    borderColor: scrollBackgroundColor,
+                },
+            }}>
+                {children}
+            </Box>
         </Box>
     );
 };

@@ -43,6 +43,16 @@ const CreateStaffMember = () => {
         { value: StaffOccupation.ASSISTANT, label: t('manageStaff.occupationOptions.assistant') },
     ];
 
+    const isValidPhoneNumber = (phoneNumber: string) => {
+        const phoneTrimmed = phoneNumber.trim();
+        if (!phoneTrimmed) {
+            return false;
+        }
+        const phoneNoZero = phoneTrimmed.replace(/^0+/, "") || "0";
+        const phoneAsNumber = Math.floor(Number(phoneNoZero));
+        return phoneAsNumber !== Infinity && String(phoneAsNumber) === phoneNoZero && phoneAsNumber >= 0;
+    }
+
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
 
@@ -51,7 +61,7 @@ const CreateStaffMember = () => {
             setShowErrorPopup(true);
             return;
         }
-        if (formValues.phoneNumber && !Number.isInteger(formValues.phoneNumber)) {
+        if (formValues.phoneNumber && !isValidPhoneNumber(formValues.phoneNumber)) {
             setErrorMessage(t('manageStaff.errorMsgs.phoneError'));
             setShowErrorPopup(true);
             return;
