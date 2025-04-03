@@ -45,7 +45,10 @@
         "staffPhone": "מספר טלפון",
         "errorMsgs": {
             "fieldMissing": "יש למלא שם מלא והכשרה",
-            "phoneError": "מספר טלפון אינו תקין"
+            "phoneError": "מספר טלפון אינו תקין",
+            "serverAddError": "קרתה תקלה בהוספת איש צוות",
+            "serverDeleteError": "קרתה תקלה במחיקת איש צוות",
+            "serverGetError": "קרתה תקלה בשרת"
         }
     },
     "newEvent": {

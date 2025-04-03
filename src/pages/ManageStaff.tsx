@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateStaffMember from 'components/Staff/CreateStaffMember';
 import { deleteStaffMemberAction, getStaffMembersAction } from 'actions/staff/staffActions';
+import { ErrorPopup } from 'components/atoms/Popups';
 
 export interface StaffMember {
     name: string;
@@ -25,17 +26,29 @@ const ManageStaff = () => {
     const { t } = useTranslation();
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
     const [isLoading, setIsLoading] = useState(false); // TODO: use
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
-        getStaffMembersAction(setStaffMembers);
-    }, []);
+        const fetchStaff = async () => {
+          try {
+            await getStaffMembersAction(setStaffMembers);
+          } catch (error) {
+            setErrorMessage(t('manageStaff.errorMsgs.serverGetError'));
+            setShowErrorPopup(true);
+          }
+        };
+        
+        fetchStaff();
+      }, []);
     
 
     async function deleteStaffMember(staffMember : StaffMember) {
         try {
             await deleteStaffMemberAction(staffMember);
         } catch (error) {
-            //handle error
+            setErrorMessage(t('manageStaff.errorMsgs.serverDeleteError'));
+            setShowErrorPopup(true);
             return;
         }
         setStaffMembers(prev =>
@@ -77,6 +90,8 @@ const ManageStaff = () => {
                     <CreateStaffMember/>
                 </Grid>
             </Grid>
+
+            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </Container>
     );
 };

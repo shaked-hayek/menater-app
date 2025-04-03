@@ -6,9 +6,11 @@ export async function getStaffMembersAction(setStaff : Dispatch<SetStateAction<S
     const response = await fetch(`${SERVER_IP}/staff`, {
         method: 'GET',
     });
+    if (!response.ok) {
+        throw new Error('Failed to get staff members');
+    }
     const staffList = await response.json();
     setStaff(staffList);
-    return response.ok ? true : false; // TODO: throw error and handle it
 };
 
 export async function addStaffMemberAction(staffMember : StaffMember) {
@@ -17,7 +19,9 @@ export async function addStaffMemberAction(staffMember : StaffMember) {
         headers: HTTP_HEADERS,
         body: JSON.stringify(staffMember),
     });
-    return response.ok ? true : false;
+    if (!response.ok) {
+        throw new Error('Failed to add staff member');
+    }
 };
 
 export async function deleteStaffMemberAction(staffMember : StaffMember) {

@@ -73,7 +73,13 @@ const CreateStaffMember = () => {
             status: 'null', // TODO: change
             phoneNumber: formValues.phoneNumber ?? '',
         };
-        await addStaffMemberAction(staffMember as StaffMember);
+        try {
+            await addStaffMemberAction(staffMember as StaffMember);
+        } catch (error) {
+            setErrorMessage(t('manageStaff.errorMsgs.serverAddError'));
+            setShowErrorPopup(true);
+            return;
+        }
         window.location.reload();    
     };
     
