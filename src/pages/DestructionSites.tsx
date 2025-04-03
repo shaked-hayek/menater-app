@@ -12,6 +12,12 @@ import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
 import { ApprovePopup, ErrorPopup } from 'components/atoms/Popups';
 
+export interface Site {
+    street: string;
+    streetNumber: string;
+    casualties: string;
+}
+
 
 const DestructionSites = () => {
   const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);

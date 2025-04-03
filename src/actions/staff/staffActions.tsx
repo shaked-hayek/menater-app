@@ -1,9 +1,10 @@
 import { SetStateAction, Dispatch } from 'react';
 import { HTTP_HEADERS, SERVER_IP } from 'consts/settings.const';
 import { StaffMember } from 'pages/ManageStaff';
+import { ROUTES } from 'actions/routes';
 
 export async function getStaffMembersAction(setStaff : Dispatch<SetStateAction<StaffMember[]>>) {
-    const response = await fetch(`${SERVER_IP}/staff`, {
+    const response = await fetch(`${SERVER_IP}${ROUTES.STAFF}`, {
         method: 'GET',
     });
     if (!response.ok) {
@@ -14,7 +15,7 @@ export async function getStaffMembersAction(setStaff : Dispatch<SetStateAction<S
 };
 
 export async function addStaffMemberAction(staffMember : StaffMember) {
-    const response = await fetch(`${SERVER_IP}/staff`, {
+    const response = await fetch(`${SERVER_IP}${ROUTES.STAFF}`, {
         method: 'POST',
         headers: HTTP_HEADERS,
         body: JSON.stringify(staffMember),
@@ -25,7 +26,7 @@ export async function addStaffMemberAction(staffMember : StaffMember) {
 };
 
 export async function deleteStaffMemberAction(staffMember : StaffMember) {
-    const response = await fetch(`${SERVER_IP}/staff`, {
+    const response = await fetch(`${SERVER_IP}${ROUTES.STAFF}`, {
         method: 'DELETE',
         headers: HTTP_HEADERS,
         body: JSON.stringify({
