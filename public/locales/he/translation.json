@@ -81,6 +81,19 @@
         "main": "ראשי",
         "secondary": "משני",
         "addStaff": "שיבוץ אנשי צוות",
-        "staff": "אנשי צוות משובצים"
+        "staff": "אנשי צוות משובצים",
+        "natarDetails": {
+            "id": "מזהה",
+            "address": "כתובת",
+            "capacity": "קיבולת",
+            "equipmentLocation": "מיקום ציוד",
+            "lastUpdateDate": "תאריך עדכון אחרון",
+            "nature": "אופי",
+            "terrainType": "סוג המשטח",
+            "vehicleApproach": "גישת כלי רכב",
+            "gasStationNear": "קרבה לתחנת דלק",
+            "shade": "הצללה",
+            "availableFacilities": "מתקנים זמינים"
+        }
     }
 }

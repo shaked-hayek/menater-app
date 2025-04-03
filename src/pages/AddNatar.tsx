@@ -12,7 +12,12 @@ interface NatarDetails {
     capacity?: number;
     equipmentLocation?: string;
     lastUpdateDate?: string;
-    // TODO
+    nature?: string;
+    terrainType?: string;
+    vehicleApproach?: string;
+    gasStationNear?: string;
+    shade?: string;
+    availableFacilities?: string;
 }
 
 interface AddNatarProps {
@@ -21,6 +26,19 @@ interface AddNatarProps {
 
 const AddNatar = ({natarDetails}: AddNatarProps) => {
     const { t } = useTranslation();
+
+    const fields: { key: keyof NatarDetails; label: string }[] = [
+        { key: 'address', label: t('natarDetails.address') },
+        { key: 'capacity', label: t('natarDetails.capacity') },
+        { key: 'equipmentLocation', label: t('natarDetails.equipmentLocation') },
+        { key: 'lastUpdateDate', label: t('natarDetails.lastUpdateDate') },
+        { key: 'nature', label: t('natarDetails.nature') },
+        { key: 'terrainType', label: t('natarDetails.terrainType') },
+        { key: 'vehicleApproach', label: t('natarDetails.vehicleApproach') },
+        { key: 'gasStationNear', label: t('natarDetails.gasStationNear') },
+        { key: 'shade', label: t('natarDetails.shade') },
+        { key: 'availableFacilities', label: t('natarDetails.availableFacilities') },
+    ];
     
     return (
         <>
@@ -30,7 +48,14 @@ const AddNatar = ({natarDetails}: AddNatarProps) => {
             <Grid container spacing={3}>
                 <Grid size={6}>
                     <ColoredSideBox>
-
+                        {fields.map(({ key, label }) =>
+                            natarDetails[key] ? (
+                                <Box key={key} sx={{ display: 'flex', gap: 1 }}>
+                                    <Typography fontWeight='bold'>{label}:</Typography>
+                                    <Typography>{String(natarDetails[key])}</Typography>
+                                </Box>
+                            ) : null
+                        )}
                     </ColoredSideBox>
                 </Grid>
                 <Grid size={6}>
