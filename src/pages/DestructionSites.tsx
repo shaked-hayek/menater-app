@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Container, Typography, TextField, Button, Box, Dialog, DialogTitle, DialogActions, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import { Container, Typography, TextField, Box, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Autocomplete } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import MapComponent, { DestructionSite } from 'components/DestractionSitesComp/DestructionSitesMap';
+import DestructionSitesMap, { DestructionSite } from 'components/DestructionSitesComp/DestructionSitesMap'
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -18,13 +18,12 @@ export interface Site {
     casualties: string;
 }
 
-
 const DestructionSites = () => {
   const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
   const [showEmptyPopup, setShowEmptyPopup] = useState(false);
   const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
   const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
-  const [streetNames, setStreetNames] = useState<string[]>(['ארלוזורוב']); //TODO: remove street
+  const [streetNames, setStreetNames] = useState<string[]>([]);
   const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
   const [siteNumber, setSiteNumber] = useState('');
   const [casualties, setCasualties] = useState('');
@@ -55,7 +54,7 @@ const DestructionSites = () => {
     if (isDuplicate) {
       setShowDuplicatePopup(true);
     } else {
-      setDestructionSites([...destructionSites, { street: selectedStreet, number: siteNumber, casualties }]);
+      setDestructionSites([...destructionSites, { street: selectedStreet, number: siteNumber, casualties: Number(casualties) }]);
       setSelectedStreet(null);
       setSiteNumber('');
       setCasualties('');
@@ -68,7 +67,6 @@ const DestructionSites = () => {
 
   return (
     <Container>
-        <Typography variant='h4' gutterBottom>{t('destructionSites.input')}</Typography>
         <Grid container spacing={3}>
             <Grid size={3.6}>
                 <ColoredSideBox title={t('destructionSites.sites')} >
@@ -135,21 +133,27 @@ const DestructionSites = () => {
                 </Box>
             </Grid>
             <Grid size={4.8}>
-                <MapComponent
+                <DestructionSitesMap
                     destructionSites={destructionSites}
                     addDestructionSite={addDestructionSite}
-                    removeDestructionSite={(site: DestructionSite) =>
-                    setDestructionSites((prevSites) => prevSites.filter((s) => !(s.street === site.street && s.number === site.number)))
-                    }
+                    // removeDestructionSite={(site: DestructionSite) =>
+                    //     setDestructionSites((prevSites) => prevSites.filter((s) => !(s.street === site.street && s.number === site.number)))
+                    //     }
                     setStreetNames={setStreetNames}
                 />
             </Grid>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center', 
+                alignItems: 'flex-end',
+                mt: 3,
+            }}>
+                <MainButton height={'40px'} onClick={handleShowRecommendation}>
+                    {t('destructionSites.getRecommendation')}
+                </MainButton>
+            </Box>
         </Grid>
-        <Box display='flex' justifyContent='center' mt={3}>
-            <MainButton height={'40px'} onClick={handleShowRecommendation}>
-                {t('destructionSites.getRecommendation')}
-            </MainButton>
-        </Box>
+        
 
         <ErrorPopup errorMessage={t('destructionSites.emptySites')} showErrorPopup={showEmptyPopup} setShowErrorPopup={setShowEmptyPopup} />
         <ErrorPopup errorMessage={t('destructionSites.addressExists')} showErrorPopup={showDuplicatePopup} setShowErrorPopup={setShowDuplicatePopup} />

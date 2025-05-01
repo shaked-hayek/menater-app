@@ -59,7 +59,7 @@
     },
     "destructionSites": {
         "input": "הזנת אתרי הרס",
-        "sites": "אתרי הרס",
+        "sites": "אתרי הרס שנבחרו",
         "casualties": "נפגעים",
         "newSite": "אתר הרס חדש",
         "street": "רחוב",
