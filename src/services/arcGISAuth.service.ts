@@ -1,25 +1,17 @@
 import IdentityManager from '@arcgis/core/identity/IdentityManager';
-import { ARCGIS_SETTINGS } from 'consts/settings.const';
+import { ARCGIS_SETTINGS, SERVER_IP } from 'consts/settings.const';
 
 export const setupArcGISAuth = async () => {
   try {
-    const response = await fetch(
-      `${ARCGIS_SETTINGS.PORTAL_URL}/sharing/rest/generateToken`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          username: ARCGIS_SETTINGS.USERNAME,
-          password: ARCGIS_SETTINGS.PASSWORD,
-          client: 'referer',
-          referer: window.location.origin,
-          expiration: '60',
-          f: 'json',
-        }),
-      }
-    );
+    const response = await fetch(`${SERVER_IP}/auth/arcgis/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        referer: window.location.origin,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error('Failed to fetch token');
