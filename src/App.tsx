@@ -35,8 +35,10 @@ const App = () => {
     setupArcGISAuth().then(success => {
       if (success) {
         // auth success
+        console.log('######## auth success')
       } else {
         // Failed to connect to ArcGIS. Please check your credentials
+        console.log('######## Failed to connect to ArcGIS. Please check your credentials')
       }
     });
   }, []);

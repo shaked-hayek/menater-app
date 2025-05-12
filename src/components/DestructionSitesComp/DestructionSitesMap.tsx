@@ -1,17 +1,21 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
+import IdentityManager from '@arcgis/core/identity/IdentityManager';
 import Basemap from '@arcgis/core/Basemap';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import Graphic from '@arcgis/core/Graphic';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import Query from '@arcgis/core/rest/support/Query';
+import '@arcgis/core/assets/esri/css/main.css';
 import debounce from 'lodash/debounce';
 
 import { ARCGIS_SETTINGS } from 'consts/settings.const';
 import { MAP_SETTINGS } from 'consts/settings.const';
+import ErrorPage from 'components/ErrorPage';
+
 
 export interface DestructionSite {
   street: string;
@@ -26,7 +30,7 @@ interface MapComponentProps {
   setStreetNames: (names: string[]) => void;
 }
 
-const DestructionSitesMap = ({
+const DestructionSitesMap = memo(({
   destructionSites,
   addDestructionSite,
   setStreetNames
@@ -38,55 +42,70 @@ const DestructionSitesMap = ({
   const selectedLayerRef = useRef<GraphicsLayer | null>(null);
 
   useEffect(() => {
+    if (viewRef.current) return;
+
     let view: MapView;
 
     const init = async () => {
-      const basemapLayer = new WebTileLayer({
-        urlTemplate: MAP_SETTINGS.BASEMAP_URL,
-        subDomains: MAP_SETTINGS.SUBDOMAINS,
-      });
+      try {
+        // IdentityManager.checkSignInStatus(ARCGIS_SETTINGS.PORTAL_URL)
+        //   .then(() => console.log('ArcGIS authenticated'))
+        //   .catch(() => {
+        //     throw new Error('ArcGIS is not authenticated'); // TODO: Change
+        //   });
+        
+        const basemapLayer = new WebTileLayer({
+          urlTemplate: MAP_SETTINGS.BASEMAP_URL,
+          subDomains: MAP_SETTINGS.SUBDOMAINS,
+        });
+    
+        await basemapLayer.load(); // wait for layer to finish loading
+    
+        const basemap = new Basemap({ baseLayers: [basemapLayer] });
+        const map = new Map({ basemap });
+    
+        view = new MapView({
+          container: mapRef.current as HTMLDivElement,
+          map,
+          center: MAP_SETTINGS.INITIAL_CENTER,
+          zoom: MAP_SETTINGS.INITIAL_ZOOM,
+        });
 
-      const basemap = new Basemap({ baseLayers: [basemapLayer] });
+        viewRef.current = view;
 
-      const map = new Map({ basemap });
-
-      view = new MapView({
-        container: mapRef.current as HTMLDivElement,
-        map,
-        center: MAP_SETTINGS.INITIAL_CENTER,
-        zoom: MAP_SETTINGS.INITIAL_ZOOM,
-      });
-
-      viewRef.current = view;
-
-      const featureLayer = new FeatureLayer({
-        url: `${ARCGIS_SETTINGS.SERVER_URL}/rest/services/BeerSheva/MapServer/4`,
-        outFields: ['*'],
-        renderer: {
-          type: 'simple',
-          symbol: {
-            type: 'simple-fill',
-            color: [211, 211, 211, 0.5],
-            outline: { color: [128, 128, 128, 1], width: 1 },
+        const featureLayer = new FeatureLayer({
+          url: `${ARCGIS_SETTINGS.SERVER_URL}/rest/services/BeerSheva/MapServer/4`,
+          outFields: ['*'],
+          renderer: {
+            type: 'simple',
+            symbol: {
+              type: 'simple-fill',
+              color: [211, 211, 211, 0.5],
+              outline: { color: [128, 128, 128, 1], width: 1 },
+            },
           },
-        },
-      });
+        });
 
-      featureLayerRef.current = featureLayer;
-      map.add(featureLayer);
+        featureLayerRef.current = featureLayer;
+        map.add(featureLayer);
 
-      const highlightLayer = new GraphicsLayer();
-      highlightLayerRef.current = highlightLayer;
-      map.add(highlightLayer);
+        const highlightLayer = new GraphicsLayer();
+        highlightLayerRef.current = highlightLayer;
+        map.add(highlightLayer);
 
-      const selectedLayer = new GraphicsLayer();
-      selectedLayerRef.current = selectedLayer;
-      map.add(selectedLayer);
+        const selectedLayer = new GraphicsLayer();
+        selectedLayerRef.current = selectedLayer;
+        map.add(selectedLayer);
 
-      view.on('click', debounceHighlight);
-      view.on('pointer-move', debouncePointerMove);
+        view.on('click', debounceHighlight);
+        view.on('pointer-move', debouncePointerMove);
 
-      fetchStreetNames();
+        fetchStreetNames();
+
+      } catch (error) {
+        console.error('Error loading ArcGIS map:', error);
+        return ErrorPage(error);
+      }
     };
 
     const fetchStreetNames = async () => {
@@ -99,9 +118,13 @@ const DestructionSitesMap = ({
         orderByFields: ['Street_Name'],
       });
 
-      const result = await featureLayerRef.current.queryFeatures(query);
-      const names = result.features.map(f => f.attributes['Street_Name']);
-      setStreetNames(Array.from(new Set(names)));
+      try {
+        const result = await featureLayerRef.current.queryFeatures(query);
+        const names = result.features.map(f => f.attributes['Street_Name']);
+        setStreetNames(Array.from(new Set(names)));
+      } catch (e) {
+        console.error('Query failed:', e);
+      }
     };
 
     const getHighlightSymbol = () =>
@@ -160,7 +183,8 @@ const DestructionSitesMap = ({
     init();
 
     return () => {
-      view?.destroy();
+      viewRef.current?.destroy();
+      viewRef.current = null;
     };
   }, []);
 
@@ -206,11 +230,11 @@ const DestructionSitesMap = ({
 
   return (
     <div
-      id='viewDiv'
+      id='destruction-sites-map-container'
       ref={mapRef}
-      style={{ width: '100%', height: '500px' }}
+      style={{ width: '100%', height: '400px' }}
     />
   );
-};
+});
 
 export default DestructionSitesMap;

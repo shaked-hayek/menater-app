@@ -26,9 +26,17 @@ export const setupArcGISAuth = async () => {
     IdentityManager.registerToken({
       server: ARCGIS_SETTINGS.SERVER_URL,
       token: tokenData.token,
+      expires: Date.now() + 7200000,
+    });
+    
+    IdentityManager.registerToken({
+      server: ARCGIS_SETTINGS.SERVER_URL + '/rest/services',
+      token: tokenData.token,
+      expires: Date.now() + 7200000,
     });
 
     return true;
+
   } catch (error) {
     console.error('ArcGIS authentication failed:', error);
     return false;

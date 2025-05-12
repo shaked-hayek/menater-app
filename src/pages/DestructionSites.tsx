@@ -12,11 +12,6 @@ import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
 import { ApprovePopup, ErrorPopup } from 'components/atoms/Popups';
 
-export interface Site {
-    street: string;
-    streetNumber: string;
-    casualties: string;
-}
 
 const DestructionSites = () => {
   const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
@@ -43,18 +38,24 @@ const DestructionSites = () => {
     }
     setShowRecommendationPopup(true);
   };
+
+  const addDestructionSite = (site: DestructionSite) => {
+    const isDuplicate = destructionSites.some(
+        (s) => s.street === site.street && s.number === site.number
+    );
   
-  const addDestructionSite = () => {
+    if (isDuplicate) {
+        setShowDuplicatePopup(true);
+        return false;
+    }
+    setDestructionSites([...destructionSites, site]);
+    return true;
+  };
+
+  const addFormDestructionSite = () => {
     if (!selectedStreet || !siteNumber) return;
 
-    const isDuplicate = destructionSites.some(
-      (site) => site.street === selectedStreet && site.number === siteNumber
-    );
-
-    if (isDuplicate) {
-      setShowDuplicatePopup(true);
-    } else {
-      setDestructionSites([...destructionSites, { street: selectedStreet, number: siteNumber, casualties: Number(casualties) }]);
+    if (addDestructionSite({ street: selectedStreet, number: siteNumber, casualties: Number(casualties) })) {
       setSelectedStreet(null);
       setSiteNumber('');
       setCasualties('');
@@ -126,10 +127,20 @@ const DestructionSites = () => {
                         <Typography>30</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                        <SecondaryButton variant='contained' color='primary' onClick={addDestructionSite}>
+                        <SecondaryButton variant='contained' color='primary' onClick={addFormDestructionSite}>
                             {t('buttons.add')}
                         </SecondaryButton>
                     </Box>
+                </Box>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center', 
+                    alignItems: 'flex-end',
+                    mt: 3,
+                }}>
+                    <MainButton height={'40px'} onClick={handleShowRecommendation}>
+                        {t('destructionSites.getRecommendation')}
+                    </MainButton>
                 </Box>
             </Grid>
             <Grid size={4.8}>
@@ -142,16 +153,6 @@ const DestructionSites = () => {
                     setStreetNames={setStreetNames}
                 />
             </Grid>
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'center', 
-                alignItems: 'flex-end',
-                mt: 3,
-            }}>
-                <MainButton height={'40px'} onClick={handleShowRecommendation}>
-                    {t('destructionSites.getRecommendation')}
-                </MainButton>
-            </Box>
         </Grid>
         
 

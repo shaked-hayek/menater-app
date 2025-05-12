@@ -15,7 +15,7 @@ import { PAGES } from 'consts/pages.const';
 import { ErrorPopup } from 'components/atoms/Popups';
 
 interface FormValues {
-  magnitude: number | null;
+  magnitude: number | null | undefined;
   dateTime: Dayjs | null;
 }
 
@@ -27,7 +27,7 @@ const NewEvent = () => {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const [formValues, setFormValues] = useState<FormValues>({
-    magnitude: null,
+    magnitude: undefined,
     dateTime: dayjs(),
   });
 
