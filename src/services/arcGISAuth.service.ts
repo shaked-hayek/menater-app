@@ -1,9 +1,10 @@
 import IdentityManager from '@arcgis/core/identity/IdentityManager';
+import { ROUTES } from 'actions/routes';
 import { ARCGIS_SETTINGS, SERVER_IP } from 'consts/settings.const';
 
 export const setupArcGISAuth = async () => {
   try {
-    const response = await fetch(`${SERVER_IP}/auth/arcgis/token`, {
+    const response = await fetch(`${SERVER_IP}${ROUTES.ARCGIS_TOKEN}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

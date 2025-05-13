@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Typography, TextField, Box, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,66 +11,79 @@ import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
 import { ApprovePopup, ErrorPopup } from 'components/atoms/Popups';
+import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
 
 
 const DestructionSites = () => {
-  const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
-  const [showEmptyPopup, setShowEmptyPopup] = useState(false);
-  const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
-  const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
-  const [streetNames, setStreetNames] = useState<string[]>([]);
-  const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
-  const [siteNumber, setSiteNumber] = useState('');
-  const [casualties, setCasualties] = useState('');
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+    const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
+    const [showEmptyPopup, setShowEmptyPopup] = useState(false);
+    const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
+    const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
+    const [streetNames, setStreetNames] = useState<string[]>([]);
+    const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
+    const [selectedNumber, setSelectedNumber] = useState('');
+    const [casualties, setCasualties] = useState('');
+    const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
+    const { t } = useTranslation();
+    const navigate = useNavigate();
 
-  const handleApproveSitesChoice = () => {
-        setShowRecommendationPopup(false);
-        // TODO: get recommendation
-        navigate(`/${PAGES.RECOMMENDED_NATARS}`);
+    const handleApproveSitesChoice = () => {
+            setShowRecommendationPopup(false);
+            // TODO: get recommendation
+            navigate(`/${PAGES.RECOMMENDED_NATARS}`);
+        };
+
+    const handleShowRecommendation = () => {
+        if (destructionSites.length === 0) {
+            setShowEmptyPopup(true);
+            return;
+        }
+        setShowRecommendationPopup(true);
     };
 
-  const handleShowRecommendation = () => {
-    if (destructionSites.length === 0) {
-        setShowEmptyPopup(true);
-        return;
-    }
-    setShowRecommendationPopup(true);
-  };
+    const addDestructionSite = (site: DestructionSite) => {
+        const isDuplicate = destructionSites.some(
+            (s) => s.street === site.street && s.number === site.number
+        );
+    
+        if (isDuplicate) {
+            setShowDuplicatePopup(true);
+            return false;
+        }
+        setDestructionSites([...destructionSites, site]);
+        return true;
+    };
 
-  const addDestructionSite = (site: DestructionSite) => {
-    const isDuplicate = destructionSites.some(
-        (s) => s.street === site.street && s.number === site.number
-    );
-  
-    if (isDuplicate) {
-        setShowDuplicatePopup(true);
-        return false;
-    }
-    setDestructionSites([...destructionSites, site]);
-    return true;
-  };
+    const addFormDestructionSite = () => {
+        if (!selectedStreet || !selectedNumber) return;
 
-  const addFormDestructionSite = () => {
-    if (!selectedStreet || !siteNumber) return;
+        if (addDestructionSite({ street: selectedStreet, number: selectedNumber, casualties: Number(casualties) })) {
+        setSelectedStreet(null);
+        setSelectedNumber('');
+        setCasualties('');
+        }
+    };
 
-    if (addDestructionSite({ street: selectedStreet, number: siteNumber, casualties: Number(casualties) })) {
-      setSelectedStreet(null);
-      setSiteNumber('');
-      setCasualties('');
-    }
-  };
+    const onSiteClick = (site: DestructionSite) => {
+        setSelectedStreet(site.street);
+        setSelectedNumber(site.number);
+        setCasualties('');
+    };
 
-  const onSiteClick = (site: DestructionSite) => {
-    setSelectedStreet(site.street);
-    setSiteNumber(site.number);
-    setCasualties('');
-  };
+    const deleteDestructionSite = (index: number) => {
+        setDestructionSites(destructionSites.filter((_, i) => i !== index));
+    };
 
-  const deleteDestructionSite = (index: number) => {
-    setDestructionSites(destructionSites.filter((_, i) => i !== index));
-  };
+    useEffect(() => {
+        const updateCasualtiesEstimate = () => {
+            if (!selectedStreet || !selectedNumber) return;
+            getCasualtiesEstimate(selectedStreet, selectedNumber, setCasualtiesEstimate);
+            if (!casualties && casualtiesEstimate) {
+                setCasualties(casualtiesEstimate);
+            }
+        }
+        updateCasualtiesEstimate();
+    }, [selectedStreet, selectedNumber]);
 
   return (
     <Container>
@@ -115,8 +128,8 @@ const DestructionSites = () => {
                     <TextField
                         label={t('destructionSites.streetNumber')}
                         type='number'
-                        value={siteNumber}
-                        onChange={(e) => setSiteNumber(e.target.value)}
+                        value={selectedNumber}
+                        onChange={(e) => setSelectedNumber(e.target.value)}
                         fullWidth
                         sx={rtlStyle}
                     />
@@ -130,7 +143,7 @@ const DestructionSites = () => {
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                         <Typography>{t('destructionSites.numberOfCasualtiesEst')}</Typography>
-                        <Typography>30</Typography>
+                        <Typography>{casualtiesEstimate ? casualtiesEstimate : '-'}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                         <SecondaryButton variant='contained' color='primary' onClick={addFormDestructionSite}>
