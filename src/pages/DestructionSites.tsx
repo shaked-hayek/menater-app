@@ -20,8 +20,9 @@ const DestructionSites = () => {
     const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
     const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
     const [streetNames, setStreetNames] = useState<string[]>([]);
+    const [streetNumbers, setStreetNumbers] = useState<string[]>([]);
     const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
-    const [selectedNumber, setSelectedNumber] = useState('');
+    const [selectedNumber, setSelectedNumber] = useState<string | null>(null);
     const [casualties, setCasualties] = useState('');
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
     const { t } = useTranslation();
@@ -128,13 +129,16 @@ const DestructionSites = () => {
                             sx={rtlStyle}
                         />}
                     />
-                    <TextField
-                        label={t('destructionSites.streetNumber')}
-                        type='number'
+                    <Autocomplete
+                        options={streetNumbers}
                         value={selectedNumber}
-                        onChange={(e) => setSelectedNumber(e.target.value)}
+                        onChange={(_, newValue) => setSelectedNumber(newValue)}
                         fullWidth
-                        sx={rtlStyle}
+                        renderInput={(params) => <TextField
+                            {...params}
+                            label={t('destructionSites.streetNumber')}
+                            sx={rtlStyle}
+                        />}
                     />
                     <TextField
                         label={t('destructionSites.numberOfCasualties')}
@@ -170,6 +174,8 @@ const DestructionSites = () => {
                     destructionSites={destructionSites}
                     onClickDestructionSite={onSiteClick}
                     setStreetNames={setStreetNames}
+                    setStreetNumbers={setStreetNumbers}
+                    selectedStreet={selectedStreet}
                 />
             </Grid>
         </Grid>

@@ -12,7 +12,7 @@ import Query from '@arcgis/core/rest/support/Query';
 import '@arcgis/core/assets/esri/css/main.css';
 import debounce from 'lodash/debounce';
 
-import { ARCGIS_SETTINGS } from 'consts/settings.const';
+import { ARCGIS_SETTINGS, CITY_DATA } from 'consts/settings.const';
 import { MAP_SETTINGS } from 'consts/settings.const';
 
 
@@ -27,12 +27,16 @@ interface MapComponentProps {
   destructionSites: DestructionSite[];
   onClickDestructionSite: (site: DestructionSite) => void;
   setStreetNames: (names: string[]) => void;
+  setStreetNumbers: (numbers: string[]) => void;
+  selectedStreet: string | null;
 }
 
 const DestructionSitesMap = memo(({
   destructionSites,
   onClickDestructionSite,
-  setStreetNames
+  setStreetNames,
+  setStreetNumbers,
+  selectedStreet,
 }: MapComponentProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<MapView | null>(null);
@@ -73,7 +77,7 @@ const DestructionSitesMap = memo(({
         viewRef.current = view;
 
         const featureLayer = new FeatureLayer({
-          url: `${ARCGIS_SETTINGS.SERVER_URL}/rest/services/BeerSheva/MapServer/4`,
+          url: `${ARCGIS_SETTINGS.SERVER_URL}/rest/services${CITY_DATA.CITY_MAP_LOC}`,
           outFields: ['*'],
           renderer: {
             type: 'simple',
@@ -225,6 +229,32 @@ const DestructionSitesMap = memo(({
 
     updateSelectedLayer();
   }, [destructionSites]);
+
+
+  const fetchStreetNumbers = async (streetName: string) => {
+    if (!featureLayerRef.current) return;
+
+    const query = new Query({
+      where: `Street_Name = '${streetName}' AND House_Number IS NOT NULL`,
+      outFields: ['House_Number'],
+      returnDistinctValues: true,
+    });
+
+    try {
+      const result = await featureLayerRef.current.queryFeatures(query);
+      const numbers = Array.from(new Set(result.features.map(f => f.attributes['House_Number'])));
+      const sortedNumbers = numbers.sort((a, b) => Number(a) - Number(b));
+      setStreetNumbers(sortedNumbers);
+    } catch (error) {
+      throw new Error('Failed to get information from ArcGIS: ' + error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedStreet) {
+      fetchStreetNumbers(selectedStreet);
+    }
+  }, [selectedStreet]);
 
   return (
     <div

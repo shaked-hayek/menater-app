@@ -19,3 +19,7 @@ export const HTTP_HEADERS = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
 };
+
+export const CITY_DATA = {
+    CITY_MAP_LOC: '/BeerSheva/MapServer/4',
+}
