@@ -57,10 +57,16 @@ const DestructionSites = () => {
     const addFormDestructionSite = () => {
         if (!selectedStreet || !selectedNumber) return;
 
-        if (addDestructionSite({ street: selectedStreet, number: selectedNumber, casualties: Number(casualties) })) {
-        setSelectedStreet(null);
-        setSelectedNumber('');
-        setCasualties('');
+        if (addDestructionSite(
+                {
+                    street: selectedStreet,
+                    number: selectedNumber,
+                    casualties: Number(casualties ? casualties : casualtiesEstimate),
+                }
+            )) {
+            setSelectedStreet(null);
+            setSelectedNumber('');
+            setCasualties('');
         }
     };
 
@@ -78,9 +84,6 @@ const DestructionSites = () => {
         const updateCasualtiesEstimate = () => {
             if (!selectedStreet || !selectedNumber) return;
             getCasualtiesEstimate(selectedStreet, selectedNumber, setCasualtiesEstimate);
-            if (!casualties && casualtiesEstimate) {
-                setCasualties(casualtiesEstimate);
-            }
         }
         updateCasualtiesEstimate();
     }, [selectedStreet, selectedNumber]);
