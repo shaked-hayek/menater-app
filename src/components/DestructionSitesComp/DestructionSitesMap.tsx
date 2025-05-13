@@ -14,7 +14,6 @@ import debounce from 'lodash/debounce';
 
 import { ARCGIS_SETTINGS } from 'consts/settings.const';
 import { MAP_SETTINGS } from 'consts/settings.const';
-import ErrorPage from 'components/ErrorPage';
 
 
 export interface DestructionSite {
@@ -48,11 +47,11 @@ const DestructionSitesMap = memo(({
 
     const init = async () => {
       try {
-        // IdentityManager.checkSignInStatus(ARCGIS_SETTINGS.PORTAL_URL)
-        //   .then(() => console.log('ArcGIS authenticated'))
-        //   .catch(() => {
-        //     throw new Error('ArcGIS is not authenticated'); // TODO: Change
-        //   });
+        IdentityManager.checkSignInStatus(ARCGIS_SETTINGS.SERVER_URL)
+          .then(() => console.log('ArcGIS authenticated'))
+          .catch(() => {
+            throw new Error('ArcGIS is not authenticated');
+          });
         
         const basemapLayer = new WebTileLayer({
           urlTemplate: MAP_SETTINGS.BASEMAP_URL,
@@ -103,8 +102,7 @@ const DestructionSitesMap = memo(({
         fetchStreetNames();
 
       } catch (error) {
-        console.error('Error loading ArcGIS map:', error);
-        return ErrorPage(error);
+        throw new Error('Error loading ArcGIS map: ' + error);
       }
     };
 
@@ -122,8 +120,8 @@ const DestructionSitesMap = memo(({
         const result = await featureLayerRef.current.queryFeatures(query);
         const names = result.features.map(f => f.attributes['Street_Name']);
         setStreetNames(Array.from(new Set(names)));
-      } catch (e) {
-        console.error('Query failed:', e);
+      } catch (error) {
+        throw new Error('Failed to get information from ArcGIS: ' + error);
       }
     };
 
