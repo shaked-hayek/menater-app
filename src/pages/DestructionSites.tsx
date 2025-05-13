@@ -62,6 +62,12 @@ const DestructionSites = () => {
     }
   };
 
+  const onSiteClick = (site: DestructionSite) => {
+    setSelectedStreet(site.street);
+    setSiteNumber(site.number);
+    setCasualties('');
+  };
+
   const deleteDestructionSite = (index: number) => {
     setDestructionSites(destructionSites.filter((_, i) => i !== index));
   };
@@ -146,10 +152,7 @@ const DestructionSites = () => {
             <Grid size={4.8}>
                 <DestructionSitesMap
                     destructionSites={destructionSites}
-                    addDestructionSite={addDestructionSite}
-                    // removeDestructionSite={(site: DestructionSite) =>
-                    //     setDestructionSites((prevSites) => prevSites.filter((s) => !(s.street === site.street && s.number === site.number)))
-                    //     }
+                    onClickDestructionSite={onSiteClick}
                     setStreetNames={setStreetNames}
                 />
             </Grid>

@@ -26,13 +26,13 @@ export interface DestructionSite {
 
 interface MapComponentProps {
   destructionSites: DestructionSite[];
-  addDestructionSite: (site: DestructionSite) => void;
+  onClickDestructionSite: (site: DestructionSite) => void;
   setStreetNames: (names: string[]) => void;
 }
 
 const DestructionSitesMap = memo(({
   destructionSites,
-  addDestructionSite,
+  onClickDestructionSite,
   setStreetNames
 }: MapComponentProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -151,7 +151,7 @@ const DestructionSitesMap = memo(({
         highlightLayerRef.current?.add(highlightGraphic);
 
         const { Street_Name, House_Number } = result.graphic.attributes;
-        addDestructionSite({
+        onClickDestructionSite({
           street: Street_Name,
           number: House_Number,
           casualties: 0,
