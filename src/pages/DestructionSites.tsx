@@ -68,6 +68,7 @@ const DestructionSites = () => {
             setSelectedStreet(null);
             setSelectedNumber('');
             setCasualties('');
+            setCasualtiesEstimate('');
         }
     };
 
