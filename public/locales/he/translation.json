@@ -32,7 +32,7 @@
     },
     "manageStaff": {
         "existingStaff": "אנשי צוות קיימים",
-        "addStaffMember": "הוסף איש צוות",
+        "addStaffMember": "הוספת איש צוות",
         "occupation": "הכשרה",
         "phone": "טלפון",
         "occupationOptions": {
