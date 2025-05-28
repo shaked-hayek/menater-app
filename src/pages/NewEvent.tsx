@@ -82,6 +82,7 @@ const NewEvent = () => {
         <DateTimePicker
           value={formValues.dateTime}
           onChange={(newValue) => setFormValues({ ...formValues, dateTime: newValue })}
+          maxDateTime={dayjs()}
         />
 
         {/* Buttons */}
