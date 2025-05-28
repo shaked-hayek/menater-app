@@ -20,21 +20,23 @@ const RecommendedNatars = () => {
     
     return (
         <Container sx={{ height: '100%' }}>
-            <Box>
-                <Typography variant='h4'>{t('recommendedNatars.title')}</Typography>
-            </Box>
             <Grid container spacing={3}>
                 <Grid size={4}>
                     <ColoredSideBox>
                     
                     </ColoredSideBox>
                 </Grid>
-                <Grid size={8}></Grid>
+                <Grid size={8}>
+                    <Box>
+                        <Typography variant='h4'>{t('recommendedNatars.title')}</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', width: '100%', height: '90%', gap: 2 }}>
+                        <SecondaryButton onClick={handleAddSite}>{t('recommendedNatars.addDestructionSite')}</SecondaryButton>
+                        <MainButton height={'40px'} onClick={handleSubmit}>{t('buttons.submit')}</MainButton>
+                    </Box>
+                </Grid>
             </Grid>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: 2 }}>
-                <SecondaryButton onClick={handleAddSite}>{t('recommendedNatars.addDestructionSite')}</SecondaryButton>
-                <MainButton height={'40px'} onClick={handleSubmit}>{t('buttons.submit')}</MainButton>
-            </Box>
+            
         </Container>
     );
 };
