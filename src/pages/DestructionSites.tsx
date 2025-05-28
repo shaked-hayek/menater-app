@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 import { Container, Typography, TextField, Box, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,8 +27,20 @@ const DestructionSites = () => {
     const [selectedNumber, setSelectedNumber] = useState<string | null>(null);
     const [casualties, setCasualties] = useState('');
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
+    
     const { t } = useTranslation();
     const navigate = useNavigate();
+
+    const isEarthquakeTimeIsDayTime = () => {
+        const { earthquakeTime } = useSelector((state: RootState) => state.appState);
+        const earthquakeHour = earthquakeTime!.getHours();
+        if (earthquakeHour >= 7 && earthquakeHour < 19) {
+            return true
+        }
+        return false;
+    }
+    const earthquakeTimeIsDayTime = isEarthquakeTimeIsDayTime();
+
 
     const handleApproveSitesChoice = () => {
             setShowRecommendationPopup(false);
@@ -85,7 +99,7 @@ const DestructionSites = () => {
     useEffect(() => {
         const updateCasualtiesEstimate = () => {
             if (!selectedStreet || !selectedNumber) return;
-            getCasualtiesEstimate(selectedStreet, selectedNumber, setCasualtiesEstimate);
+            getCasualtiesEstimate(selectedStreet, selectedNumber, setCasualtiesEstimate, earthquakeTimeIsDayTime);
         }
         updateCasualtiesEstimate();
     }, [selectedStreet, selectedNumber]);
