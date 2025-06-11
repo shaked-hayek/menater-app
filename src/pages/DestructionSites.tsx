@@ -14,22 +14,36 @@ import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
 import { ApprovePopup, ErrorPopup } from 'components/atoms/Popups';
 import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
+import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
 
 
 const DestructionSites = () => {
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
-    const [showEmptyPopup, setShowEmptyPopup] = useState(false);
     const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
-    const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
     const [streetNames, setStreetNames] = useState<string[]>([]);
     const [streetNumbers, setStreetNumbers] = useState<string[]>([]);
     const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
     const [selectedNumber, setSelectedNumber] = useState<string | null>(null);
     const [casualties, setCasualties] = useState('');
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     
     const { t } = useTranslation();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchSites = async () => {
+          try {
+            await getSites(setDestructionSites);
+          } catch (error) {
+            setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
+            setShowErrorPopup(true);
+          }
+        };
+
+        fetchSites();
+      }, []);
 
     const isEarthquakeTimeIsDayTime = () => {
         const { earthquakeTime } = useSelector((state: RootState) => state.appState);
@@ -50,29 +64,38 @@ const DestructionSites = () => {
 
     const handleShowRecommendation = () => {
         if (destructionSites.length === 0) {
-            setShowEmptyPopup(true);
+            setErrorMessage(t('destructionSites.errorMsgs.emptySites'));
+            setShowErrorPopup(true);
             return;
         }
         setShowRecommendationPopup(true);
     };
 
-    const addDestructionSite = (site: DestructionSite) => {
+    const addDestructionSite = async (site: DestructionSite) => {
         const isDuplicate = destructionSites.some(
             (s) => s.street === site.street && s.number === site.number
         );
     
         if (isDuplicate) {
-            setShowDuplicatePopup(true);
+            setErrorMessage(t('destructionSites.errorMsgs.addressExists'));
+            setShowErrorPopup(true);
             return false;
         }
         setDestructionSites([...destructionSites, site]);
+        try {
+            await addSiteAction(site);
+        } catch (error) {
+            setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
+            setShowErrorPopup(true);
+            return false;
+        }
         return true;
     };
 
-    const addFormDestructionSite = () => {
+    const addFormDestructionSite = async () => {
         if (!selectedStreet || !selectedNumber) return;
 
-        if (addDestructionSite(
+        if (await addDestructionSite(
                 {
                     street: selectedStreet,
                     number: selectedNumber,
@@ -92,7 +115,14 @@ const DestructionSites = () => {
         setCasualties('');
     };
 
-    const deleteDestructionSite = (index: number) => {
+    const deleteDestructionSite = async (site: DestructionSite, index: number) => {
+        try {
+            await deleteSiteAction(site);
+        } catch (error) {
+            setErrorMessage(t('destructionSites.errorMsgs.serverDeleteError'));
+            setShowErrorPopup(true);
+            return;
+        }
         setDestructionSites(destructionSites.filter((_, i) => i !== index));
     };
 
@@ -115,7 +145,7 @@ const DestructionSites = () => {
                                 key={index}
                                 disableGutters
                                 secondaryAction={
-                                    <IconButton edge="start" onClick={() => deleteDestructionSite(index)}>
+                                    <IconButton edge="start" onClick={() => deleteDestructionSite(site, index)}>
                                         <DeleteIcon color="error" />
                                     </IconButton>
                                 }
@@ -195,9 +225,8 @@ const DestructionSites = () => {
             </Grid>
         </Grid>
         
+        <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
 
-        <ErrorPopup errorMessage={t('destructionSites.emptySites')} showErrorPopup={showEmptyPopup} setShowErrorPopup={setShowEmptyPopup} />
-        <ErrorPopup errorMessage={t('destructionSites.addressExists')} showErrorPopup={showDuplicatePopup} setShowErrorPopup={setShowDuplicatePopup} />
         <ApprovePopup
             message={t('destructionSites.approveSites')}
             showPopup={showRecommendationPopup}

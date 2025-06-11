@@ -72,8 +72,13 @@
         "numberOfCasualtiesEst": "מספר נפגעים מוערך",
         "getRecommendation": "קבלת המלצה",
         "approveSites": "האם לאשר את אתרי ההרס ולעבור להמלצה?",
-        "addressExists": "כתובת זו כבר קיימת",
-        "emptySites": "יש להזין אתרי הרס"
+        "errorMsgs": {
+            "addressExists": "כתובת זו כבר קיימת",
+            "emptySites": "יש להזין אתרי הרס",
+            "serverAddError": "שגיאה בהוספת אתר הרס",
+            "serverDeleteError": "שגיאה במחיקת אתר הרס",
+            "serverGetError": "קרתה תקלה בשרת"
+        }
     },
     "recommendedNatars": {
         "title": "נט\"רים מומלצים לפתיחה",

@@ -31,6 +31,7 @@ export async function deleteSiteAction(site : DestructionSite) {
         headers: HTTP_HEADERS,
         body: JSON.stringify({
             street: site.street,
+            number: site.number,
         }),
     });
     if (!response.ok) {
