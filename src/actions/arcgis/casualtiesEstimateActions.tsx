@@ -28,7 +28,7 @@ export const getCasualtiesEstimate = async (
 
     const query = new Query({
         where: `Street_Name = '${streetName}' AND House_Number = '${number}'`,
-        outFields: ['DayTime', 'NightTime', 'Apartments', 'Residence'],
+        outFields: ['Apartments', 'Floors', 'Residence'],
         returnGeometry: false,
     });
 
@@ -37,20 +37,19 @@ export const getCasualtiesEstimate = async (
         if (result.features.length > 0) {
             const attr = result.features[0].attributes;
 
-            const maxPeople = attr.Apartments * AVG_PEOPLE_APARTMENT;
-            console.log(attr.Apartments, maxPeople)
-            let est;
+            const maxPeople = attr.Floors * attr.Apartments * AVG_PEOPLE_APARTMENT;
+            let estimate;
             if (earthquakeTimeIsDayTime) {
-                est = attr.Residence
+                estimate = attr.Residence
                     ? maxPeople * RESIDENTIAL_DAY_TIME
                     : maxPeople * PUBLIC_DAY_TIME;
             } else {
-                est = attr.Residence
+                estimate = attr.Residence
                     ? maxPeople * RESIDENTIAL_NIGHT_TIME
                     : maxPeople * PUBLIC_NIGHT_TIME;
             }
-            console.log('###', est.toString(), attr.Residence, earthquakeTimeIsDayTime)
-            setCasualtiesEstimate(est.toString());
+            const roundedEstimate = Math.ceil(estimate);
+            setCasualtiesEstimate(roundedEstimate.toString());
             return;
         }
     } catch (err) {
