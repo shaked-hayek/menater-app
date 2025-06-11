@@ -4,4 +4,5 @@ export enum ROUTES {
     SITES = '/sites',
     ARCGIS_TOKEN = '/arcgis/token',
     CASUALTIES_ESTIMATE = '/arcgis/casualties_estimate',
+    GET_RECOMMENDATION = '/getRecommendation'
 }

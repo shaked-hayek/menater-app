@@ -72,12 +72,14 @@
         "numberOfCasualtiesEst": "מספר נפגעים מוערך",
         "getRecommendation": "קבלת המלצה",
         "approveSites": "האם לאשר את אתרי ההרס ולעבור להמלצה?",
+        "creatingRecommendation": "המלצה בתהליך יצירה",
         "errorMsgs": {
             "addressExists": "כתובת זו כבר קיימת",
             "emptySites": "יש להזין אתרי הרס",
             "serverAddError": "שגיאה בהוספת אתר הרס",
             "serverDeleteError": "שגיאה במחיקת אתר הרס",
-            "serverGetError": "קרתה תקלה בשרת"
+            "serverGetError": "קרתה תקלה בשרת",
+            "errorGettingRecommendation": "קרתה תקלה בשרת בקבלת ההמלצה"
         }
     },
     "recommendedNatars": {

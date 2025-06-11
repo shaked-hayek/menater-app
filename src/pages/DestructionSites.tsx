@@ -12,14 +12,16 @@ import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
-import { ApprovePopup, ErrorPopup } from 'components/atoms/Popups';
+import { ApprovePopup, ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
 import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
+import { getRecommendation } from 'actions/getRecommendation/recomendationAction';
 
 
 const DestructionSites = () => {
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
     const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
+    const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [streetNames, setStreetNames] = useState<string[]>([]);
     const [streetNumbers, setStreetNumbers] = useState<string[]>([]);
     const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
@@ -56,9 +58,18 @@ const DestructionSites = () => {
     const earthquakeTimeIsDayTime = isEarthquakeTimeIsDayTime();
 
 
-    const handleApproveSitesChoice = () => {
+    const handleApproveSitesChoice = async () => {
             setShowRecommendationPopup(false);
-            // TODO: get recommendation
+            setShowLoadingPopup(true);
+
+            try {
+                await getRecommendation();
+            } catch (error) {
+                setErrorMessage(t('destructionSites.errorMsgs.errorGettingRecommendation'));
+                setShowLoadingPopup(false);
+                setShowErrorPopup(true);
+                return;
+            }
             navigate(`/${PAGES.RECOMMENDED_NATARS}`);
         };
 
@@ -234,6 +245,8 @@ const DestructionSites = () => {
             onApprove={handleApproveSitesChoice}
             onReject={() => setShowRecommendationPopup(false)}
         />
+
+        <LoadingPopup loadingMessage={t('destructionSites.creatingRecommendation')} showLoadingPopup={showLoadingPopup} />
     </Container>
   );
 };
