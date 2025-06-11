@@ -15,3 +15,7 @@ export const lightBgColor = '#6682e0';
 
 export const scrollColor = '#131153';
 export const scrollBackgroundColor = '#93a4ad';
+
+export const errorRed = '#ff80ab';
+export const waitingOrange = '#ffa500';
+export const successGreen = '#5cb85c';

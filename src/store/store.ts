@@ -1,13 +1,16 @@
 import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit';
 import { MODE } from 'consts/mode.const';
+import { useDispatch } from 'react-redux';
 
 interface AppState {
-    mode: MODE | null;
-    earthquakeTime: Date | null;
-    earthquakeMagnitude: number | null;
+  arcgisAuth: boolean | null;
+  mode: MODE | null;
+  earthquakeTime: Date | null;
+  earthquakeMagnitude: number | null;
 }
 
 const initialState: AppState = {
+  arcgisAuth: null,
   mode: null,
   earthquakeTime: null,
   earthquakeMagnitude: null,
@@ -17,6 +20,9 @@ const appSlice = createSlice({
   name: 'app',
   initialState: initialState,
   reducers: {
+    setArcgisAuth: (state, action: PayloadAction<boolean>) => {
+      state.arcgisAuth = action.payload;
+    },
     setMode: (state, action: PayloadAction<MODE>) => {
         state.mode = action.payload;
     },
@@ -29,7 +35,7 @@ const appSlice = createSlice({
   },
 });
 
-export const { setMode, setEarthquakeTime, setEarthquakeMagnitude } = appSlice.actions;
+export const { setArcgisAuth, setMode, setEarthquakeTime, setEarthquakeMagnitude } = appSlice.actions;
 
 export const store = configureStore({
   reducer: {
@@ -39,4 +45,3 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-

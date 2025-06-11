@@ -6,12 +6,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import TimeSince from './atoms/Timer';
 import { MODE } from 'consts/mode.const';
-import { themeColor, trialColor } from 'style/colors';
+import { themeColor, trialColor, waitingOrange, successGreen, errorRed } from 'style/colors';
 
 const Header = () => {
     const { t } = useTranslation();
     const [ currentTimeString, setCurrentTimeString ] = useState('');
-    const { earthquakeTime, mode } = useSelector((state: RootState) => state.appState);
+    const { arcgisAuth, earthquakeTime, mode } = useSelector((state: RootState) => state.appState);
 
     const updateTime = () => {
         setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
@@ -26,6 +26,15 @@ const Header = () => {
                     <Button color='inherit' component={Link} to='/'>
                         {t('header.home')}
                     </Button>
+                    <Typography
+                        variant='body1'
+                        color={arcgisAuth ? successGreen : (arcgisAuth == null ? waitingOrange : errorRed)}
+                        fontWeight='bold'
+                    >
+                        {arcgisAuth ? t('header.arcgisConnected') : (
+                            arcgisAuth == null ? t('header.arcgisWaitingConnection') : t('header.arcgisConnectionError')
+                        )}
+                    </Typography>
                 </Box>
 
                 {earthquakeTime && (

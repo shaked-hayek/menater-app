@@ -4,7 +4,10 @@
     "header": {
         "home": "בית",
         "title": "מנט\"ר",
-        "timeSince": "זמן מהרעש:"
+        "timeSince": "זמן מהרעש:",
+        "arcgisConnected": "מחובר למפה",
+        "arcgisWaitingConnection": "ממתין להתחברות למפה",
+        "arcgisConnectionError": "שגיאה בהתחברות למפה"
     },
     "buttons": {
         "next": "הבא",
