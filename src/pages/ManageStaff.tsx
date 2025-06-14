@@ -7,19 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CreateStaffMember from 'components/Staff/CreateStaffMember';
 import { deleteStaffMemberAction, getStaffMembersAction } from 'actions/staff/staffActions';
 import { ErrorPopup } from 'components/atoms/Popups';
+import { StaffMember } from '../components/Interfaces/StaffMember';
 
-export interface StaffMember {
-    name: string;
-    occupation: string;
-    status?: string
-    phoneNumber?: string;
-}
-
-export enum StaffOccupation {
-    DOCTOR = 'doctor',
-    PARAMEDIC = 'paramedic',
-    ASSISTANT = 'assistant',
-}
 
 const ManageStaff = () => {
     // const navigate = useNavigate();

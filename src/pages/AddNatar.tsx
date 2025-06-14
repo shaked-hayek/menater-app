@@ -1,33 +1,19 @@
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
+import { Natar } from 'components/Interfaces/Natar';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { NATAR_TYPE } from 'consts/natarType.const';
 import { useTranslation } from 'react-i18next';
 
-interface NatarDetails {
-    id: number;
-    name: string;
-    type: NATAR_TYPE;
-    address?: string;
-    capacity?: number;
-    equipmentLocation?: string;
-    lastUpdateDate?: string;
-    nature?: string;
-    terrainType?: string;
-    vehicleApproach?: string;
-    gasStationNear?: string;
-    shade?: string;
-    availableFacilities?: string;
-}
 
 interface AddNatarProps {
-    natarDetails: NatarDetails;
+    natarDetails: Natar;
 }
 
 const AddNatar = ({natarDetails}: AddNatarProps) => {
     const { t } = useTranslation();
 
-    const fields: { key: keyof NatarDetails; label: string }[] = [
+    const fields: { key: keyof Natar; label: string }[] = [
         { key: 'address', label: t('natarDetails.address') },
         { key: 'capacity', label: t('natarDetails.capacity') },
         { key: 'equipmentLocation', label: t('natarDetails.equipmentLocation') },

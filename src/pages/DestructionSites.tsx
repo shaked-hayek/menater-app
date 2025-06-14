@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid2';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Autocomplete } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import DestructionSitesMap, { DestructionSite } from 'components/DestructionSitesComp/DestructionSitesMap'
+import DestructionSitesMap from 'components/DestructionSitesComp/DestructionSitesMap'
+import { DestructionSite } from 'components/Interfaces/DestructionSite';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -15,7 +16,7 @@ import { PAGES } from 'consts/pages.const';
 import { ApprovePopup, ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
 import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
-import { getRecommendation } from 'actions/getRecommendation/recomendationAction';
+import { getRecommendation } from 'actions/getRecommendation/recommendationAction';
 
 
 const DestructionSites = () => {

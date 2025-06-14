@@ -1,7 +1,8 @@
 import { SetStateAction, Dispatch } from 'react';
 import { HTTP_HEADERS, SERVER_IP } from 'consts/settings.const';
 import { ROUTES } from 'actions/routes';
-import { DestructionSite } from 'components/DestructionSitesComp/DestructionSitesMap';
+import { DestructionSite } from 'components/Interfaces/DestructionSite';
+
 
 export async function getSites(setSites : Dispatch<SetStateAction<DestructionSite[]>>) {
     const response = await fetch(`${SERVER_IP}${ROUTES.SITES}`, {

@@ -14,14 +14,8 @@ import debounce from 'lodash/debounce';
 
 import { ARCGIS_SETTINGS, CITY_DATA } from 'consts/settings.const';
 import { MAP_SETTINGS } from 'consts/settings.const';
+import { DestructionSite } from '../Interfaces/DestructionSite';
 
-
-export interface DestructionSite {
-  street: string;
-  number: string;
-  casualties: number;
-  geometry?: __esri.GeometryUnion | null;
-}
 
 interface MapComponentProps {
   destructionSites: DestructionSite[];

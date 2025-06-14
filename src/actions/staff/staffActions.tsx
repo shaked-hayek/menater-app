@@ -1,6 +1,6 @@
 import { SetStateAction, Dispatch } from 'react';
 import { HTTP_HEADERS, SERVER_IP } from 'consts/settings.const';
-import { StaffMember } from 'pages/ManageStaff';
+import { StaffMember } from 'components/Interfaces/StaffMember';
 import { ROUTES } from 'actions/routes';
 
 export async function getStaffMembersAction(setStaff : Dispatch<SetStateAction<StaffMember[]>>) {

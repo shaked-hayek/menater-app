@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Box, Button, Container, Dialog, DialogActions, DialogTitle, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Container, MenuItem, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { formStyle, rtlStyle } from "style/muiStyles";
-import { StaffOccupation, StaffMember } from 'pages/ManageStaff';
+import { StaffMember, StaffOccupation } from 'components/Interfaces/StaffMember';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { addStaffMemberAction } from 'actions/staff/staffActions';
 import { ErrorPopup } from 'components/atoms/Popups';
