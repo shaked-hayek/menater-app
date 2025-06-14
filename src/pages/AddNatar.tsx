@@ -20,7 +20,7 @@ const AddNatar = ({natarDetails}: AddNatarProps) => {
         { key: 'lastUpdateDate', label: t('natarDetails.lastUpdateDate') },
         { key: 'nature', label: t('natarDetails.nature') },
         { key: 'terrainType', label: t('natarDetails.terrainType') },
-        { key: 'vehicleApproach', label: t('natarDetails.vehicleApproach') },
+        { key: 'carAccess', label: t('natarDetails.vehicleApproach') },
         { key: 'gasStationNear', label: t('natarDetails.gasStationNear') },
         { key: 'shade', label: t('natarDetails.shade') },
         { key: 'availableFacilities', label: t('natarDetails.availableFacilities') },

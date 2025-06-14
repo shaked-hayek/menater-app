@@ -16,7 +16,7 @@ import { PAGES } from 'consts/pages.const';
 import { ApprovePopup, ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
 import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
-import { getRecommendation } from 'actions/getRecommendation/recommendationAction';
+import { generateRecommendation } from 'actions/generateRecommendation/recommendationAction';
 
 
 const DestructionSites = () => {
@@ -64,7 +64,7 @@ const DestructionSites = () => {
             setShowLoadingPopup(true);
 
             try {
-                await getRecommendation();
+                await generateRecommendation();
             } catch (error) {
                 setErrorMessage(t('destructionSites.errorMsgs.errorGettingRecommendation'));
                 setShowLoadingPopup(false);

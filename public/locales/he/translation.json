@@ -84,7 +84,10 @@
     },
     "recommendedNatars": {
         "title": "נט\"רים מומלצים לפתיחה",
-        "addDestructionSite": "הוספת אתר הרס"
+        "addDestructionSite": "הוספת אתר הרס",
+        "errorMsgs": {
+            "serverGetError": "קרתה תקלה בשרת"
+        }
     },
     "openNatar": {
         "title": "נט\"ר {{type}}: {{name}}",
