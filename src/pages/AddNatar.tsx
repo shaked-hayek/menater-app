@@ -8,6 +8,7 @@ import { NATAR_TYPE } from 'consts/natarType.const';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import SinglePointMap from 'actions/arcgis/MapWithHighlightedPoint';
 
 
 interface AddNatarProps {
@@ -39,7 +40,7 @@ const AddNatar = ({natarDetails, onClose}: AddNatarProps) => {
     
     return (
         <>
-            <Box     sx={{ position: 'absolute', top: 1, right: 1 }}>
+            <Box sx={{ position: 'absolute', top: 1, right: 1 }}>
                 <IconButton onClick={onClose}>
                     <CloseIcon />
                 </IconButton>
@@ -77,7 +78,7 @@ const AddNatar = ({natarDetails, onClose}: AddNatarProps) => {
                         </ColoredSideBox>
                     </Grid>
                     <Grid size={6}>
-                        {/* TODO: map */}
+                        <SinglePointMap lat={natarDetails.lat} long={natarDetails.long} />
                         <AssignStaffToNatar natar={natarDetails} />
                     </Grid>
                 </Grid>

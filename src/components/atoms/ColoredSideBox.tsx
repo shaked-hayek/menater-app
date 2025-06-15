@@ -20,7 +20,7 @@ const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, h
                 textAlign: 'start',
                 bgcolor: bgColor,
                 height: height ?? 'calc(100vh - 125px)',
-                borderRadius: '10%',
+                borderRadius: height ? '2%' : '10%',
                 p: 2,
                 ...props.sx,
             }}

@@ -14,6 +14,8 @@ export interface Natar {
     gasStationNear?: boolean;
     shade?: boolean;
     availableFacilities?: string;
+    lat: number;
+    long: number;
 }
 
 
@@ -32,6 +34,8 @@ export const mapNatars = (rawNatars: any) => {
         gasStationNear: Boolean(natar.Gas),
         shade: Boolean(natar.conv_shado),
         availableFacilities: natar.Avail_Faci?.trim() || undefined,
+        lat: natar.LAT,
+        long: natar.LONG,
       }));
     return mappedNatars
 }

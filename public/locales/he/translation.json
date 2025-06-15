@@ -37,6 +37,7 @@
         "existingStaff": "אנשי צוות קיימים",
         "addStaffMember": "הוספת איש צוות",
         "assignStaff": "שיבוץ אנשי צוות",
+        "assignedStaff": "אנשי צוות משובצים",
         "occupation": "הכשרה",
         "phone": "טלפון",
         "occupationOptions": {
