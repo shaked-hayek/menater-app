@@ -41,7 +41,7 @@ const App = () => {
                 <Route index element={<StartPage />} />
                 <Route path={PAGES.MANAGE_STAFF} element={<ManageStaff />} />
                 <Route path={PAGES.NEW_EVENT} element={<NewEvent />} />
-                <Route path={PAGES.DESTRUCATION_SITES} element={<DestructionSites />} />
+                <Route path={PAGES.DESTRUCTION_SITES} element={<DestructionSites />} />
                 <Route path={PAGES.RECOMMENDED_NATARS} element={<RecommendedNatars />} />
               </Route>
             </Routes>

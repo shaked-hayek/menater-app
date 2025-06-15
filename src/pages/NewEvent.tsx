@@ -41,7 +41,7 @@ const NewEvent = () => {
 
     dispatch(setEarthquakeMagnitude(formValues.magnitude));
     dispatch(setEarthquakeTime(formValues.dateTime.toDate()));
-    navigate(`/${PAGES.DESTRUCATION_SITES}`);
+    navigate(`/${PAGES.DESTRUCTION_SITES}`);
   };
 
   const generateRandomValues = () => {

@@ -37,7 +37,7 @@ const RecommendedNatars = () => {
       }, []);
 
     const handleAddSite = () => {
-        navigate(`/${PAGES.DESTRUCATION_SITES}`);
+        navigate(`/${PAGES.DESTRUCTION_SITES}`);
     };
 
     const handleSubmit = () => {
