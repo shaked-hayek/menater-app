@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Dialog, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Container, Dialog, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -13,6 +13,19 @@ import AddIcon from '@mui/icons-material/Add';
 import { mainButtonColor } from 'style/colors';
 import AddNatar from './AddNatar';
 
+const modalStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '85%',
+    height: '85%',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+    textAlign: 'center',
+  };
 
 const RecommendedNatars = () => {
     const navigate = useNavigate();
@@ -67,7 +80,7 @@ const RecommendedNatars = () => {
                                     key={index}
                                     disableGutters
                                     secondaryAction={
-                                        <IconButton edge="start" onClick={() => openNatar(natar)}>
+                                        <IconButton edge='start' onClick={() => openNatar(natar)}>
                                             <AddIcon sx={{ color: mainButtonColor }} />
                                         </IconButton>
                                     }
@@ -92,9 +105,11 @@ const RecommendedNatars = () => {
                 </Grid>
             </Grid>
 
-            <Dialog open={isNatarModalOpen} onClose={closeModal} fullWidth maxWidth='md'>
-                {selectedNatar && <AddNatar natarDetails={selectedNatar} onClose={closeModal} />}
-            </Dialog>
+            <Modal open={isNatarModalOpen} onClose={closeModal}>
+                <Box sx={modalStyle}>
+                    {selectedNatar && <AddNatar natarDetails={selectedNatar} onClose={closeModal} />}
+                </Box>
+            </Modal>
             
             <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </Container>

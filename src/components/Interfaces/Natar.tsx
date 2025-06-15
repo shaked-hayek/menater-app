@@ -19,7 +19,7 @@ export interface Natar {
 
 export const mapNatars = (rawNatars: any) => {
     const mappedNatars: Natar[] = rawNatars.map((natar: any, index: number) => ({
-        id: index,
+        id: natar.OBJECTID || index,
         name: natar.Name?.trim() || 'ללא שם',
         type: NATAR_TYPE.MAIN,
         address: natar.Address?.trim() || undefined,

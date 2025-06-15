@@ -5,9 +5,10 @@ interface CustomBoxProps extends BoxProps {
     title?: string;
     children?: React.ReactNode;
     bgColor?: string;
+    height?: string;
   }
 
-const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, ...props }: CustomBoxProps) => {
+const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, height, ...props }: CustomBoxProps) => {
     return (
         <Box 
             {...props}
@@ -16,10 +17,12 @@ const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, .
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
+                textAlign: 'start',
                 bgcolor: bgColor,
-                height: 'calc(100vh - 125px)',
+                height: height ?? 'calc(100vh - 125px)',
                 borderRadius: '10%',
                 p: 2,
+                ...props.sx,
             }}
         >
             {title && <Typography variant='h6' sx={{m: 1}}>{title}</Typography>}

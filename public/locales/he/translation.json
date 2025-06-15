@@ -36,6 +36,7 @@
     "manageStaff": {
         "existingStaff": "אנשי צוות קיימים",
         "addStaffMember": "הוספת איש צוות",
+        "assignStaff": "שיבוץ אנשי צוות",
         "occupation": "הכשרה",
         "phone": "טלפון",
         "occupationOptions": {
@@ -97,6 +98,7 @@
         "staff": "אנשי צוות משובצים",
         "exists": "יש",
         "doesntExist": "אין",
+        "openNatar": "פתיחת נט\"ר",
         "natarDetails": {
             "id": "מזהה",
             "address": "כתובת",
