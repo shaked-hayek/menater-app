@@ -10,8 +10,8 @@ export interface Natar {
     lastUpdateDate?: string;
     nature?: string;
     terrainType?: string;
-    carAccess?: string;
-    gasStationNear?: string;
+    carAccess?: boolean;
+    gasStationNear?: boolean;
     shade?: boolean;
     availableFacilities?: string;
 }
@@ -28,9 +28,9 @@ export const mapNatars = (rawNatars: any) => {
         lastUpdateDate: natar.Last_Update || undefined,
         nature: natar.Type?.toString(),
         terrainType: natar.surface_1?.trim() || undefined,
-        carAccess: natar.car_access?.toString() || undefined,
-        gasStationNear: natar.Gas?.toString() || undefined,
-        shade: Boolean(natar.conv_shado) || undefined,
+        carAccess: Boolean(natar.car_access),
+        gasStationNear: Boolean(natar.Gas),
+        shade: Boolean(natar.conv_shado),
         availableFacilities: natar.Avail_Faci?.trim() || undefined,
       }));
     return mappedNatars

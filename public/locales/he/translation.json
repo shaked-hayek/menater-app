@@ -95,6 +95,8 @@
         "secondary": "משני",
         "addStaff": "שיבוץ אנשי צוות",
         "staff": "אנשי צוות משובצים",
+        "exists": "יש",
+        "doesntExist": "אין",
         "natarDetails": {
             "id": "מזהה",
             "address": "כתובת",

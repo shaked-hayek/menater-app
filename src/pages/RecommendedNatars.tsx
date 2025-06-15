@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Container, Dialog, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -11,12 +11,15 @@ import { Natar } from 'components/Interfaces/Natar';
 import { ErrorPopup } from 'components/atoms/Popups';
 import AddIcon from '@mui/icons-material/Add';
 import { mainButtonColor } from 'style/colors';
+import AddNatar from './AddNatar';
 
 
 const RecommendedNatars = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [recommendedNatars, setRecommendedNatars] = useState<Natar[]>([]);
+    const [selectedNatar, setSelectedNatar] = useState<Natar | null>(null);
+    const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -42,8 +45,16 @@ const RecommendedNatars = () => {
     };
 
     const openNatar = (natar: Natar) => {
-
+        if (natar) {
+            setSelectedNatar(natar);
+            setIsNatarModalOpen(true);
+        }
     }
+
+    const closeModal = () => {
+        setIsNatarModalOpen(false);
+        setSelectedNatar(null);
+      };
     
     return (
         <Container sx={{ height: '100%' }}>
@@ -80,6 +91,10 @@ const RecommendedNatars = () => {
                     </Box>
                 </Grid>
             </Grid>
+
+            <Dialog open={isNatarModalOpen} onClose={closeModal} fullWidth maxWidth='md'>
+                {selectedNatar && <AddNatar natarDetails={selectedNatar} onClose={closeModal} />}
+            </Dialog>
             
             <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </Container>

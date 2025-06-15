@@ -8,28 +8,34 @@ import { useTranslation } from 'react-i18next';
 
 interface AddNatarProps {
     natarDetails: Natar;
+    onClose: () => void;
 }
 
-const AddNatar = ({natarDetails}: AddNatarProps) => {
+const AddNatar = ({natarDetails, onClose}: AddNatarProps) => {
     const { t } = useTranslation();
 
     const fields: { key: keyof Natar; label: string }[] = [
-        { key: 'address', label: t('natarDetails.address') },
-        { key: 'capacity', label: t('natarDetails.capacity') },
-        { key: 'equipmentLocation', label: t('natarDetails.equipmentLocation') },
-        { key: 'lastUpdateDate', label: t('natarDetails.lastUpdateDate') },
-        { key: 'nature', label: t('natarDetails.nature') },
-        { key: 'terrainType', label: t('natarDetails.terrainType') },
-        { key: 'carAccess', label: t('natarDetails.vehicleApproach') },
-        { key: 'gasStationNear', label: t('natarDetails.gasStationNear') },
-        { key: 'shade', label: t('natarDetails.shade') },
-        { key: 'availableFacilities', label: t('natarDetails.availableFacilities') },
+        { key: 'address', label: t('openNatar.natarDetails.address') },
+        { key: 'capacity', label: t('openNatar.natarDetails.capacity') },
+        { key: 'equipmentLocation', label: t('openNatar.natarDetails.equipmentLocation') },
+        { key: 'lastUpdateDate', label: t('openNatar.natarDetails.lastUpdateDate') },
+        { key: 'nature', label: t('openNatar.natarDetails.nature') },
+        { key: 'terrainType', label: t('openNatar.natarDetails.terrainType') },
+        { key: 'carAccess', label: t('openNatar.natarDetails.vehicleApproach') },
+        { key: 'gasStationNear', label: t('openNatar.natarDetails.gasStationNear') },
+        { key: 'shade', label: t('openNatar.natarDetails.shade') },
+        { key: 'availableFacilities', label: t('openNatar.natarDetails.availableFacilities') },
     ];
     
     return (
         <>
             <Box>
-                <Typography variant='h4'>{t('openNatar.title', { type: natarDetails.type, name: natarDetails.name})}</Typography>
+                <Typography variant='h5'>
+                    {t('openNatar.title', {
+                        type: natarDetails.type == NATAR_TYPE.MAIN ? t('openNatar.main') : t('openNatar.secondary'),
+                        name: natarDetails.name
+                    })}
+                </Typography>
             </Box>
             <Grid container spacing={3}>
                 <Grid size={6}>
@@ -38,7 +44,11 @@ const AddNatar = ({natarDetails}: AddNatarProps) => {
                             natarDetails[key] ? (
                                 <Box key={key} sx={{ display: 'flex', gap: 1 }}>
                                     <Typography fontWeight='bold'>{label}:</Typography>
-                                    <Typography>{String(natarDetails[key])}</Typography>
+                                    <Typography>
+                                        {typeof natarDetails[key] === 'boolean'
+                                            ? t(natarDetails[key] ? t('openNatar.exists') : 'general.doesntExist')
+                                            : String(natarDetails[key])}
+                                    </Typography>
                                 </Box>
                             ) : null
                         )}
