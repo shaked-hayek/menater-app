@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Natar } from 'components/Interfaces/Natar';
@@ -9,7 +10,11 @@ import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import SinglePointMap from 'actions/arcgis/SinglePointMap';
+import { StaffMember } from 'components/Interfaces/StaffMember';
+import { ErrorPopup } from 'components/atoms/Popups';
 
+
+const MIN_STAFF_NEEDED = 2;
 
 interface AddNatarProps {
     natarDetails: Natar;
@@ -19,6 +24,9 @@ interface AddNatarProps {
 
 const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
     const { t } = useTranslation();
+    const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const fields: { key: keyof Natar; label: string }[] = [
         { key: 'id', label: t('openNatar.natarDetails.id') },
@@ -35,7 +43,11 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
     ];
 
     const handleSubmit = () => {
-        // todo - check staff
+        if (staffMembers.length < MIN_STAFF_NEEDED) {
+            setErrorMessage(t('openNatar.notEnoughStaff', {amount: MIN_STAFF_NEEDED}));
+            setShowErrorPopup(true);
+            return;
+        }
         onMarkAsOpened(natarDetails.id);
         onClose();
     }
@@ -81,11 +93,17 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
                     </Grid>
                     <Grid size={6}>
                         <SinglePointMap lat={natarDetails.lat} long={natarDetails.long} />
-                        <AssignStaffToNatar natar={natarDetails} />
+                        <AssignStaffToNatar
+                            natar={natarDetails}
+                            staffMembers={staffMembers}
+                            setStaffMembers={setStaffMembers}
+                        />
                     </Grid>
                 </Grid>
             </Box>
             <MainButton height={'40px'} onClick={handleSubmit}>{t('openNatar.openNatar')}</MainButton>
+
+            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </>
     );
 };

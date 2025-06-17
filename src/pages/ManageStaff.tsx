@@ -11,10 +11,8 @@ import { StaffMember } from '../components/Interfaces/StaffMember';
 
 
 const ManageStaff = () => {
-    // const navigate = useNavigate();
     const { t } = useTranslation();
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
-    const [isLoading, setIsLoading] = useState(false); // TODO: use
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -30,7 +28,6 @@ const ManageStaff = () => {
         
         fetchStaff();
       }, []);
-    
 
     async function deleteStaffMember(staffMember : StaffMember) {
         try {
