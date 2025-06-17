@@ -17,11 +17,13 @@ import { ApprovePopup, ErrorPopup, LoadingPopup } from 'components/atoms/Popups'
 import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
 import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
 import { generateRecommendation } from 'actions/generateRecommendation/recommendationAction';
+import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
 
 
 const DestructionSites = () => {
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
     const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
+    const [connectedToArcgis, setConnectedToArcgis] = useState<boolean | null>(null);
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [streetNames, setStreetNames] = useState<string[]>([]);
     const [streetNumbers, setStreetNumbers] = useState<string[]>([]);
@@ -34,7 +36,37 @@ const DestructionSites = () => {
     
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { earthquakeTime } = useSelector((state: RootState) => state.appState);
 
+    const isEarthquakeTimeIsDayTime = () => {
+        if (!earthquakeTime) {
+            navigate('/');
+            return false; // Will not be used
+        }
+        const earthquakeHour = earthquakeTime.getHours();
+        if (earthquakeHour >= 7 && earthquakeHour < 19) {
+            return true
+        }
+        return false;
+    }
+    const earthquakeTimeIsDayTime = isEarthquakeTimeIsDayTime();
+
+    waitForArcgisAuth()
+        .then((connected) => {
+            if (connected) {
+                setConnectedToArcgis(true);
+            } else {
+                setConnectedToArcgis(false);
+                setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
+                setShowErrorPopup(true);
+            }
+        })
+        .catch((err) => {
+            setConnectedToArcgis(false);
+            setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
+            setShowErrorPopup(true);
+        });
+    
     useEffect(() => {
         const fetchSites = async () => {
           try {
@@ -47,16 +79,6 @@ const DestructionSites = () => {
 
         fetchSites();
       }, []);
-
-    const isEarthquakeTimeIsDayTime = () => {
-        const { earthquakeTime } = useSelector((state: RootState) => state.appState);
-        const earthquakeHour = earthquakeTime!.getHours();
-        if (earthquakeHour >= 7 && earthquakeHour < 19) {
-            return true
-        }
-        return false;
-    }
-    const earthquakeTimeIsDayTime = isEarthquakeTimeIsDayTime();
 
 
     const handleApproveSitesChoice = async () => {
@@ -227,13 +249,13 @@ const DestructionSites = () => {
                 </Box>
             </Grid>
             <Grid size={4.8}>
-                <DestructionSitesMap
+                {connectedToArcgis && <DestructionSitesMap
                     destructionSites={destructionSites}
                     onClickDestructionSite={onSiteClick}
                     setStreetNames={setStreetNames}
                     setStreetNumbers={setStreetNumbers}
                     selectedStreet={selectedStreet}
-                />
+                />}
             </Grid>
         </Grid>
         

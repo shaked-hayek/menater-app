@@ -34,6 +34,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
+        <ArcgisProvider />
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={currentLanguage}>
           <Router>
             <Routes>
@@ -46,8 +47,7 @@ const App = () => {
               </Route>
             </Routes>
           </Router>
-          </LocalizationProvider>
-          <ArcgisProvider />
+        </LocalizationProvider>
       </ThemeProvider>
     </Provider>
   );
