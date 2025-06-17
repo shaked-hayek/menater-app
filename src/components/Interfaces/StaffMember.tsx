@@ -6,6 +6,7 @@ export enum StaffOccupation {
 }
 
 export interface StaffMember {
+    id: string;
     name: string;
     occupation: StaffOccupation;
     status?: string;

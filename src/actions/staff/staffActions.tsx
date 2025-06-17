@@ -30,10 +30,24 @@ export async function deleteStaffMemberAction(staffMember : StaffMember) {
         method: 'DELETE',
         headers: HTTP_HEADERS,
         body: JSON.stringify({
-            name: staffMember.name,
+            id: staffMember.id,
         }),
     });
     if (!response.ok) {
         throw new Error('Failed to delete staff member');
     }
+};
+
+
+// Assign to natar:
+
+export async function getStaffMembersOfNatarAction(natarId: number, setStaff : Dispatch<SetStateAction<StaffMember[]>>) {
+    const response = await fetch(`${SERVER_IP}${ROUTES.STAFF}?natarId=${natarId}`, {
+        method: 'GET',
+    });
+    if (!response.ok) {
+        throw new Error('Failed to get staff members');
+    }
+    const staffList = await response.json();
+    setStaff(staffList);
 };
