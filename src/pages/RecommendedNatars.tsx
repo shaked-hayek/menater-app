@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
+import { Box, Container, Modal, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -9,10 +9,9 @@ import { useNavigate } from 'react-router';
 import { getRecommendedNatars } from 'actions/natars/natarsActions';
 import { Natar } from 'components/Interfaces/Natar';
 import { ErrorPopup } from 'components/atoms/Popups';
-import AddIcon from '@mui/icons-material/Add';
-import { mainButtonColor } from 'style/colors';
 import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
+import NatarNestedList from 'components/NatarNestedList';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -82,25 +81,8 @@ const RecommendedNatars = () => {
         <Container sx={{ height: '100%' }}>
             <Grid container spacing={3}>
                 <Grid size={4}>
-                    <ColoredSideBox>
-                        <List>
-                            {recommendedNatars.map((natar, index) => (
-                                <ListItem
-                                    key={index}
-                                    disableGutters
-                                    secondaryAction={
-                                        <IconButton edge='start' onClick={() => openNatar(natar)}>
-                                            <AddIcon sx={{ color: mainButtonColor }} />
-                                        </IconButton>
-                                    }
-                                >
-                                    <ListItemText
-                                        primary={`${natar.name}`}
-                                        sx={{ textAlign: 'right' }}
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
+                    <ColoredSideBox disableOverflowX>
+                        <NatarNestedList recommendedNatars={recommendedNatars} openNatar={openNatar} />
                     </ColoredSideBox>
                 </Grid>
                 <Grid size={8}>

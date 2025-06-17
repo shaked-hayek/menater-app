@@ -21,4 +21,4 @@ export const waitingOrange = '#ffa500';
 export const successGreen = '#5cb85c';
 
 export const mainNatarColor = '#131153';
-export const secondaryNatarColor = '#72246c';
+export const secondaryNatarColor = '#c03ab6';

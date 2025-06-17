@@ -6,9 +6,17 @@ interface CustomBoxProps extends BoxProps {
     children?: React.ReactNode;
     bgColor?: string;
     height?: string;
+    disableOverflowX?: boolean
   }
 
-const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, height, ...props }: CustomBoxProps) => {
+const ColoredSideBox = ({
+    title,
+    children,
+    bgColor = secondaryBackgroundColor,
+    height,
+    disableOverflowX = false,
+    ...props
+}: CustomBoxProps) => {
     return (
         <Box 
             {...props}
@@ -28,6 +36,7 @@ const ColoredSideBox = ({ title, children, bgColor = secondaryBackgroundColor, h
             {title && <Typography variant='h6' sx={{m: 1}}>{title}</Typography>}
             <Box sx={{
                 overflowY: 'auto',
+                overflowX: disableOverflowX ? 'hidden' : 'auto',
                 width: '100%',
                 flexGrow: 1,
                 '&::-webkit-scrollbar-track': {
