@@ -14,9 +14,10 @@ import SinglePointMap from 'actions/arcgis/SinglePointMap';
 interface AddNatarProps {
     natarDetails: Natar;
     onClose: () => void;
+    onMarkAsOpened: (id: number) => void;
 }
 
-const AddNatar = ({natarDetails, onClose}: AddNatarProps) => {
+const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
     const { t } = useTranslation();
 
     const fields: { key: keyof Natar; label: string }[] = [
@@ -34,7 +35,8 @@ const AddNatar = ({natarDetails, onClose}: AddNatarProps) => {
     ];
 
     const handleSubmit = () => {
-        // TODO ?
+        // todo - check staff
+        onMarkAsOpened(natarDetails.id);
         onClose();
     }
     

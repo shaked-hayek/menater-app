@@ -19,3 +19,6 @@ export const scrollBackgroundColor = '#93a4ad';
 export const errorRed = '#ae1313';
 export const waitingOrange = '#ffa500';
 export const successGreen = '#5cb85c';
+
+export const mainNatarColor = '#131153';
+export const secondaryNatarColor = '#72246c';

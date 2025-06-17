@@ -12,6 +12,7 @@ import '@arcgis/core/assets/esri/css/main.css';
 import { ARCGIS_SETTINGS, MAP_SETTINGS } from 'consts/settings.const';
 import { Natar } from 'components/Interfaces/Natar';
 import { NATAR_TYPE } from 'consts/natarType.const';
+import { mainNatarColor, secondaryNatarColor } from 'style/colors';
 
 
 interface MultiPointMapProps {
@@ -57,7 +58,7 @@ const MultiPointMap = ({ natars, zoom = 12 }: MultiPointMapProps) => {
         natars.forEach(({ lat, long, wasOpened, type }) => {
           const point = new Point({ latitude: lat, longitude: long });
 
-          const color = type === NATAR_TYPE.MAIN ? [0, 0, 255] : [128, 0, 128];
+          const color = type === NATAR_TYPE.MAIN ? mainNatarColor : secondaryNatarColor;
 
           const markerSymbol = new SimpleMarkerSymbol({
             color: wasOpened ? color : [255, 255, 255, 0],

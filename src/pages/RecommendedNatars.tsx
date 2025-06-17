@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Dialog, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
+import { Box, Container, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -26,7 +26,7 @@ const modalStyle = {
     p: 4,
     borderRadius: 2,
     textAlign: 'center',
-  };
+};
 
 const RecommendedNatars = () => {
     const navigate = useNavigate();
@@ -68,7 +68,15 @@ const RecommendedNatars = () => {
     const closeModal = () => {
         setIsNatarModalOpen(false);
         setSelectedNatar(null);
-      };
+    };
+
+    const markNatarAsOpen = (id: number) => {
+        setRecommendedNatars(prev =>
+            prev.map(natar =>
+                natar.id === id ? { ...natar, wasOpened: true } : natar
+            )
+        );
+    };
     
     return (
         <Container sx={{ height: '100%' }}>
@@ -116,7 +124,7 @@ const RecommendedNatars = () => {
 
             <Modal open={isNatarModalOpen} onClose={closeModal}>
                 <Box sx={modalStyle}>
-                    {selectedNatar && <AddNatar natarDetails={selectedNatar} onClose={closeModal} />}
+                    {selectedNatar && <AddNatar natarDetails={selectedNatar} onClose={closeModal} onMarkAsOpened={markNatarAsOpen} />}
                 </Box>
             </Modal>
             

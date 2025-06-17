@@ -1,8 +1,24 @@
-import { Box, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Modal, Typography } from '@mui/material';
 import { Natar } from 'components/Interfaces/Natar';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
+import ChooseStaff from './ChooseStaff';
+
+const modalStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '85%',
+    height: '85%',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+    textAlign: 'center',
+};
 
 interface AssignStaffToNatarProps {
     natar: Natar;
