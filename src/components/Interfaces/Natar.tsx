@@ -4,6 +4,7 @@ export interface Natar {
     id: number;
     name: string;
     type: NATAR_TYPE;
+    fatherNatar?: number;
     address?: string;
     capacity?: number;
     equipmentLocation?: string;
@@ -19,23 +20,30 @@ export interface Natar {
 }
 
 
+export interface RecommendedNatar {
+    id: number;
+    date: Date;
+}
+
+
 export const mapNatars = (rawNatars: any) => {
     const mappedNatars: Natar[] = rawNatars.map((natar: any, index: number) => ({
-        id: natar.OBJECTID || index,
-        name: natar.Name?.trim() || 'ללא שם',
-        type: NATAR_TYPE.MAIN,
-        address: natar.Address?.trim() || undefined,
-        capacity: natar.capacity || undefined,
-        equipmentLocation: natar.Equipment?.trim() || undefined,
-        lastUpdateDate: natar.Last_Update || undefined,
-        nature: natar.Type?.toString(),
-        terrainType: natar.surface_1?.trim() || undefined,
-        carAccess: Boolean(natar.car_access),
-        gasStationNear: Boolean(natar.Gas),
-        shade: Boolean(natar.conv_shado),
-        availableFacilities: natar.Avail_Faci?.trim() || undefined,
-        lat: natar.LAT,
-        long: natar.LONG,
+        id: natar.attributes.OBJECTID || index,
+        name: natar.attributes.Name?.trim() || 'ללא שם',
+        type: natar.attributes.father == 0 ? NATAR_TYPE.MAIN : NATAR_TYPE.SECONDARY,
+        fatherNatar: natar.attributes.father,
+        address: natar.attributes.Address?.trim() || undefined,
+        capacity: natar.attributes.capacity || undefined,
+        equipmentLocation: natar.attributes.Equipment?.trim() || undefined,
+        lastUpdateDate: natar.attributes.Last_Update || undefined,
+        nature: natar.attributes.Type?.toString(),
+        terrainType: natar.attributes.surface_1?.trim() || undefined,
+        carAccess: Boolean(natar.attributes.car_access),
+        gasStationNear: Boolean(natar.attributes.Gas),
+        shade: Boolean(natar.attributes.conv_shado),
+        availableFacilities: natar.attributes.Avail_Faci?.trim() || undefined,
+        lat: natar.attributes.LAT,
+        long: natar.attributes.LONG,
       }));
     return mappedNatars
 }

@@ -21,5 +21,6 @@ export const HTTP_HEADERS = {
 };
 
 export const CITY_DATA = {
-    CITY_MAP_LOC: '/BeerSheva/MapServer/4',
+    CITY_MAP_LOC: '/BeerSheva/MapServer/4', // Buildings_Final
+    NATARIM_LAYER: '/BeerSheva/MapServer/1', // Natarim_Final_New
 }
