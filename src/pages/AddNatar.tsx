@@ -8,7 +8,7 @@ import { NATAR_TYPE } from 'consts/natarType.const';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import SinglePointMap from 'actions/arcgis/MapWithHighlightedPoint';
+import SinglePointMap from 'actions/arcgis/SinglePointMap';
 
 
 interface AddNatarProps {
