@@ -17,6 +17,7 @@ export interface Natar {
     availableFacilities?: string;
     lat: number;
     long: number;
+    wasOpened: boolean;
 }
 
 
@@ -44,6 +45,7 @@ export const mapNatars = (rawNatars: any) => {
         availableFacilities: natar.attributes.Avail_Faci?.trim() || undefined,
         lat: natar.attributes.LAT,
         long: natar.attributes.LONG,
+        wasOpened: false,
       }));
     return mappedNatars
 }

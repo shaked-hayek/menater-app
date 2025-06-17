@@ -10,20 +10,21 @@ import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import IdentityManager from '@arcgis/core/identity/IdentityManager';
 import '@arcgis/core/assets/esri/css/main.css';
 import { ARCGIS_SETTINGS, MAP_SETTINGS } from 'consts/settings.const';
+import { Natar } from 'components/Interfaces/Natar';
+import { NATAR_TYPE } from 'consts/natarType.const';
 
 
-interface SinglePointMapProps {
-    lat: number;
-    long: number;
-    zoom?: number;
+interface MultiPointMapProps {
+  natars: Natar[];
+  zoom?: number;
 }
 
-const SinglePointMap = ({ lat, long, zoom = 15 } : SinglePointMapProps) => {
+const MultiPointMap = ({ natars, zoom = 12 }: MultiPointMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<MapView | null>(null);
 
   useEffect(() => {
-    if (viewRef.current || !mapRef.current) return;
+    if (viewRef.current || !mapRef.current || natars.length === 0) return;
 
     const initializeMap = async () => {
       try {
@@ -39,33 +40,43 @@ const SinglePointMap = ({ lat, long, zoom = 15 } : SinglePointMapProps) => {
         const basemap = new Basemap({ baseLayers: [basemapLayer] });
         const map = new Map({ basemap });
 
+        const centerLat = natars[0].lat;
+        const centerLong = natars[0].long;
+
         const view = new MapView({
           container: mapRef.current!,
           map,
-          center: [long, lat],
+          center: [centerLong, centerLat],
           zoom,
         });
 
         viewRef.current = view;
 
-        const point = new Point({ latitude: lat, longitude: long });
-
-        const markerSymbol = new SimpleMarkerSymbol({
-          color: [226, 119, 40],
-          size: 10,
-          outline: {
-            color: [255, 255, 255],
-            width: 2,
-          },
-        });
-
-        const graphic = new Graphic({
-          geometry: point,
-          symbol: markerSymbol,
-        });
-
         const graphicsLayer = new GraphicsLayer();
-        graphicsLayer.add(graphic);
+
+        natars.forEach(({ lat, long, wasOpened, type }) => {
+          const point = new Point({ latitude: lat, longitude: long });
+
+          const color = type === NATAR_TYPE.MAIN ? [0, 0, 255] : [128, 0, 128];
+
+          const markerSymbol = new SimpleMarkerSymbol({
+            color: wasOpened ? color : [255, 255, 255, 0],
+            size: 10,
+            style: 'circle',
+            outline: {
+              color,
+              width: 2,
+            },
+          });
+
+          const graphic = new Graphic({
+            geometry: point,
+            symbol: markerSymbol,
+          });
+
+          graphicsLayer.add(graphic);
+        });
+
         map.add(graphicsLayer);
       } catch (error) {
         console.error('Failed to load map:', error);
@@ -78,14 +89,14 @@ const SinglePointMap = ({ lat, long, zoom = 15 } : SinglePointMapProps) => {
       viewRef.current?.destroy();
       viewRef.current = null;
     };
-  }, [lat, long, zoom]);
+  }, [natars, zoom]);
 
   return (
     <div
       ref={mapRef}
-      style={{ width: '100%', height: '200px', borderRadius: 8 }}
+      style={{ width: '100%', height: '300px', borderRadius: 8 }}
     />
   );
-}
+};
 
-export default SinglePointMap;
+export default MultiPointMap;

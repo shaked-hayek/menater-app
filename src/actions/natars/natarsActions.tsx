@@ -33,7 +33,6 @@ export async function getRecommendedNatars(setNatars : Dispatch<SetStateAction<N
     const recNatarsList = await getRecommendedNatarsIds();
     const natarsIdList = recNatarsList.map((item: RecommendedNatar) => item.id);
     const natarsList = await getNatarsByIds(natarsIdList);
-    console.log('############', natarsList);
     setNatars(mapNatars(natarsList));
 };
 

@@ -12,6 +12,7 @@ import { ErrorPopup } from 'components/atoms/Popups';
 import AddIcon from '@mui/icons-material/Add';
 import { mainButtonColor } from 'style/colors';
 import AddNatar from './AddNatar';
+import MultiPointMap from 'actions/arcgis/MultiPointMap';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -95,10 +96,18 @@ const RecommendedNatars = () => {
                     </ColoredSideBox>
                 </Grid>
                 <Grid size={8}>
-                    <Box>
+                    <Box mb={2}>
                         <Typography variant='h4'>{t('recommendedNatars.title')}</Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', width: '100%', height: '90%', gap: 2 }}>
+                    <MultiPointMap natars={recommendedNatars} />
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        justifyContent: 'flex-end',
+                        width: '100%',
+                        gap: 2,
+                        mt: 2
+                    }}>
                         <SecondaryButton onClick={handleAddSite}>{t('recommendedNatars.addDestructionSite')}</SecondaryButton>
                         <MainButton height={'40px'} onClick={handleSubmit}>{t('buttons.submit')}</MainButton>
                     </Box>
