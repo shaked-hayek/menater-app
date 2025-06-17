@@ -30,10 +30,13 @@ const Header = () => {
                         variant='body1'
                         color={arcgisAuth ? successGreen : (arcgisAuth == null ? waitingOrange : errorRed)}
                         fontWeight='bold'
+                        sx={{ whiteSpace: 'nowrap', alignSelf: 'center' }}
                     >
-                        {arcgisAuth ? t('header.arcgisConnected') : (
-                            arcgisAuth == null ? t('header.arcgisWaitingConnection') : t('header.arcgisConnectionError')
-                        )}
+                          {arcgisAuth
+                            ? t('header.arcgisConnected')
+                            : arcgisAuth == null
+                            ? t('header.arcgisWaitingConnection')
+                            : t('header.arcgisConnectionError')}
                     </Typography>
                 </Box>
 
