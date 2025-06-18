@@ -85,7 +85,12 @@ const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignSta
 
             <Modal open={isModalOpen} onClose={closeModal}>
                 <Box sx={modalStyle}>
-                    <ChooseStaff natar={natar} onClose={closeModal} />
+                    <ChooseStaff
+                        natar={natar}
+                        mainStaffMembers={staffMembers}
+                        setMainStaffMembers={setStaffMembers}
+                        onClose={closeModal}
+                    />
                 </Box>
             </Modal>
 

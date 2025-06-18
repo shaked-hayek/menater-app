@@ -49,6 +49,10 @@
         "staffName": "שם מלא",
         "staffOccupation": "הכשרה",
         "staffPhone": "מספר טלפון",
+        "staffStatus": "ססטוס",
+        "statusAssigned": "משובץ",
+        "statusNotAssigned": "לא משובץ",
+        "searchByName": "חיפוש לפי שם",
         "errorMsgs": {
             "fieldMissing": "יש למלא שם מלא והכשרה",
             "phoneError": "מספר טלפון אינו תקין",

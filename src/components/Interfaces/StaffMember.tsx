@@ -11,4 +11,5 @@ export interface StaffMember {
     occupation: StaffOccupation;
     status?: string;
     phoneNumber?: string;
+    natarId: number;
 }
