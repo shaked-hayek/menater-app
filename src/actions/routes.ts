@@ -1,6 +1,7 @@
 
 export enum ROUTES {
     STAFF = '/staff',
+    STAFF_UPDATE = '/staff/bulk-update',
     SITES = '/sites',
     RECOMMENDED_NATARS = '/getRecommendedNatars',
     ARCGIS_TOKEN = '/arcgis/token',

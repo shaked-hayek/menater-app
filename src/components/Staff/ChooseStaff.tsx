@@ -4,7 +4,7 @@ import { Box, Checkbox, TextField, Typography } from '@mui/material';
 import { Natar } from 'components/Interfaces/Natar';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
-import { getStaffMembersAction } from 'actions/staff/staffActions';
+import { bulkUpdateStaffNatarAction, getStaffMembersAction } from 'actions/staff/staffActions';
 import { StaffMember } from 'components/Interfaces/StaffMember';
 import { ErrorPopup } from 'components/atoms/Popups';
 import { SecondaryButton } from 'components/atoms/Buttons';
@@ -48,9 +48,11 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
     };
 
     const onApprove = () => {
-        const selected = staffMembers.filter((s) => selectedIds.has(s.id));
+        const selected: StaffMember[] = staffMembers.filter((s) => selectedIds.has(s.id));
         setMainStaffMembers(selected);
-        // TODO: send `selected` to server
+
+        const selectedIdsArray: string[] = Array.from(selectedIds);
+        bulkUpdateStaffNatarAction(selectedIdsArray, natar.id);
         onClose();
     };
 

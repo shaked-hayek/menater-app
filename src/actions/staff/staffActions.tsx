@@ -51,3 +51,22 @@ export async function getStaffMembersOfNatarAction(natarId: number, setStaff : D
     const staffList = await response.json();
     setStaff(staffList);
 };
+
+export async function bulkUpdateStaffNatarAction(staffIds: string[], natarId: number) {
+    const response = await fetch(`${SERVER_IP}${ROUTES.STAFF_UPDATE}`, {
+        method: 'PUT',
+        headers: HTTP_HEADERS,
+        body: JSON.stringify({
+            staffIds,
+            natarId,
+        }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update staff members');
+    }
+
+    const result = await response.json();
+    return result;
+};
