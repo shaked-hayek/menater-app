@@ -23,15 +23,19 @@
     },
     "startPage": {
         "title": "ברוכים הבאים למערכת המנט\"ר!",
-        "openEvent": "פתיחת אירוע",
+        "openNewEvent": "פתיחת אירוע חדש",
+        "openExistingEvent": "המשך עם אירוע קיים",
         "chooseEventType": "בחרו את סוג האירוע",
         "emergencyEvent": "אירוע חירום",
         "trialEvent": "אירוע תרגול",
         "eventsHistory": "היסטוריית אירועים",
         "manageNatars": "ניהול נט\"רים",
-        "manageStaff": "ניהול אנשי צוות",
+        "manageStaffButton": "ניהול אנשי צוות",
         "synchronize": "סנכרון",
-        "settings": "הגדרות"
+        "settings": "הגדרות",
+        "errorMsgs": {
+            "serverGetError": "קרתה תקלה בשרת"
+        }
     },
     "manageStaff": {
         "existingStaff": "אנשי צוות קיימים",

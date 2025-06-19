@@ -1,5 +1,6 @@
 
 export enum ROUTES {
+    EVENTS = '/events',
     STAFF = '/staff',
     STAFF_UPDATE = '/staff/bulk-update',
     SITES = '/sites',

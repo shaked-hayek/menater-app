@@ -13,6 +13,8 @@ import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { PAGES } from 'consts/pages.const';
 import { ErrorPopup } from 'components/atoms/Popups';
+import { addEventAction } from 'actions/events/eventsActions';
+import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 
 interface FormValues {
   magnitude: number | null | undefined;
@@ -39,8 +41,15 @@ const NewEvent = () => {
       return;
     }
 
-    dispatch(setEarthquakeMagnitude(formValues.magnitude));
-    dispatch(setEarthquakeTime(formValues.dateTime.toDate()));
+    const new_event : EarthquakeEvent = {
+      mode: mode!, 
+      earthquakeMagnitude: formValues.magnitude, 
+      earthquakeTime: formValues.dateTime.toDate()
+    };
+    addEventAction(new_event);
+
+    dispatch(setEarthquakeMagnitude(new_event.earthquakeMagnitude));
+    dispatch(setEarthquakeTime(new_event.earthquakeTime));
     navigate(`/${PAGES.DESTRUCTION_SITES}`);
   };
 

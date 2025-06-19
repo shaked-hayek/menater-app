@@ -1,32 +1,60 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Modal, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'components/atoms/Buttons';
-import { setMode } from 'store/store';
+import { setEarthquakeMagnitude, setEarthquakeTime, setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
+import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
+import { getEventsAction } from 'actions/events/eventsActions';
+import { ErrorPopup } from 'components/atoms/Popups';
 
 
 const modalStyle = {
-    position: "absolute" as const,
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: "background.paper",
+    bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
     borderRadius: 2,
-    textAlign: "center",
-  };
+    textAlign: 'center',
+};
+
+const buttonsStyle = {
+    p: 2,
+    m: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+}
 
 
 const StartPage = () => {
     const [showNewEvent, setShowNewEvent] = useState(false);
+    const [oldEvents, setOldEvents] = useState<EarthquakeEvent[]>([]);
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchStaff = async () => {
+          try {
+            await getEventsAction(setOldEvents);
+            console.log('####', oldEvents);
+          } catch (error) {
+            setErrorMessage(t('startPage.errorMsgs.serverGetError'));
+            setShowErrorPopup(true);
+          }
+        };
+        
+        fetchStaff();
+      }, []);
 
     const handleClose = () => setShowNewEvent(false);
     const handleEventChoice = (mode: MODE) => {
@@ -35,11 +63,20 @@ const StartPage = () => {
         navigate(`/${PAGES.NEW_EVENT}`)
     };
     const handleShow = () => setShowNewEvent(true);
+
+    const onOpenExistingEvent = () => {
+        // TODO: add option to open events other then last one
+        const oldEvent = oldEvents[0];
+        dispatch(setMode(oldEvent.mode));
+        dispatch(setEarthquakeMagnitude(oldEvent.earthquakeMagnitude));
+        dispatch(setEarthquakeTime(new Date(oldEvent.earthquakeTime)));
+        navigate(`/${PAGES.DESTRUCTION_SITES}`);
+    }
     
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const logo = require("../assets/Logo.png");
+    const logo = require('../assets/Logo.png');
 
     return (
         <>
@@ -48,7 +85,7 @@ const StartPage = () => {
                 <Typography variant='h4'>{t('startPage.title')}</Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                <Box sx={{ p: 2, m: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={buttonsStyle}>
                     <SecondaryButton>
                         {t('startPage.eventsHistory')}
                     </SecondaryButton>
@@ -56,7 +93,7 @@ const StartPage = () => {
                         {t('startPage.manageNatars')}
                     </SecondaryButton>
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>
-                        {t('startPage.manageStaff')}
+                        {t('startPage.manageStaffButton')}
                     </SecondaryButton>
                     <SecondaryButton>
                         {t('startPage.synchronize')}
@@ -65,10 +102,18 @@ const StartPage = () => {
                         {t('startPage.settings')}
                     </SecondaryButton>
                 </Box>
-                <MainButton onClick={handleShow}>
-                    {t('startPage.openEvent')}
-                </MainButton>
+                <Box sx={buttonsStyle}>
+                    {oldEvents.length !== 0 &&
+                        <MainButton onClick={onOpenExistingEvent}>
+                            {t('startPage.openExistingEvent')}
+                        </MainButton>
+                    }
+                    <MainButton onClick={handleShow}>
+                        {t('startPage.openNewEvent')}
+                    </MainButton>
+                </Box>
             </Box>
+
             <Modal open={showNewEvent} onClose={handleClose}>
                 <Box sx={modalStyle}>
                     <Typography variant='h5'>{t('startPage.chooseEventType')}</Typography>
@@ -82,6 +127,8 @@ const StartPage = () => {
                     </Box>
                 </Box>
             </Modal>
+
+            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </>
     );
 };

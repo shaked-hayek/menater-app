@@ -15,7 +15,7 @@ export const MainButton = ({ children, height = '80px', ...props }: CustomButton
         bgcolor: mainButtonColor,
         color: lightTextColor,
         flex: 1, 
-        height,
+        minHeight: height,
         maxWidth: '200px', 
         fontSize: '1.2rem', 
       }}
