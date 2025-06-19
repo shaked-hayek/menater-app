@@ -1,5 +1,9 @@
-import { Natar } from "components/Interfaces/Natar";
-import { NATAR_TYPE } from "consts/natarType.const";
+import { Dispatch, UnknownAction } from 'redux';
+import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
+import { Natar } from 'components/Interfaces/Natar';
+import { NATAR_TYPE } from 'consts/natarType.const';
+import { setEarthquakeMagnitude, setEarthquakeTime, setMode } from 'store/store';
+import { getEventsAction } from 'actions/events/eventsActions';
 
 export const buildNestedNatars = (natars: Natar[]): Natar[] => {
     const mainNatars = natars.filter(n => n.type === NATAR_TYPE.MAIN);
@@ -14,4 +18,10 @@ export const buildNestedNatars = (natars: Natar[]): Natar[] => {
     }
 
     return nestedList;
+};
+
+export const setEventDataForSystem = (event: EarthquakeEvent, dispatch: Dispatch<UnknownAction>) => {
+    dispatch(setMode(event.mode));
+    dispatch(setEarthquakeMagnitude(event.earthquakeMagnitude));
+    dispatch(setEarthquakeTime(new Date(event.earthquakeTime)));
 };

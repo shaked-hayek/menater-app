@@ -5,12 +5,13 @@ import { Box, Modal, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'components/atoms/Buttons';
-import { setEarthquakeMagnitude, setEarthquakeTime, setMode } from 'store/store';
+import { setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup } from 'components/atoms/Popups';
+import { setEventDataForSystem } from 'utils';
 
 
 const modalStyle = {
@@ -43,17 +44,16 @@ const StartPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchStaff = async () => {
+        const fetchEvents = async () => {
           try {
             await getEventsAction(setOldEvents);
-            console.log('####', oldEvents);
           } catch (error) {
             setErrorMessage(t('startPage.errorMsgs.serverGetError'));
             setShowErrorPopup(true);
           }
         };
         
-        fetchStaff();
+        fetchEvents();
       }, []);
 
     const handleClose = () => setShowNewEvent(false);
@@ -66,10 +66,7 @@ const StartPage = () => {
 
     const onOpenExistingEvent = () => {
         // TODO: add option to open events other then last one
-        const oldEvent = oldEvents[0];
-        dispatch(setMode(oldEvent.mode));
-        dispatch(setEarthquakeMagnitude(oldEvent.earthquakeMagnitude));
-        dispatch(setEarthquakeTime(new Date(oldEvent.earthquakeTime)));
+        setEventDataForSystem(oldEvents[0], dispatch);
         navigate(`/${PAGES.DESTRUCTION_SITES}`);
     }
     
