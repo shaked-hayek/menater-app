@@ -8,7 +8,7 @@ const Layout = () => {
     const headerHeight = '6 rem';
 
     return (
-        <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <Box sx={{ height: headerHeight, display: 'flex', bgcolor: lightBgColor }}>
                 <Header />
             </Box>

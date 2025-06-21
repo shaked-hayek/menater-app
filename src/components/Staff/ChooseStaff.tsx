@@ -66,67 +66,67 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
                 {t('manageStaff.chooseStaff', { natar: natar.name })}
             </Typography>
 
-        <TextField
-            fullWidth
-            variant='outlined'
-            size='small'
-            placeholder={t('manageStaff.searchByName')}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            sx={{ mb: 2 }}
-        />
+            <TextField
+                fullWidth
+                variant='outlined'
+                size='small'
+                placeholder={t('manageStaff.searchByName')}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                sx={{ mb: 2 }}
+            />
 
-        <ColoredSideBox height='65%' mb={2}>
-            {/* Header */}
-            <Box display='flex' borderBottom='1px solid #ccc' py={1} px={2} fontWeight='bold'>
-                <Box width='10%' />
-                <Box width='30%' textAlign='right'>{t('manageStaff.staffName')}</Box>
-                <Box width='30%' textAlign='right'>{t('manageStaff.staffOccupation')}</Box>
-                <Box width='30%' textAlign='right'>{t('manageStaff.staffStatus')}</Box>
-            </Box>
-
-            {/* Staff Rows */}
-            {filteredStaff.map((staff) => (
-                <Box
-                    key={staff.id}
-                    display='flex'
-                    alignItems='center'
-                    py={0.5}
-                    px={2}
-                    borderBottom='1px solid #eee'
-                >
-                    <Box width='10%'>
-                    <Checkbox
-                        checked={selectedIds.has(staff.id)}
-                        onChange={() => toggleSelection(staff.id)}
-                    />
-                    </Box>
-                    <Box width='30%' textAlign='right'>
-                        <Typography variant='body2'>{staff.name}</Typography>
-                    </Box>
-                    <Box width='30%' textAlign='right'>
-                        <Typography variant='body2'>{staff.occupation}</Typography>
-                    </Box>
-                    <Box width='30%' textAlign='right'>
-                        <Typography variant='body2'>
-                            {staff.natarId === 0
-                                ? t('manageStaff.statusNotAssigned')
-                                : t('manageStaff.statusAssigned')}
-                        </Typography>
-                    </Box>
+            <ColoredSideBox height='65%' mb={2}>
+                {/* Header */}
+                <Box display='flex' borderBottom='1px solid #ccc' py={1} px={2} fontWeight='bold'>
+                    <Box width='10%' />
+                    <Box width='30%' textAlign='right'>{t('manageStaff.staffName')}</Box>
+                    <Box width='30%' textAlign='right'>{t('manageStaff.staffOccupation')}</Box>
+                    <Box width='30%' textAlign='right'>{t('manageStaff.staffStatus')}</Box>
                 </Box>
-            ))}
-        </ColoredSideBox>
 
-        <SecondaryButton onClick={onApprove}>
-            {t('buttons.submit')}
-        </SecondaryButton>
+                {/* Staff Rows */}
+                {filteredStaff.map((staff) => (
+                    <Box
+                        key={staff.id}
+                        display='flex'
+                        alignItems='center'
+                        py={0.5}
+                        px={2}
+                        borderBottom='1px solid #eee'
+                    >
+                        <Box width='10%'>
+                        <Checkbox
+                            checked={selectedIds.has(staff.id)}
+                            onChange={() => toggleSelection(staff.id)}
+                        />
+                        </Box>
+                        <Box width='30%' textAlign='right'>
+                            <Typography variant='body2'>{staff.name}</Typography>
+                        </Box>
+                        <Box width='30%' textAlign='right'>
+                            <Typography variant='body2'>{staff.occupation}</Typography>
+                        </Box>
+                        <Box width='30%' textAlign='right'>
+                            <Typography variant='body2'>
+                                {staff.natarId === 0
+                                    ? t('manageStaff.statusNotAssigned')
+                                    : t('manageStaff.statusAssigned')}
+                            </Typography>
+                        </Box>
+                    </Box>
+                ))}
+            </ColoredSideBox>
 
-        <ErrorPopup
-            errorMessage={errorMessage}
-            showErrorPopup={showErrorPopup}
-            setShowErrorPopup={setShowErrorPopup}
-          />
+            <SecondaryButton onClick={onApprove}>
+                {t('buttons.submit')}
+            </SecondaryButton>
+
+            <ErrorPopup
+                errorMessage={errorMessage}
+                showErrorPopup={showErrorPopup}
+                setShowErrorPopup={setShowErrorPopup}
+            />
         </>
       );
 };

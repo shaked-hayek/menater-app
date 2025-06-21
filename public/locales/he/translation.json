@@ -65,6 +65,16 @@
             "serverGetError": "קרתה תקלה בשרת"
         }
     },
+    "manageNatars": {
+        "existingNatars": "נט\"רים קיימים",
+        "addNatar": "הוסף נט\"ר",
+        "actions": "פעולות",
+        "errorMsgs": {
+            "serverAddError": "קרתה תקלה בהוספת נט\"ר",
+            "serverDeleteError": "קרתה תקלה במחיקת נט\"ר",
+            "serverGetError": "קרתה תקלה בשרת"
+        }
+    },
     "newEvent": {
         "create": "יצירת אירוע {{type}} חדש",
         "earthquakeMagnitude": "עוצמת הרעש",

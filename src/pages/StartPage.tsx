@@ -86,7 +86,7 @@ const StartPage = () => {
                     <SecondaryButton>
                         {t('startPage.eventsHistory')}
                     </SecondaryButton>
-                    <SecondaryButton>
+                    <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_NATARS}`)}>
                         {t('startPage.manageNatars')}
                     </SecondaryButton>
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>

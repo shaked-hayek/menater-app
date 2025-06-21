@@ -3,4 +3,5 @@ export enum PAGES {
     DESTRUCTION_SITES = 'destructionSites',
     RECOMMENDED_NATARS = 'recommendedNatars',
     MANAGE_STAFF = 'manageStaff',
+    MANAGE_NATARS = 'manageNatars',
 }

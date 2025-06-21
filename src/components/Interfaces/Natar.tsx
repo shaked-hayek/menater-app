@@ -1,4 +1,5 @@
 import { NATAR_TYPE } from "consts/natarType.const";
+import { TFunction } from "i18next";
 
 export interface Natar {
     id: number;
@@ -49,3 +50,17 @@ export const mapNatars = (rawNatars: any) => {
       }));
     return mappedNatars
 }
+
+export const getNatarFields = (t: TFunction<'translation', undefined>): { key: keyof Natar; label: string }[] => [
+  { key: 'id', label: t('openNatar.natarDetails.id') },
+  { key: 'address', label: t('openNatar.natarDetails.address') },
+  { key: 'capacity', label: t('openNatar.natarDetails.capacity') },
+  { key: 'equipmentLocation', label: t('openNatar.natarDetails.equipmentLocation') },
+  { key: 'lastUpdateDate', label: t('openNatar.natarDetails.lastUpdateDate') },
+  { key: 'nature', label: t('openNatar.natarDetails.nature') },
+  { key: 'terrainType', label: t('openNatar.natarDetails.terrainType') },
+  { key: 'carAccess', label: t('openNatar.natarDetails.vehicleApproach') },
+  { key: 'gasStationNear', label: t('openNatar.natarDetails.gasStationNear') },
+  { key: 'shade', label: t('openNatar.natarDetails.shade') },
+  { key: 'availableFacilities', label: t('openNatar.natarDetails.availableFacilities') },
+];

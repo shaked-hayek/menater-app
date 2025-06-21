@@ -22,3 +22,5 @@ export const successGreen = '#5cb85c';
 
 export const mainNatarColor = '#131153';
 export const secondaryNatarColor = '#c03ab6';
+
+export const tableBgColor = '#f5f7fa';

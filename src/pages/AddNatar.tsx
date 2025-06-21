@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { Natar } from 'components/Interfaces/Natar';
+import { Natar, getNatarFields } from 'components/Interfaces/Natar';
 import AssignStaffToNatar from 'components/Staff/AssignStaffToNatar';
 import { MainButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
@@ -28,19 +28,7 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const fields: { key: keyof Natar; label: string }[] = [
-        { key: 'id', label: t('openNatar.natarDetails.id') },
-        { key: 'address', label: t('openNatar.natarDetails.address') },
-        { key: 'capacity', label: t('openNatar.natarDetails.capacity') },
-        { key: 'equipmentLocation', label: t('openNatar.natarDetails.equipmentLocation') },
-        { key: 'lastUpdateDate', label: t('openNatar.natarDetails.lastUpdateDate') },
-        { key: 'nature', label: t('openNatar.natarDetails.nature') },
-        { key: 'terrainType', label: t('openNatar.natarDetails.terrainType') },
-        { key: 'carAccess', label: t('openNatar.natarDetails.vehicleApproach') },
-        { key: 'gasStationNear', label: t('openNatar.natarDetails.gasStationNear') },
-        { key: 'shade', label: t('openNatar.natarDetails.shade') },
-        { key: 'availableFacilities', label: t('openNatar.natarDetails.availableFacilities') },
-    ];
+    const fields = getNatarFields(t);
 
     const handleSubmit = () => {
         if (staffMembers.length < MIN_STAFF_NEEDED) {
