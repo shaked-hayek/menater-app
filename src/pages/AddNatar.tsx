@@ -69,7 +69,7 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
                                             <Grid size={7}>
                                                 <Typography>
                                                     {typeof natarDetails[key] === 'boolean'
-                                                        ? t(natarDetails[key] ? t('openNatar.exists') : 'general.doesntExist')
+                                                        ? t(natarDetails[key] ? 'openNatar.exists' : 'openNatar.doesntExist')
                                                         : String(natarDetails[key])}
                                                 </Typography>
                                             </Grid>

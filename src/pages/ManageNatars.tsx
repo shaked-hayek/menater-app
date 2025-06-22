@@ -12,10 +12,9 @@ import {
   Paper,
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
 import { ErrorPopup } from 'components/atoms/Popups';
-import { Natar, getNatarFields } from 'components/Interfaces/Natar';
+import { Natar, getNatarTableFields } from 'components/Interfaces/Natar';
 import { getOptionalNatars, editNatarAction, deleteNatarAction } from 'actions/natars/natarsActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { tableBgColor } from 'style/colors';
@@ -28,7 +27,7 @@ const ManageNatars = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState<Partial<Natar>>({});
 
-    const fields = getNatarFields(t);
+    const fields = getNatarTableFields(t);
 
     useEffect(() => {
         const fetchNatars = async () => {
@@ -101,37 +100,37 @@ const ManageNatars = () => {
                     <TableHead>
                         <TableRow>
                             {fields.map(field => (
-                                <TableCell key={field.key}>{field.label}</TableCell>
+                                <TableCell key={field.key} align='right' sx={{ fontWeight: 'bold' }}>
+                                    {field.label}
+                                </TableCell>
                             ))}
-                            <TableCell align='right'>{t('manageNatars.actions')}</TableCell>
+                            <TableCell align='right' sx={{ fontWeight: 'bold' }}>{t('manageNatars.actions')}</TableCell>
                         </TableRow>
                     </TableHead>
-                </Table>
-                <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
-                    <Table>
-                        <TableBody>
-                            {natars.map(natar => (
-                                <TableRow key={natar.id}>
-                                    {fields.map(({ key }) =>
-                                        <TableCell key={key}>
-                                            {typeof natar[key] === 'boolean'
-                                            ? t(natar[key] ? 'openNatar.exists' : 'general.doesntExist')
-                                            : String(natar[key] ?? '')}
-                                        </TableCell>
-                                    )}
-                                    <TableCell align='right'>
+                    <TableBody>
+                        {natars.map(natar => (
+                            <TableRow key={natar.id}>
+                                {fields.map(({ key }) =>
+                                    <TableCell key={key} align='right'>
+                                        {typeof natar[key] === 'boolean'
+                                        ? t(natar[key] ? 'openNatar.exists' : 'openNatar.doesntExist')
+                                        : String(natar[key] ?? '')}
+                                    </TableCell>
+                                )}
+                                <TableCell align='right'>
+                                    <Box display='flex' gap={1} justifyContent='flex-end'>
                                         <IconButton onClick={() => handleEdit(natar)}>
                                             <Edit color='primary' />
                                         </IconButton>
                                         <IconButton onClick={() => handleDelete(natar)}>
                                             <Delete color='error' />
                                         </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Box>
+                                    </Box>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </Paper>
 
             <ErrorPopup

@@ -122,6 +122,7 @@
         "notEnoughStaff": "יש לשבץ לפחות {{amount}} אנשי צוות",
         "natarDetails": {
             "id": "מזהה",
+            "name": "שם",
             "address": "כתובת",
             "capacity": "קיבולת",
             "equipmentLocation": "מיקום ציוד",

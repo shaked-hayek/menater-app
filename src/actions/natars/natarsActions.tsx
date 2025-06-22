@@ -23,7 +23,7 @@ export async function queryNatarsLayer(query: __esri.Query) {
         });
 
         const result = await natarsLayer.queryFeatures(query);
-        return result;
+        return result.features;
     } catch (error) {
         throw new Error('Failed to query natars:', error);
     }
@@ -35,12 +35,8 @@ export async function getOptionalNatars(setNatars : Dispatch<SetStateAction<Nata
         returnGeometry: true,
     });
 
-    const result = await queryNatarsLayer(query);
-    const natarsList: Natar[] = result.features.map((feature: __esri.Graphic) => ({
-        ...feature.attributes,
-    }));
-    // TODO: fix
-    setNatars(natarsList);
+    const natarsList = await queryNatarsLayer(query);
+    setNatars(mapNatars(natarsList));
 };
 
 export async function editNatarAction(natar: Natar) {
@@ -81,5 +77,5 @@ export async function getNatarsByIds(idList : number[]) {
     });
 
     const result = await queryNatarsLayer(query);
-    return result.features;
+    return result;
 };

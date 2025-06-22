@@ -64,3 +64,16 @@ export const getNatarFields = (t: TFunction<'translation', undefined>): { key: k
   { key: 'shade', label: t('openNatar.natarDetails.shade') },
   { key: 'availableFacilities', label: t('openNatar.natarDetails.availableFacilities') },
 ];
+
+export const getNatarTableFields = (t: TFunction<'translation', undefined>): { key: keyof Natar; label: string }[] => [
+    { key: 'id', label: t('openNatar.natarDetails.id') },
+    { key: 'name', label: t('openNatar.natarDetails.name') },
+    { key: 'address', label: t('openNatar.natarDetails.address') },
+    { key: 'capacity', label: t('openNatar.natarDetails.capacity') },
+    { key: 'equipmentLocation', label: t('openNatar.natarDetails.equipmentLocation') },
+    { key: 'nature', label: t('openNatar.natarDetails.nature') },
+    { key: 'terrainType', label: t('openNatar.natarDetails.terrainType') },
+    { key: 'carAccess', label: t('openNatar.natarDetails.vehicleApproach') },
+    { key: 'gasStationNear', label: t('openNatar.natarDetails.gasStationNear') },
+    { key: 'shade', label: t('openNatar.natarDetails.shade') },
+  ];
