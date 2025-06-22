@@ -11,6 +11,7 @@ import {
   Box,
   Paper,
   TableContainer,
+  Modal,
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +20,22 @@ import { Natar, getNatarTableFields } from 'components/Interfaces/Natar';
 import { getOptionalNatars, editNatarAction, deleteNatarAction } from 'actions/natars/natarsActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { tableBgColor } from 'style/colors';
+import EditNatarModal from 'components/natars/EditNatarModal';
+
+
+const modalStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '85%',
+    height: '85%',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+    textAlign: 'center',
+};
 
 const ManageNatars = () => {
     const { t } = useTranslation();
@@ -26,7 +43,7 @@ const ManageNatars = () => {
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [modalData, setModalData] = useState<Partial<Natar>>({});
+    const [modalData, setModalData] = useState<Natar>();
 
     const fields = getNatarTableFields(t);
 
@@ -59,22 +76,26 @@ const ManageNatars = () => {
     };
 
     const handleAdd = () => {
-        setModalData({});
-        setShowModal(true);
+        // setModalData();
+        // setShowModal(true);
     };
 
-    const handleModalSave = async () => {
-        try {
-            if (modalData.name) {
-                await editNatarAction(modalData as Natar);
-                await getOptionalNatars(setNatars);
-            }
-            setShowModal(false);
-        } catch (error) {
-            setErrorMessage(t('manageNatars.errorMsgs.serverEditError'));
-            setShowErrorPopup(true);
-        }
-    };
+    // const handleModalSave = async () => {
+    //     try {
+    //         if (modalData.name) {
+    //             await editNatarAction(modalData);
+    //             await getOptionalNatars(setNatars);
+    //         }
+    //         setShowModal(false);
+    //     } catch (error) {
+    //         setErrorMessage(t('manageNatars.errorMsgs.serverEditError'));
+    //         setShowErrorPopup(true);
+    //     }
+    // };
+
+    const closeModal = () => {
+        setShowModal(false);
+    }
 
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflow: 'hidden'}}>
@@ -85,7 +106,6 @@ const ManageNatars = () => {
                 <Typography variant='h5' sx={{ flexGrow: 1, textAlign: 'center' }}>
                     {t('manageNatars.existingNatars')}
                 </Typography>
-                <Box width='135px' />
             </Box>
 
             <Paper
@@ -135,6 +155,14 @@ const ManageNatars = () => {
                     </Table>
                 </TableContainer>
             </Paper>
+
+            <Modal open={showModal} onClose={closeModal}>
+                <Box sx={modalStyle}>
+                    {modalData &&
+                        <EditNatarModal natar={modalData} fields={fields} onClose={closeModal} />
+                    }
+                </Box>
+            </Modal>
 
             <ErrorPopup
                 errorMessage={errorMessage}

@@ -1,8 +1,9 @@
 import { SetStateAction, Dispatch } from 'react';
 import { CITY_DATA, SERVER_IP } from 'consts/settings.const';
 import { ROUTES } from 'actions/routes';
-import { Natar, RecommendedNatar, mapNatars } from 'components/Interfaces/Natar';
+import { Natar, RecommendedNatar, convertNatarToRaw, mapNatars } from 'components/Interfaces/Natar';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import Graphic from '@arcgis/core/Graphic';
 import Query from '@arcgis/core/rest/support/Query';
 import { ARCGIS_SETTINGS } from 'consts/settings.const';
 import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
@@ -40,11 +41,55 @@ export async function getOptionalNatars(setNatars : Dispatch<SetStateAction<Nata
 };
 
 export async function editNatarAction(natar: Natar) {
+    const query = new Query({
+        where: `OBJECTID = ${natar.id}`,
+        outFields: ['*'],
+        returnGeometry: true,
+    });
 
+    const features = await queryNatarsLayer(query);
+    const existingFeature = features[0];
+
+    if (!existingFeature) {
+        throw new Error(`Natar with id ${natar.id} not found`);
+    }
+
+    const updatedFeature = new Graphic({
+        geometry: existingFeature.geometry,
+        attributes: {
+            ...existingFeature.attributes,
+            ...convertNatarToRaw(natar),
+        },
+    });
+
+    const layer = existingFeature.layer as FeatureLayer;
+    const result = await layer.applyEdits({ updateFeatures: [updatedFeature] });
+
+    if (result.updateFeatureResults[0].error) {
+        throw new Error('Failed to update natar: ' + result.updateFeatureResults[0].error.message);
+    }
 };
 
-export async function deleteNatarAction(natar: Natar) {
 
+export async function deleteNatarAction(natar: Natar) {
+    const query = new Query({
+        where: `OBJECTID = ${natar.id}`,
+        returnGeometry: true,
+    });
+
+    const features = await queryNatarsLayer(query);
+    const featureToDelete = features[0];
+
+    if (!featureToDelete) {
+        throw new Error(`Natar with id ${natar.id} not found`);
+    }
+
+    const layer = featureToDelete.layer as FeatureLayer;
+    const result = await layer.applyEdits({ deleteFeatures: [featureToDelete] });
+
+    if (result.deleteFeatureResults[0].error) {
+        throw new Error('Failed to delete natar: ' + result.deleteFeatureResults[0].error.message);
+    }
 };
 
 export async function getRecommendedNatarsIds() {

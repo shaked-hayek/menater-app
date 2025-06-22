@@ -49,9 +49,30 @@ export const mapNatars = (rawNatars: any) => {
         wasOpened: false,
       }));
     return mappedNatars
+};
+
+export const convertNatarToRaw = (natar: Natar) => {
+    return {
+        OBJECTID: natar.id,
+        Name: natar.name,
+        Address: natar.address,
+        Equipment: natar.equipmentLocation,
+        Last_Update: natar.lastUpdateDate,
+        Type: natar.nature,
+        surface_1: natar.terrainType,
+        car_access: natar.carAccess ? 1 : 0,
+        Gas: natar.gasStationNear ? 1 : 0,
+        conv_shado: natar.shade ? 1 : 0,
+        Avail_Faci: natar.availableFacilities,
+      };
+};
+
+export interface NatarField {
+    key: keyof Natar;
+    label: string;
 }
 
-export const getNatarFields = (t: TFunction<'translation', undefined>): { key: keyof Natar; label: string }[] => [
+export const getNatarFields = (t: TFunction<'translation', undefined>): NatarField[] => [
   { key: 'id', label: t('openNatar.natarDetails.id') },
   { key: 'address', label: t('openNatar.natarDetails.address') },
   { key: 'capacity', label: t('openNatar.natarDetails.capacity') },
@@ -65,7 +86,7 @@ export const getNatarFields = (t: TFunction<'translation', undefined>): { key: k
   { key: 'availableFacilities', label: t('openNatar.natarDetails.availableFacilities') },
 ];
 
-export const getNatarTableFields = (t: TFunction<'translation', undefined>): { key: keyof Natar; label: string }[] => [
+export const getNatarTableFields = (t: TFunction<'translation', undefined>): NatarField[] => [
     { key: 'id', label: t('openNatar.natarDetails.id') },
     { key: 'name', label: t('openNatar.natarDetails.name') },
     { key: 'address', label: t('openNatar.natarDetails.address') },
