@@ -2,7 +2,7 @@ import { IconButton, List, ListItem, ListItemText } from '@mui/material';
 import { mainButtonColor, mainNatarColor, secondaryNatarColor } from 'style/colors';
 import AddIcon from '@mui/icons-material/Add';
 import { buildNestedNatars } from 'utils';
-import { Natar } from './Interfaces/Natar';
+import { Natar } from '../Interfaces/Natar';
 import { NATAR_TYPE } from 'consts/natarType.const';
 
 interface NatarNestedListProps {

@@ -11,7 +11,7 @@ import { Natar } from 'components/Interfaces/Natar';
 import { ErrorPopup } from 'components/atoms/Popups';
 import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
-import NatarNestedList from 'components/NatarNestedList';
+import NatarNestedList from 'components/natars/NatarNestedList';
 
 const modalStyle = {
     position: 'absolute' as const,
