@@ -96,6 +96,7 @@
         "getRecommendation": "קבלת המלצה",
         "approveSites": "האם לאשר את אתרי ההרס ולעבור להמלצה?",
         "creatingRecommendation": "המלצה בתהליך יצירה",
+        "connectingToMap": "טוען מפה",
         "errorMsgs": {
             "addressExists": "כתובת זו כבר קיימת",
             "emptySites": "יש להזין אתרי הרס",

@@ -21,10 +21,15 @@ import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
 
 
 const DestructionSites = () => {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { earthquakeTime } = useSelector((state: RootState) => state.appState);
+
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
     const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
     const [connectedToArcgis, setConnectedToArcgis] = useState<boolean | null>(null);
-    const [showLoadingPopup, setShowLoadingPopup] = useState(false);
+    const [showLoadingPopup, setShowLoadingPopup] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState(t('destructionSites.connectingToMap'));
     const [streetNames, setStreetNames] = useState<string[]>([]);
     const [streetNumbers, setStreetNumbers] = useState<string[]>([]);
     const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
@@ -33,10 +38,7 @@ const DestructionSites = () => {
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { earthquakeTime } = useSelector((state: RootState) => state.appState);
+
 
     const isEarthquakeTimeIsDayTime = () => {
         if (!earthquakeTime) {
@@ -71,7 +73,9 @@ const DestructionSites = () => {
         const fetchSites = async () => {
           try {
             await getSites(setDestructionSites);
+            setShowLoadingPopup(false);
           } catch (error) {
+            setShowLoadingPopup(false);
             setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
             setShowErrorPopup(true);
           }
@@ -82,19 +86,20 @@ const DestructionSites = () => {
 
 
     const handleApproveSitesChoice = async () => {
-            setShowRecommendationPopup(false);
-            setShowLoadingPopup(true);
+        setShowRecommendationPopup(false);
+        setLoadingMessage(t('destructionSites.creatingRecommendation'));
+        setShowLoadingPopup(true);
 
-            try {
-                await generateRecommendation();
-            } catch (error) {
-                setErrorMessage(t('destructionSites.errorMsgs.errorGettingRecommendation'));
-                setShowLoadingPopup(false);
-                setShowErrorPopup(true);
-                return;
-            }
-            navigate(`/${PAGES.RECOMMENDED_NATARS}`);
-        };
+        try {
+            await generateRecommendation();
+        } catch (error) {
+            setErrorMessage(t('destructionSites.errorMsgs.errorGettingRecommendation'));
+            setShowLoadingPopup(false);
+            setShowErrorPopup(true);
+            return;
+        }
+        navigate(`/${PAGES.RECOMMENDED_NATARS}`);
+    };
 
     const handleShowRecommendation = () => {
         if (destructionSites.length === 0) {
@@ -269,7 +274,7 @@ const DestructionSites = () => {
             onReject={() => setShowRecommendationPopup(false)}
         />
 
-        <LoadingPopup loadingMessage={t('destructionSites.creatingRecommendation')} showLoadingPopup={showLoadingPopup} />
+        <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
     </Container>
   );
 };
