@@ -71,18 +71,23 @@ const DestructionSites = () => {
     
     useEffect(() => {
         const fetchSites = async () => {
-          try {
-            await getSites(setDestructionSites);
-            setShowLoadingPopup(false);
-          } catch (error) {
-            setShowLoadingPopup(false);
-            setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
-          }
+            try {
+                await getSites(setDestructionSites);
+            } catch (error) {
+                setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
+                setShowErrorPopup(true);
+            }
         };
 
         fetchSites();
-      }, []);
+    }, []);
+
+
+    useEffect(() => {
+        if (streetNames && streetNames.length > 0) {
+            setShowLoadingPopup(false);
+        }
+    }, [streetNames]);
 
 
     const handleApproveSitesChoice = async () => {
