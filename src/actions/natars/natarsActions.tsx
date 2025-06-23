@@ -68,6 +68,7 @@ export async function editNatarAction(natar: Natar) {
     if (result.updateFeatureResults[0].error) {
         throw new Error('Failed to update natar: ' + result.updateFeatureResults[0].error.message);
     }
+    return true;
 };
 
 

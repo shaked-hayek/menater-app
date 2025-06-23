@@ -70,6 +70,7 @@
         "addNatar": "הוסף נט\"ר",
         "actions": "פעולות",
         "editNatar": "עריכת נט\"ר",
+        "gettingNatars": "טוען נט\"רים",
         "errorMsgs": {
             "serverAddError": "קרתה תקלה בהוספת נט\"ר",
             "serverDeleteError": "קרתה תקלה במחיקת נט\"ר",

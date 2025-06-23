@@ -1,26 +1,12 @@
 import { useState, useEffect } from 'react';
-import {
-  Container,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  IconButton,
-  Box,
-  Paper,
-  TableContainer,
-  Modal,
-} from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import { Container, Typography, Box, Modal } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ErrorPopup } from 'components/atoms/Popups';
+import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { Natar, getNatarTableFields } from 'components/Interfaces/Natar';
-import { getOptionalNatars, editNatarAction, deleteNatarAction } from 'actions/natars/natarsActions';
+import { getOptionalNatars } from 'actions/natars/natarsActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
-import { tableBgColor } from 'style/colors';
 import EditNatarModal from 'components/natars/EditNatarModal';
+import FullNatarsTable from 'components/natars/FullNatarsTable';
 
 
 const modalStyle = {
@@ -44,14 +30,18 @@ const ManageNatars = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState<Natar>();
+    const [showLoadingPopup, setShowLoadingPopup] = useState(true);
 
     const fields = getNatarTableFields(t);
 
     useEffect(() => {
         const fetchNatars = async () => {
+            setShowLoadingPopup(true);
             try {
                 await getOptionalNatars(setNatars);
+                setShowLoadingPopup(false);
             } catch (error) {
+                setShowLoadingPopup(false);
                 setErrorMessage(t('manageNatars.errorMsgs.serverGetError'));
                 setShowErrorPopup(true);
             }
@@ -60,38 +50,10 @@ const ManageNatars = () => {
         fetchNatars();
     }, []);
 
-    const handleDelete = async (natar: Natar) => {
-        try {
-            await deleteNatarAction(natar);
-            setNatars(prev => prev.filter(n => n.id !== natar.id));
-        } catch (error) {
-            setErrorMessage(t('manageNatars.errorMsgs.serverDeleteError'));
-            setShowErrorPopup(true);
-        }
-    };
-
-    const handleEdit = (natar: Natar) => {
-        setModalData(natar);
-        setShowModal(true);
-    };
-
     const handleAdd = () => {
         // setModalData();
         // setShowModal(true);
     };
-
-    // const handleModalSave = async () => {
-    //     try {
-    //         if (modalData.name) {
-    //             await editNatarAction(modalData);
-    //             await getOptionalNatars(setNatars);
-    //         }
-    //         setShowModal(false);
-    //     } catch (error) {
-    //         setErrorMessage(t('manageNatars.errorMsgs.serverEditError'));
-    //         setShowErrorPopup(true);
-    //     }
-    // };
 
     const closeModal = () => {
         setShowModal(false);
@@ -108,53 +70,13 @@ const ManageNatars = () => {
                 </Typography>
             </Box>
 
-            <Paper
-                elevation={2}
-                sx={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    bgcolor: tableBgColor,
-                }}
-            >
-                <TableContainer sx={{ maxHeight: '445px' }}>
-                    <Table stickyHeader>
-                        <TableHead>
-                            <TableRow>
-                                {fields.map(field => (
-                                    <TableCell key={field.key} align='right' sx={{ fontWeight: 'bold' }}>
-                                        {field.label}
-                                    </TableCell>
-                                ))}
-                                <TableCell align='right' sx={{ fontWeight: 'bold' }}>{t('manageNatars.actions')}</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {natars.map(natar => (
-                                <TableRow key={natar.id}>
-                                    {fields.map(({ key }) =>
-                                        <TableCell key={key} align='right'>
-                                            {typeof natar[key] === 'boolean'
-                                            ? t(natar[key] ? 'openNatar.exists' : 'openNatar.doesntExist')
-                                            : String(natar[key] ?? '')}
-                                        </TableCell>
-                                    )}
-                                    <TableCell align='right'>
-                                        <Box display='flex' gap={1} justifyContent='flex-end'>
-                                            <IconButton onClick={() => handleEdit(natar)}>
-                                                <Edit color='primary' />
-                                            </IconButton>
-                                            <IconButton onClick={() => handleDelete(natar)}>
-                                                <Delete color='error' />
-                                            </IconButton>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+            <FullNatarsTable
+                natars={natars}
+                setNatars={setNatars}
+                fields={fields}
+                setModalData={setModalData}
+                setShowModal={setShowModal}
+            />
 
             <Modal open={showModal} onClose={closeModal}>
                 <Box sx={modalStyle}>
@@ -163,6 +85,8 @@ const ManageNatars = () => {
                     }
                 </Box>
             </Modal>
+
+            <LoadingPopup loadingMessage={t('manageNatars.gettingNatars')} showLoadingPopup={showLoadingPopup} />
 
             <ErrorPopup
                 errorMessage={errorMessage}
