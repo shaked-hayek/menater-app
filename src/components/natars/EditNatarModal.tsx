@@ -49,7 +49,6 @@ const EditNatarModal = ({ natar, fields, onClose } : EditNatarModalProps) => {
         try {
             await editNatarAction(editedNatar);
         } catch (error) {
-            console.log('### error:', error)
             setErrorMessage(t('manageNatars.errorMsgs.serverGetError'));
             setShowErrorPopup(true);
         }

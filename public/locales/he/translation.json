@@ -122,7 +122,10 @@
         "exists": "יש",
         "doesntExist": "אין",
         "openNatar": "פתיחת נט\"ר",
-        "notEnoughStaff": "יש לשבץ לפחות {{amount}} אנשי צוות",
+        "errorMsgs": {
+            "serverGetError": "קרתה תקלה בשרת",
+            "notEnoughStaff": "יש לשבץ לפחות {{amount}} אנשי צוות"
+        },
         "natarDetails": {
             "id": "מזהה",
             "name": "שם",

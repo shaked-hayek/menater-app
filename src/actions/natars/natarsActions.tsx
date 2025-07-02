@@ -93,7 +93,7 @@ export async function deleteNatarAction(natar: Natar) {
     }
 };
 
-export async function getRecommendedNatarsIds() {
+export async function getRecommendedNatarsFromServer() {
     const response = await fetch(`${SERVER_IP}${ROUTES.RECOMMENDED_NATARS}`, {
         method: 'GET',
     });
@@ -105,10 +105,22 @@ export async function getRecommendedNatarsIds() {
 };
 
 export async function getRecommendedNatars(setNatars : Dispatch<SetStateAction<Natar[]>>) {
-    const recNatarsList = await getRecommendedNatarsIds();
+    const recNatarsList = await getRecommendedNatarsFromServer();
     const natarsIdList = recNatarsList.map((item: RecommendedNatar) => item.id);
     const natarsList = await getNatarsByIds(natarsIdList);
-    setNatars(mapNatars(natarsList));
+
+    // merges extra attributes
+    const recNatarMap = new Map(recNatarsList.map((item: RecommendedNatar) => [item.id, item]));
+    const mergedNatars = natarsList.map(natar => {
+        const recNatar = recNatarMap.get(natar.attributes.OBJECTID);
+        return {attributes: {
+                ...natar.attributes,
+                ...(recNatar ?? {}),
+            }
+        };
+    });
+
+    setNatars(mapNatars(mergedNatars));
 };
 
 export async function getNatarsByIds(idList : number[]) {

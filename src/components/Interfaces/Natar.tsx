@@ -25,6 +25,8 @@ export interface Natar {
 export interface RecommendedNatar {
     id: number;
     date: Date;
+    opened?: boolean;
+    time_updated?: Date | null;
 }
 
 
@@ -46,7 +48,7 @@ export const mapNatars = (rawNatars: any) => {
         availableFacilities: natar.attributes.Avail_Faci?.trim() || undefined,
         lat: natar.attributes.LAT,
         long: natar.attributes.LONG,
-        wasOpened: false,
+        wasOpened: natar.attributes.opened || false,
       }));
     return mappedNatars
 };

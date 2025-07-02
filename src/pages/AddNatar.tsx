@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import SinglePointMap from 'actions/arcgis/SinglePointMap';
 import { StaffMember } from 'components/Interfaces/StaffMember';
 import { ErrorPopup } from 'components/atoms/Popups';
+import { updateNatarOpenedStatus } from 'actions/natars/serverNatarsActions';
 
 
 const MIN_STAFF_NEEDED = 2;
@@ -30,9 +31,16 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
 
     const fields = getNatarFields(t);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (staffMembers.length < MIN_STAFF_NEEDED) {
-            setErrorMessage(t('openNatar.notEnoughStaff', {amount: MIN_STAFF_NEEDED}));
+            setErrorMessage(t('openNatar.errorMsgs.notEnoughStaff', {amount: MIN_STAFF_NEEDED}));
+            setShowErrorPopup(true);
+            return;
+        }
+        try {
+            await updateNatarOpenedStatus(natarDetails.id, true);
+        } catch(error) {
+            setErrorMessage(t('openNatar.errorMsgs.serverGetError', {amount: MIN_STAFF_NEEDED}));
             setShowErrorPopup(true);
             return;
         }
