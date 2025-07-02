@@ -70,8 +70,8 @@ const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignSta
                         {staffMembers.map((staff, index) => (
                             <Box
                                 key={index}
-                                display='flex'
-                                justifyContent='space-between'
+                                display='grid'
+                                gridTemplateColumns='1fr 1fr 1fr'
                             >
                                 <Typography variant='body2'>{staff.name}</Typography>
                                 <Typography variant='body2'>{staff.occupation}</Typography>
