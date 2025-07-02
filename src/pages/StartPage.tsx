@@ -10,8 +10,9 @@ import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
-import { ErrorPopup } from 'components/atoms/Popups';
+import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { setEventDataForSystem } from 'utils';
+import { generateClosestNatarsAction } from 'actions/closestNatarsAction/closestNatarsAction';
 
 
 const modalStyle = {
@@ -37,10 +38,15 @@ const buttonsStyle = {
 
 
 const StartPage = () => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [showNewEvent, setShowNewEvent] = useState(false);
     const [oldEvents, setOldEvents] = useState<EarthquakeEvent[]>([]);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [showLoadingPopup, setShowLoadingPopup] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -69,9 +75,19 @@ const StartPage = () => {
         setEventDataForSystem(oldEvents[0], dispatch);
         navigate(`/${PAGES.DESTRUCTION_SITES}`);
     }
-    
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
+
+    const onInitialize = async() => {
+        setLoadingMessage(t('startPage.initializing'))
+        setShowLoadingPopup(true);
+        try {
+            await generateClosestNatarsAction();
+        } catch (error) {
+            setErrorMessage(t('startPage.errorMsgs.serverGetError'));
+            setShowLoadingPopup(false);
+            setShowErrorPopup(true);
+            return;
+        }
+    };
 
     const logo = require('../assets/Logo.png');
 
@@ -92,8 +108,8 @@ const StartPage = () => {
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>
                         {t('startPage.manageStaffButton')}
                     </SecondaryButton>
-                    <SecondaryButton>
-                        {t('startPage.synchronize')}
+                    <SecondaryButton onClick={onInitialize}>
+                        {t('startPage.initialize')}
                     </SecondaryButton>
                     <SecondaryButton>
                         {t('startPage.settings')}
@@ -126,6 +142,8 @@ const StartPage = () => {
             </Modal>
 
             <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
+            
+            <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </>
     );
 };

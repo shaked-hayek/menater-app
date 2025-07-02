@@ -7,6 +7,6 @@ export enum ROUTES {
     NATARS = '/natars',
     RECOMMENDED_NATARS = '/getRecommendedNatars',
     ARCGIS_TOKEN = '/arcgis/token',
-    CASUALTIES_ESTIMATE = '/arcgis/casualties_estimate',
-    GENERATE_RECOMMENDATION = '/generateRecommendation'
+    GENERATE_RECOMMENDATION = '/generateRecommendation',
+    GENERATE_CLOSEST_NATARS_TABLE = '/generateClosestNatarsTable',
 }

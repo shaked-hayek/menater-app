@@ -31,7 +31,8 @@
         "eventsHistory": "היסטוריית אירועים",
         "manageNatars": "ניהול נט\"רים",
         "manageStaffButton": "ניהול אנשי צוות",
-        "synchronize": "סנכרון",
+        "initialize": "אתחול",
+        "initializing": "מאתחל מערכת",
         "settings": "הגדרות",
         "errorMsgs": {
             "serverGetError": "קרתה תקלה בשרת"
