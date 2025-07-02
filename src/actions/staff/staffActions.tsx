@@ -53,6 +53,10 @@ export async function getStaffMembersOfNatarAction(natarId: number, setStaff : D
 };
 
 export async function bulkUpdateStaffNatarAction(staffIds: string[], natarId: number) {
+    if (staffIds.length == 0) {
+        return;
+    }
+
     const response = await fetch(`${SERVER_IP}${ROUTES.STAFF_UPDATE}`, {
         method: 'PUT',
         headers: HTTP_HEADERS,
