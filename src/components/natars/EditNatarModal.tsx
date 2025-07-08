@@ -49,7 +49,7 @@ const EditNatarModal = ({ natar, fields, onClose } : EditNatarModalProps) => {
         try {
             await editNatarAction(editedNatar);
         } catch (error) {
-            setErrorMessage(t('manageNatars.errorMsgs.serverGetError'));
+            setErrorMessage(t('manageNatars.errorMsgs.serverGetError') + `error: ${error}`);
             setShowErrorPopup(true);
         }
         onClose();
@@ -97,7 +97,7 @@ const EditNatarModal = ({ natar, fields, onClose } : EditNatarModalProps) => {
                     {t('buttons.submit')}
                 </SecondaryButton>
             </Box>
-            <Box sx={{...formStyle, overflowY: 'auto', maxHeight: '80vh'}}>
+            <Box sx={{...formStyle, overflowY: 'auto', maxHeight: '80vh', alignItems: 'center'}}>
                 {editFields.map(field => (
                     <Box key={field.key} sx={textFieldBoxStyle}>
                         <Typography sx={textFieldTypographyStyle}>{field.label}</Typography>

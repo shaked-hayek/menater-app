@@ -14,7 +14,7 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '85%',
+    width: '50%',
     height: '85%',
     bgcolor: 'background.paper',
     boxShadow: 24,
@@ -42,7 +42,7 @@ const ManageNatars = () => {
                 setShowLoadingPopup(false);
             } catch (error) {
                 setShowLoadingPopup(false);
-                setErrorMessage(t('manageNatars.errorMsgs.serverGetError'));
+                setErrorMessage(t('manageNatars.errorMsgs.serverGetError') + `\nerror: ${error}`);
                 setShowErrorPopup(true);
             }
         };
