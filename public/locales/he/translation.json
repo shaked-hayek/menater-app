@@ -111,7 +111,9 @@
         "title": "נט\"רים מומלצים לפתיחה",
         "addDestructionSite": "הוספת אתר הרס",
         "errorMsgs": {
-            "serverGetError": "קרתה תקלה בשרת"
+            "serverGetError": "קרתה תקלה בשרת",
+            "fatherNotFound": "תקלה: לא נמצא נט\"ר אב",
+            "fatherNotOpened": "יש לפתוח את נט\"ר האב לפני שפותחים נט\"ר משני"
         }
     },
     "openNatar": {

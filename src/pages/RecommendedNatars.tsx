@@ -12,6 +12,7 @@ import { ErrorPopup } from 'components/atoms/Popups';
 import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
 import NatarNestedList from 'components/natars/NatarNestedList';
+import { NATAR_TYPE } from 'consts/natarType.const';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -58,10 +59,27 @@ const RecommendedNatars = () => {
     };
 
     const openNatar = (natar: Natar) => {
-        if (natar) {
-            setSelectedNatar(natar);
-            setIsNatarModalOpen(true);
+        if (!natar) {
+            return;
         }
+        if (natar.type == NATAR_TYPE.SECONDARY) {
+            const fatherNatar = recommendedNatars.find(n => n.id === natar.fatherNatar);
+
+            if (!fatherNatar) {
+                setErrorMessage(t('recommendedNatars.errorMsgs.fatherNotFound'));
+                setShowErrorPopup(true);
+                return;
+            }
+
+            if (!fatherNatar.wasOpened) {
+                setErrorMessage(t('recommendedNatars.errorMsgs.fatherNotOpened'));
+                setShowErrorPopup(true);
+                return;
+            }
+        }
+
+        setSelectedNatar(natar);
+        setIsNatarModalOpen(true);
     }
 
     const closeModal = () => {
