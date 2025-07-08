@@ -81,6 +81,7 @@ const StartPage = () => {
         setShowLoadingPopup(true);
         try {
             await generateClosestNatarsAction();
+            setShowLoadingPopup(false);
         } catch (error) {
             setErrorMessage(t('startPage.errorMsgs.serverGetError'));
             setShowLoadingPopup(false);
