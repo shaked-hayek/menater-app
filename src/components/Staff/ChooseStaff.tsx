@@ -86,36 +86,43 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
                 </Box>
 
                 {/* Staff Rows */}
-                {filteredStaff.map((staff) => (
-                    <Box
-                        key={staff.id}
-                        display='flex'
-                        alignItems='center'
-                        py={0.5}
-                        px={2}
-                        borderBottom='1px solid #eee'
-                    >
-                        <Box width='10%'>
-                        <Checkbox
-                            checked={selectedIds.has(staff.id)}
-                            onChange={() => toggleSelection(staff.id)}
-                        />
+                {filteredStaff.map((staff) => {
+                    const isAssignedToOtherNatar = staff.natarId !== 0 && staff.natarId !== natar.id;
+                    const isDisabled = isAssignedToOtherNatar;
+
+                    return (
+                        <Box
+                            key={staff.id}
+                            display='flex'
+                            alignItems='center'
+                            py={0.5}
+                            px={2}
+                            borderBottom='1px solid #eee'
+                            sx={{ opacity: isDisabled ? 0.5 : 1 }}
+                        >
+                            <Box width='10%'>
+                                <Checkbox
+                                    checked={selectedIds.has(staff.id)}
+                                    onChange={() => toggleSelection(staff.id)}
+                                    disabled={isDisabled}
+                                />
+                            </Box>
+                            <Box width='30%' textAlign='right'>
+                                <Typography variant='body2'>{staff.name}</Typography>
+                            </Box>
+                            <Box width='30%' textAlign='right'>
+                                <Typography variant='body2'>{staff.occupation}</Typography>
+                            </Box>
+                            <Box width='30%' textAlign='right'>
+                                <Typography variant='body2'>
+                                    {isAssignedToOtherNatar
+                                        ? t('manageStaff.statusAssigned')
+                                        : t('manageStaff.statusNotAssigned')}
+                                </Typography>
+                            </Box>
                         </Box>
-                        <Box width='30%' textAlign='right'>
-                            <Typography variant='body2'>{staff.name}</Typography>
-                        </Box>
-                        <Box width='30%' textAlign='right'>
-                            <Typography variant='body2'>{staff.occupation}</Typography>
-                        </Box>
-                        <Box width='30%' textAlign='right'>
-                            <Typography variant='body2'>
-                                {staff.natarId === 0
-                                    ? t('manageStaff.statusNotAssigned')
-                                    : t('manageStaff.statusAssigned')}
-                            </Typography>
-                        </Box>
-                    </Box>
-                ))}
+                    );
+                })}
             </ColoredSideBox>
 
             <SecondaryButton onClick={onApprove}>
