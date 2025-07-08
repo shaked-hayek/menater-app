@@ -93,6 +93,7 @@ export const getNatarTableFields = (t: TFunction<'translation', undefined>): Nat
     { key: 'name', label: t('openNatar.natarDetails.name') },
     { key: 'address', label: t('openNatar.natarDetails.address') },
     { key: 'capacity', label: t('openNatar.natarDetails.capacity') },
+    { key: 'fatherNatar', label: t('openNatar.natarDetails.fatherNatar') },
     { key: 'equipmentLocation', label: t('openNatar.natarDetails.equipmentLocation') },
     { key: 'nature', label: t('openNatar.natarDetails.nature') },
     { key: 'terrainType', label: t('openNatar.natarDetails.terrainType') },

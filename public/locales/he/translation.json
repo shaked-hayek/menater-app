@@ -134,6 +134,7 @@
             "name": "שם",
             "address": "כתובת",
             "capacity": "קיבולת",
+            "fatherNatar": "נט\"ר אב",
             "equipmentLocation": "מיקום ציוד",
             "lastUpdateDate": "תאריך עדכון אחרון",
             "nature": "אופי",
