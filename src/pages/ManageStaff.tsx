@@ -48,26 +48,28 @@ const ManageStaff = () => {
                 <Grid size={4}>
                     <ColoredSideBox title={t('manageStaff.existingStaff')} >
                         <List>
-                            {staffMembers.map((staff, index) => (
-                                <ListItem
-                                    key={index}
-                                    disableGutters
-                                    secondaryAction={
-                                        <IconButton edge="start" onClick={() => deleteStaffMember(staff)}>
-                                            <DeleteIcon color="error" />
-                                        </IconButton>
-                                    }
-                                >
-                                    <ListItemText
-                                        primary={`${staff.name}`}
-                                        secondary={
-                                            `${t('manageStaff.occupation')}: ${staff.occupation}` +
-                                            (staff.phoneNumber ? (
-                                                `, ${t('manageStaff.phone')}: ${staff.phoneNumber}`
-                                            ) : '')}
-                                        sx={{ textAlign: 'right' }}
-                                    />
-                                </ListItem>
+                            {[...staffMembers]
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .map((staff, index) => (
+                                    <ListItem
+                                        key={index}
+                                        disableGutters
+                                        secondaryAction={
+                                            <IconButton edge="start" onClick={() => deleteStaffMember(staff)}>
+                                                <DeleteIcon color="error" />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <ListItemText
+                                            primary={`${staff.name}`}
+                                            secondary={
+                                                `${t('manageStaff.occupation')}: ${staff.occupation}` +
+                                                (staff.phoneNumber ? (
+                                                    `, ${t('manageStaff.phone')}: ${staff.phoneNumber}`
+                                                ) : '')}
+                                            sx={{ textAlign: 'right' }}
+                                        />
+                                    </ListItem>
                             ))}
                         </List>
                     </ColoredSideBox>

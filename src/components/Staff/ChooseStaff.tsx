@@ -86,7 +86,9 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
                 </Box>
 
                 {/* Staff Rows */}
-                {filteredStaff.map((staff) => {
+                {[...filteredStaff]
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((staff) => {
                     const isAssignedToOtherNatar = staff.natarId !== 0 && staff.natarId !== natar.id;
                     const isDisabled = isAssignedToOtherNatar;
 
