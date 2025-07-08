@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { getRecommendedNatars } from 'actions/natars/natarsActions';
 import { Natar } from 'components/Interfaces/Natar';
-import { ErrorPopup } from 'components/atoms/Popups';
+import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
 import NatarNestedList from 'components/natars/NatarNestedList';
@@ -35,12 +35,15 @@ const RecommendedNatars = () => {
     const [selectedNatar, setSelectedNatar] = useState<Natar | null>(null);
     const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [showLoadingPopup, setShowLoadingPopup] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchNatars = async () => {
           try {
             await getRecommendedNatars(setRecommendedNatars);
+            setShowLoadingPopup(false);
           } catch (error) {
             setErrorMessage(t('recommendedNatars.errorMsgs.serverGetError'));
             setShowErrorPopup(true);
@@ -129,6 +132,7 @@ const RecommendedNatars = () => {
             </Modal>
             
             <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
+            <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </Container>
     );
 };
