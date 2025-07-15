@@ -26,16 +26,21 @@ const textFieldTypographyStyle = {
     minWidth: '120px',
 };
 
-const CreateStaffMember = () => {
+interface CreateStaffMemberProps {
+    onCreate?: (staffMember: StaffMember) => void;
+}
+
+const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
     const { t } = useTranslation();
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const [formValues, setFormValues] = useState<FormValues>({
-        name: null,
+    const defaultFormValues = {
+        name: '',
         occupation: null,
-        phoneNumber: null,
-      });
+        phoneNumber: '',
+    };
+    const [formValues, setFormValues] = useState<FormValues>(defaultFormValues);
 
     const occupationOptions = [
         { value: StaffOccupation.DOCTOR, label: t('manageStaff.occupationOptions.doctor') },
@@ -70,8 +75,9 @@ const CreateStaffMember = () => {
         const staffMember = {
             name: formValues.name, 
             occupation: formValues.occupation,
-            status: 'null', // TODO: change
+            status: 'null',
             phoneNumber: formValues.phoneNumber ?? '',
+            natarId: 0,
         };
         try {
             await addStaffMemberAction(staffMember as StaffMember);
@@ -80,13 +86,16 @@ const CreateStaffMember = () => {
             setShowErrorPopup(true);
             return;
         }
-        window.location.reload();    
+        if (onCreate) {
+            onCreate(staffMember as StaffMember);
+        }
+        setFormValues(defaultFormValues);
     };
     
     return (
         <Container>
             <Box>
-                <Typography variant='h4'>{t('manageStaff.addStaffMember')}</Typography>
+                <Typography variant='h5'>{t('manageStaff.addStaffMember')}</Typography>
             </Box>
             <Box sx={formStyle}>
                 <Box sx={textFieldBoxStyle}>

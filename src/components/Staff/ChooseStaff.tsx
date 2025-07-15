@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SetStateAction, Dispatch } from 'react';
-import { Box, Checkbox, TextField, Typography } from '@mui/material';
+import { Box, Checkbox, Modal, TextField, Typography } from '@mui/material';
 import { Natar } from 'components/Interfaces/Natar';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,22 @@ import { bulkUpdateStaffNatarAction, getStaffMembersAction } from 'actions/staff
 import { StaffMember } from 'components/Interfaces/StaffMember';
 import { ErrorPopup } from 'components/atoms/Popups';
 import { SecondaryButton } from 'components/atoms/Buttons';
+import CreateStaffMember from './CreateStaffMember';
+
+
+const modalStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '40%',
+    height: '60%',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+    textAlign: 'center',
+};
 
 interface ChooseStaffProps {
     natar: Natar;
@@ -22,6 +38,7 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [searchText, setSearchText] = useState('');
+    const [showCreateStaffModal, setShowCreateStaffModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
@@ -56,6 +73,11 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
         onClose();
     };
 
+    const onStaffCreate = (newStaff: StaffMember) => {
+        setShowCreateStaffModal(false);
+        setStaffMembers([...staffMembers, newStaff]);
+    };
+
     const filteredStaff = staffMembers.filter((s) =>
         s.name.toLowerCase().includes(searchText.toLowerCase())
     );
@@ -65,6 +87,12 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
             <Typography variant='h5' mb={2}>
                 {t('manageStaff.chooseStaff', { natar: natar.name })}
             </Typography>
+
+            <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 10 }}>
+                <SecondaryButton variant='contained' color='primary' onClick={() => setShowCreateStaffModal(true)}>
+                    {t('manageStaff.addStaffMember')}
+                </SecondaryButton>
+            </Box>
 
             <TextField
                 fullWidth
@@ -136,6 +164,15 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
                 showErrorPopup={showErrorPopup}
                 setShowErrorPopup={setShowErrorPopup}
             />
+
+            <Modal
+                open={showCreateStaffModal}
+                onClose={() => setShowCreateStaffModal(false)}
+            >
+                <Box sx={modalStyle}>
+                    <CreateStaffMember onCreate={onStaffCreate} />
+                </Box>
+            </Modal>
         </>
       );
 };

@@ -42,6 +42,10 @@ const ManageStaff = () => {
         );
     }
 
+    const onStaffCreate = (newStaff: StaffMember) => {
+        setStaffMembers([...staffMembers, newStaff]);
+    };
+
     return (
         <Container sx={{ height: '100%', width: '100%' }}>
             <Grid container spacing={3}>
@@ -75,7 +79,7 @@ const ManageStaff = () => {
                     </ColoredSideBox>
                 </Grid>
                 <Grid size={8}>
-                    <CreateStaffMember/>
+                    <CreateStaffMember onCreate={onStaffCreate} />
                 </Grid>
             </Grid>
 
