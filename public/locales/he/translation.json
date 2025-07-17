@@ -72,10 +72,26 @@
         "actions": "פעולות",
         "editNatar": "עריכת נט\"ר",
         "gettingNatars": "טוען נט\"רים",
+        "columns": {
+            "mode": "סוג אירוע",
+            "earthquakeMagnitude": "עוצמת הרעש",
+            "earthquakeTime": "זמן הרעש",
+            "timeOpened": "זמן פתיחת האירוע",
+            "actions": "פעולות"
+        },
         "errorMsgs": {
             "serverAddError": "קרתה תקלה בהוספת נט\"ר",
             "serverDeleteError": "קרתה תקלה במחיקת נט\"ר",
             "serverGetError": "קרתה תקלה בשרת"
+        }
+    },
+    "manageEvents": {
+        "title": "אירועים במערכת",
+        "viewSummary": "סיכום אירוע",
+        "loading": "טוען אירועים",
+        "errorMsgs": {
+          "serverGetError": "תקלה בטעינת אירועים מהשרת",
+          "serverSummaryError": "תקלה בטעינת סיכום אירוע מהשרת"
         }
     },
     "newEvent": {

@@ -100,7 +100,7 @@ const StartPage = () => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                 <Box sx={buttonsStyle}>
-                    <SecondaryButton>
+                    <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_EVENTS}`)}>
                         {t('startPage.eventsHistory')}
                     </SecondaryButton>
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_NATARS}`)}>

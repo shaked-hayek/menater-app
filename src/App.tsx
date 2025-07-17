@@ -19,6 +19,7 @@ import { PAGES } from 'consts/pages.const';
 import ManageStaff from 'pages/ManageStaff';
 import ArcgisProvider from 'services/ArcgisProvider';
 import ManageNatars from 'pages/ManageNatars';
+import ManageEvents from 'components/Events/ManageEvents';
 
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
               <Route path='/' element={<Layout />}>
                 <Route index element={<StartPage />} />
                 <Route path={PAGES.MANAGE_STAFF} element={<ManageStaff />} />
+                <Route path={PAGES.MANAGE_EVENTS} element={<ManageEvents />} />
                 <Route path={PAGES.MANAGE_NATARS} element={<ManageNatars />} />
                 <Route path={PAGES.NEW_EVENT} element={<NewEvent />} />
                 <Route path={PAGES.DESTRUCTION_SITES} element={<DestructionSites />} />

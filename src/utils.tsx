@@ -25,3 +25,14 @@ export const setEventDataForSystem = (event: EarthquakeEvent, dispatch: Dispatch
     dispatch(setEarthquakeMagnitude(event.earthquakeMagnitude));
     dispatch(setEarthquakeTime(new Date(event.earthquakeTime)));
 };
+
+export const formatDateTime = (dateStr: Date) =>
+    new Date(dateStr).toLocaleString('he-IL', {
+        timeZone: 'Asia/Jerusalem',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    });
