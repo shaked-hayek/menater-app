@@ -24,4 +24,6 @@ export async function addEventAction(event : EarthquakeEvent) {
     if (!response.ok) {
         throw new Error('Failed to add event');
     }
+    const result = await response.json();
+    return result.id;
 };

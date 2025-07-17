@@ -7,6 +7,7 @@ interface AppState {
   mode: MODE | null;
   earthquakeTime: Date | null;
   earthquakeMagnitude: number | null;
+  eventId: string | null;
 }
 
 const initialState: AppState = {
@@ -14,6 +15,7 @@ const initialState: AppState = {
   mode: null,
   earthquakeTime: null,
   earthquakeMagnitude: null,
+  eventId: null,
 };
 
 const appSlice = createSlice({
@@ -31,11 +33,14 @@ const appSlice = createSlice({
     },
     setEarthquakeMagnitude: (state, action: PayloadAction<number>) => {
       state.earthquakeMagnitude = action.payload;
-  },
+    },
+    setEventId: (state, action: PayloadAction<string>) => {
+      state.eventId = action.payload;
+    },
   },
 });
 
-export const { setArcgisAuth, setMode, setEarthquakeTime, setEarthquakeMagnitude } = appSlice.actions;
+export const { setArcgisAuth, setMode, setEarthquakeTime, setEarthquakeMagnitude, setEventId } = appSlice.actions;
 
 export const store = configureStore({
   reducer: {

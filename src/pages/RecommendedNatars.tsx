@@ -13,6 +13,9 @@ import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
 import NatarNestedList from 'components/natars/NatarNestedList';
 import { NATAR_TYPE } from 'consts/natarType.const';
+import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -38,6 +41,7 @@ const RecommendedNatars = () => {
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
     const [errorMessage, setErrorMessage] = useState('');
+    const { eventId } = useSelector((state: RootState) => state.appState);
 
     useEffect(() => {
         const fetchNatars = async () => {
@@ -58,6 +62,9 @@ const RecommendedNatars = () => {
     };
 
     const handleSubmit = () => {
+        if (eventId) {
+            createEventSummaryAction(eventId);
+        }
         navigate(`/`);
     };
 

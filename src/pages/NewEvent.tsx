@@ -9,7 +9,7 @@ import { SecondaryButton, CreateDataButton } from 'components/atoms/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { MODE } from 'consts/mode.const';
-import { setEarthquakeMagnitude, setEarthquakeTime } from 'store/store';
+import { setEarthquakeMagnitude, setEarthquakeTime, setEventId } from 'store/store';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { PAGES } from 'consts/pages.const';
 import { ErrorPopup } from 'components/atoms/Popups';
@@ -33,7 +33,7 @@ const NewEvent = () => {
     dateTime: dayjs(),
   });
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     if (!formValues.magnitude || !formValues.dateTime) {
@@ -46,8 +46,9 @@ const NewEvent = () => {
       earthquakeMagnitude: formValues.magnitude, 
       earthquakeTime: formValues.dateTime.toDate()
     };
-    addEventAction(new_event);
+    const eventId = await addEventAction(new_event);
 
+    dispatch(setEventId(eventId));
     dispatch(setEarthquakeMagnitude(new_event.earthquakeMagnitude));
     dispatch(setEarthquakeTime(new_event.earthquakeTime));
     navigate(`/${PAGES.DESTRUCTION_SITES}`);
