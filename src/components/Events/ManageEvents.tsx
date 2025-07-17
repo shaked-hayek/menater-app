@@ -52,6 +52,12 @@ const ManageEvents = () => {
         try {
             setShowLoadingPopup(true);
             const summary = await getEventSummaryAction(eventId);
+            if (!summary) {
+                setShowLoadingPopup(false);
+                setErrorMessage(t('manageEvents.noSummary'));
+                setShowErrorPopup(true);
+                return;
+            }
             setSummaryData(summary);
             setShowModal(true);
             setShowLoadingPopup(false);

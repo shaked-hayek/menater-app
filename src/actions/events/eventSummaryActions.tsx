@@ -7,6 +7,9 @@ export async function getEventSummaryAction(eventId: string) {
     });
 
     if (!response.ok) {
+        if (response.status == 404) {
+            return false;
+        }
         throw new Error('Failed to get event summary');
     }
 

@@ -89,6 +89,7 @@
         "title": "אירועים במערכת",
         "viewSummary": "סיכום אירוע",
         "loading": "טוען אירועים",
+        "noSummary": "עדיין לא קיים סיכום לאירוע זה",
         "errorMsgs": {
           "serverGetError": "תקלה בטעינת אירועים מהשרת",
           "serverSummaryError": "תקלה בטעינת סיכום אירוע מהשרת"
