@@ -11,7 +11,7 @@ import { themeColor, trialColor, waitingOrange, successGreen, errorRed } from 's
 const Header = () => {
     const { t } = useTranslation();
     const [ currentTimeString, setCurrentTimeString ] = useState('');
-    const { arcgisAuth, earthquakeTime, mode } = useSelector((state: RootState) => state.appState);
+    const { arcgisAuth, earthquakeEvent, mode } = useSelector((state: RootState) => state.appState);
 
     const updateTime = () => {
         setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
@@ -40,10 +40,10 @@ const Header = () => {
                     </Typography>
                 </Box>
 
-                {earthquakeTime && (
+                {earthquakeEvent?.earthquakeTime && (
                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
                         <Typography variant='body1'>{t('header.timeSince')}</Typography>
-                        <TimeSince date={earthquakeTime} />
+                        <TimeSince date={earthquakeEvent.earthquakeTime} />
                     </Box>
                 )}
 

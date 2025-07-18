@@ -41,7 +41,7 @@ const RecommendedNatars = () => {
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
     const [errorMessage, setErrorMessage] = useState('');
-    const { eventId } = useSelector((state: RootState) => state.appState);
+    const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     useEffect(() => {
         const fetchNatars = async () => {
@@ -62,8 +62,8 @@ const RecommendedNatars = () => {
     };
 
     const handleSubmit = () => {
-        if (eventId) {
-            createEventSummaryAction(eventId);
+        if (earthquakeEvent?.id) {
+            createEventSummaryAction(earthquakeEvent.id);
         }
         navigate(`/`);
     };

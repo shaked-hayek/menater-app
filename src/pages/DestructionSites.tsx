@@ -23,7 +23,7 @@ import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
 const DestructionSites = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { earthquakeTime } = useSelector((state: RootState) => state.appState);
+    const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
     const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
@@ -41,11 +41,11 @@ const DestructionSites = () => {
 
 
     const isEarthquakeTimeIsDayTime = () => {
-        if (!earthquakeTime) {
+        if (!earthquakeEvent?.earthquakeTime) {
             navigate('/');
             return false; // Will not be used
         }
-        const earthquakeHour = earthquakeTime.getHours();
+        const earthquakeHour = earthquakeEvent.earthquakeTime.getHours();
         if (earthquakeHour >= 7 && earthquakeHour < 19) {
             return true
         }
