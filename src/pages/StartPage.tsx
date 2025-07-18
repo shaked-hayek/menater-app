@@ -13,6 +13,7 @@ import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { setEventDataForSystem } from 'utils';
 import { generateClosestNatarsAction } from 'actions/closestNatarsAction/closestNatarsAction';
+import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
 
 
 const modalStyle = {
@@ -68,7 +69,13 @@ const StartPage = () => {
         handleClose();
         navigate(`/${PAGES.NEW_EVENT}`)
     };
-    const handleShow = () => setShowNewEvent(true);
+    const onOpenNewEvent = () => {
+        // TODO: Clean old data DB
+        if (oldEvents && oldEvents[0].id) {
+            createEventSummaryAction(oldEvents[0].id)
+        }
+        setShowNewEvent(true);
+    };
 
     const onOpenExistingEvent = () => {
         // TODO: add option to open events other then last one
@@ -122,7 +129,7 @@ const StartPage = () => {
                             {t('startPage.openExistingEvent')}
                         </MainButton>
                     }
-                    <MainButton onClick={handleShow}>
+                    <MainButton onClick={onOpenNewEvent}>
                         {t('startPage.openNewEvent')}
                     </MainButton>
                 </Box>
