@@ -20,7 +20,14 @@ export const buildNestedNatars = (natars: Natar[]): Natar[] => {
 };
 
 export const setEventDataForSystem = (event: EarthquakeEvent, dispatch: Dispatch<UnknownAction>) => {
-    dispatch(setEarthquakeEvent(event));
+    const parsedEvent = {
+        ...event,
+        earthquakeTime: event.earthquakeTime instanceof Date
+            ? event.earthquakeTime
+            : new Date(event.earthquakeTime),
+    };
+
+    dispatch(setEarthquakeEvent(parsedEvent));
     dispatch(setMode(event.mode));
 };
 

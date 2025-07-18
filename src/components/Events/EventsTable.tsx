@@ -25,6 +25,10 @@ interface FullEventsTableProps {
 const EventsTable = ({ events, onViewSummary }: FullEventsTableProps) => {
     const { t } = useTranslation();
 
+    const sortDates = (a : EarthquakeEvent, b : EarthquakeEvent) => {
+        return new Date(b.timeOpened || 0).getTime() - new Date(a.timeOpened || 0).getTime();
+    };
+
     return (
         <>
             <Paper
@@ -58,18 +62,20 @@ const EventsTable = ({ events, onViewSummary }: FullEventsTableProps) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {events.map(event => (
-                                <TableRow key={event.id}>
-                                    <TableCell align='right'>{event.mode == MODE.TRIAL ? t('trial') : t('emergency')}</TableCell>
-                                    <TableCell align='right'>{event.earthquakeMagnitude}</TableCell>
-                                    <TableCell align='right'>{formatDateTime(event.earthquakeTime)}</TableCell>
-                                    <TableCell align='right'>{event.timeOpened ? formatDateTime(event.timeOpened) : ''}</TableCell>
-                                    <TableCell align='right'>
-                                        <IconButton onClick={() => onViewSummary(event.id!)}>
-                                            <Visibility color='primary' />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
+                            {[...events]
+                                .sort(sortDates)
+                                .map(event => (
+                                    <TableRow key={event.id}>
+                                        <TableCell align='right'>{event.mode == MODE.TRIAL ? t('trial') : t('emergency')}</TableCell>
+                                        <TableCell align='right'>{event.earthquakeMagnitude}</TableCell>
+                                        <TableCell align='right'>{formatDateTime(event.earthquakeTime)}</TableCell>
+                                        <TableCell align='right'>{event.timeOpened ? formatDateTime(event.timeOpened) : ''}</TableCell>
+                                        <TableCell align='right'>
+                                            <IconButton onClick={() => onViewSummary(event.id!)}>
+                                                <Visibility color='primary' />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
                             ))}
                         </TableBody>
                     </Table>
