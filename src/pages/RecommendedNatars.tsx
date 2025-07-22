@@ -65,6 +65,7 @@ const RecommendedNatars = () => {
         if (earthquakeEvent?.id) {
             createEventSummaryAction(earthquakeEvent.id);
         }
+        // todo: show summary
         navigate(`/`);
     };
 

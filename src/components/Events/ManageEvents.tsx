@@ -6,7 +6,7 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import EventSummaryModal from './EventSummaryModal';
-import { getEventSummaryAction } from 'actions/events/eventSummaryActions';
+import { getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
 import EventsTable from './EventsTable';
 
 const modalStyle = {
@@ -30,6 +30,7 @@ const ManageEvents = () => {
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState(t('manageEvents.loading'));
     const [showModal, setShowModal] = useState(false);
     const [summaryData, setSummaryData] = useState<any>(null);
 
@@ -69,13 +70,29 @@ const ManageEvents = () => {
         }
     };
 
+    const handleLoadEventData = async (eventId: string) => {
+        try {
+            setLoadingMessage(t('manageEvents.loadingEventData'));
+            setShowLoadingPopup(true);
+            // todo Save old event summary before loading new one
+            // Load Earthquake event to store
+            const response = await loadEventDataFromSummaryAction(eventId);
+            setShowLoadingPopup(false);
+        } catch (error) {
+            setShowLoadingPopup(false);
+            setErrorMessage(t('manageEvents.errorMsgs.serverLoadEventError') + `\nerror: ${error}`);
+            setShowErrorPopup(true);
+        }
+    };
+
+
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflow: 'hidden' }}>
             <Typography variant='h4' sx={{ textAlign: 'center', mt: 2 }}>
                 {t('manageEvents.title')}
             </Typography>
 
-            <EventsTable events={events} onViewSummary={handleShowSummary} />
+            <EventsTable events={events} onViewSummary={handleShowSummary} onLoadEvent={handleLoadEventData} />
 
             <Modal open={showModal} onClose={() => setShowModal(false)}>
                 <Box sx={modalStyle}>
@@ -83,7 +100,7 @@ const ManageEvents = () => {
                 </Box>
             </Modal>
 
-            <LoadingPopup loadingMessage={t('manageEvents.loading')} showLoadingPopup={showLoadingPopup} />
+            <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
 
             <ErrorPopup
                 errorMessage={errorMessage}
