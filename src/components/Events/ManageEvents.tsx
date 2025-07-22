@@ -6,10 +6,11 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import EventSummaryModal from './EventSummaryModal';
-import { getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
+import { createEventSummaryAction, getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
 import EventsTable from './EventsTable';
 import { setEventDataForSystem } from 'utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -29,6 +30,7 @@ const modalStyle = {
 const ManageEvents = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     const [events, setEvents] = useState<EarthquakeEvent[]>([]);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
@@ -78,7 +80,11 @@ const ManageEvents = () => {
         try {
             setLoadingMessage(t('manageEvents.loadingEventData'));
             setShowLoadingPopup(true);
-            // todo Save old event summary before loading new one
+
+            // Save current event summary before loading a new one
+            if (earthquakeEvent?.id) {
+                createEventSummaryAction(earthquakeEvent.id);
+            }
 
             const response = await loadEventDataFromSummaryAction(eventId);
 
