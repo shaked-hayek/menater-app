@@ -8,6 +8,8 @@ import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import EventSummaryModal from './EventSummaryModal';
 import { getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
 import EventsTable from './EventsTable';
+import { setEventDataForSystem } from 'utils';
+import { useDispatch } from 'react-redux';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -26,6 +28,8 @@ const modalStyle = {
 
 const ManageEvents = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [events, setEvents] = useState<EarthquakeEvent[]>([]);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -75,8 +79,12 @@ const ManageEvents = () => {
             setLoadingMessage(t('manageEvents.loadingEventData'));
             setShowLoadingPopup(true);
             // todo Save old event summary before loading new one
-            // Load Earthquake event to store
+
             const response = await loadEventDataFromSummaryAction(eventId);
+
+            // Load Earthquake event details to store
+            const selectedEvent = events.find(event => event.id === eventId);
+            setEventDataForSystem(selectedEvent!, dispatch);
             setShowLoadingPopup(false);
         } catch (error) {
             setShowLoadingPopup(false);
