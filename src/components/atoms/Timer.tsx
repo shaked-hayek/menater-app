@@ -21,10 +21,13 @@ const TimeSince = ({ date }: { date: Date }) => {
     const [timeSince, setTimeSince] = useState(calculateTimeSince());
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        // Immediate update when date changes
         setTimeSince(calculateTimeSince());
+    
+        const interval = setInterval(() => {
+            setTimeSince(calculateTimeSince());
         }, MINUTE_IN_MILLI);
-
+    
         return () => clearInterval(interval);
     }, [date]);
 

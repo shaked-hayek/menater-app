@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -13,10 +13,15 @@ const Header = () => {
     const [ currentTimeString, setCurrentTimeString ] = useState('');
     const { arcgisAuth, earthquakeEvent, mode } = useSelector((state: RootState) => state.appState);
 
-    const updateTime = () => {
-        setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
-    };
-    setInterval(updateTime);
+    useEffect(() => {
+        const updateTime = () => {
+            setCurrentTimeString(new Date().toLocaleTimeString('en-GB'));
+        };
+
+        updateTime(); // Initial call
+        const interval = setInterval(updateTime, 1000);
+        return () => clearInterval(interval); // Cleanup
+    }, []);
 
     return (
         <AppBar position='static'>
