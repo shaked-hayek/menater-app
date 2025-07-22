@@ -110,7 +110,7 @@ const ManageEvents = () => {
 
             <Modal open={showModal} onClose={() => setShowModal(false)}>
                 <Box sx={modalStyle}>
-                    <EventSummaryModal summary={summaryData} />
+                    <EventSummaryModal summary={summaryData} onClose={() => setShowModal(false)} />
                 </Box>
             </Modal>
 

@@ -14,7 +14,10 @@
         "createData": "חילול נתונים",
         "edit": "עריכה",
         "submit": "אישור",
-        "add": "הוסף"
+        "add": "הוסף",
+        "close": "סגור",
+        "print": "הדפס",
+        "download": "הורד"
     },
     "timer": {
         "days": "ימים",
@@ -103,6 +106,15 @@
         "earthquakeMagnitude": "עוצמת הרעש",
         "earthquakeTime": "מועד הרעש",
         "invalidInput": "עוצמת או מועד הרעש חסרים"
+    },
+    "eventSummary": {
+        "title": "סיכום אירוע",
+        "destructionSites": "אתרי ההרס",
+        "recommendedNatars": "נט\"רים מומלצים",
+        "natar": "מזהה נט\"ר",
+        "staff": "אנשי צוות",
+        "casualties": "נפגעים",
+        "address": "כתובת"
     },
     "destructionSites": {
         "input": "הזנת אתרי הרס",
