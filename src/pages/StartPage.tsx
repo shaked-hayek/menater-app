@@ -5,7 +5,7 @@ import { Box, Modal, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'components/atoms/Buttons';
-import { setMode } from 'store/store';
+import { setEarthquakeEvent, setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
@@ -13,7 +13,7 @@ import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { setEventDataForSystem } from 'utils';
 import { generateClosestNatarsAction } from 'actions/closestNatarsAction/closestNatarsAction';
-import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
+import { clearEventDataAction, createEventSummaryAction } from 'actions/events/eventSummaryActions';
 
 
 const modalStyle = {
@@ -71,17 +71,21 @@ const StartPage = () => {
       }, []);
 
     const handleClose = () => setShowNewEvent(false);
-    const handleEventChoice = (mode: MODE) => {
-        dispatch(setMode(mode));
-        handleClose();
-        navigate(`/${PAGES.NEW_EVENT}`)
-    };
 
-    const onOpenNewEvent = () => {
-        // TODO: Clean old data DB
+    const handleEventChoice = (mode: MODE) => {
         if (latestEvent?.id) {
             createEventSummaryAction(latestEvent.id)
         }
+        clearEventDataAction();
+
+        dispatch(setMode(mode));
+        dispatch(setEarthquakeEvent(null));
+
+        handleClose();
+        navigate(`/${PAGES.NEW_EVENT}`);
+    };
+
+    const onOpenNewEvent = () => {
         setShowNewEvent(true);
     };
 
