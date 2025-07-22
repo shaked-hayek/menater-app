@@ -43,19 +43,26 @@ const StartPage = () => {
     const dispatch = useDispatch();
 
     const [showNewEvent, setShowNewEvent] = useState(false);
-    const [oldEvents, setOldEvents] = useState<EarthquakeEvent[]>([]);
+    const [latestEvent, setLatestEvent] = useState<EarthquakeEvent>();
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvents = async () => {
           try {
-            await getEventsAction(setOldEvents);
+            const oldEventsResponse = await getEventsAction();
+            const latestEventResponse = oldEventsResponse.reduce((latest: EarthquakeEvent, current: EarthquakeEvent) => {
+                const latestTime = new Date(latest.timeOpened || 0).getTime();
+                const currentTime = new Date(current.timeOpened || 0).getTime();
+                return currentTime > latestTime ? current : latest;
+            });
+            setLatestEvent(latestEventResponse);
           } catch (error) {
-            setErrorMessage(t('startPage.errorMsgs.serverGetError'));
+            setErrorMessage(t('startPage.errorMsgs.serverGetError') + `\nerror: ${error}`);
             setShowErrorPopup(true);
           }
         };
@@ -69,18 +76,20 @@ const StartPage = () => {
         handleClose();
         navigate(`/${PAGES.NEW_EVENT}`)
     };
+
     const onOpenNewEvent = () => {
         // TODO: Clean old data DB
-        if (oldEvents && oldEvents[0].id) {
-            createEventSummaryAction(oldEvents[0].id)
+        if (latestEvent?.id) {
+            createEventSummaryAction(latestEvent.id)
         }
         setShowNewEvent(true);
     };
 
     const onOpenExistingEvent = () => {
-        // TODO: add option to open events other then last one
-        setEventDataForSystem(oldEvents[0], dispatch);
-        navigate(`/${PAGES.DESTRUCTION_SITES}`);
+        if (latestEvent) {
+            setEventDataForSystem(latestEvent, dispatch);
+            navigate(`/${PAGES.DESTRUCTION_SITES}`);
+        }
     }
 
     const onInitialize = async() => {
@@ -124,7 +133,7 @@ const StartPage = () => {
                     </SecondaryButton>
                 </Box>
                 <Box sx={buttonsStyle}>
-                    {oldEvents.length !== 0 &&
+                    {latestEvent &&
                         <MainButton onClick={onOpenExistingEvent}>
                             {t('startPage.openExistingEvent')}
                         </MainButton>

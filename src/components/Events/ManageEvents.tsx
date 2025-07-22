@@ -36,7 +36,8 @@ const ManageEvents = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                await getEventsAction(setEvents);
+                const eventsResponse = await getEventsAction();
+                setEvents(eventsResponse);
                 setShowLoadingPopup(false);
             } catch (error) {
                 setShowLoadingPopup(false);

@@ -4,7 +4,7 @@ import { ROUTES } from 'actions/routes';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 
 
-export async function getEventsAction(setEvents : Dispatch<SetStateAction<EarthquakeEvent[]>>) {
+export async function getEventsAction() {
     const response = await fetch(`${SERVER_IP}${ROUTES.EVENTS}`, {
         method: 'GET',
     });
@@ -12,7 +12,7 @@ export async function getEventsAction(setEvents : Dispatch<SetStateAction<Earthq
         throw new Error('Failed to get events');
     }
     const eventsList = await response.json();
-    setEvents(eventsList);
+    return eventsList;
 };
 
 export async function addEventAction(event : EarthquakeEvent) {
