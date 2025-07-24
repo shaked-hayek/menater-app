@@ -9,9 +9,13 @@ import { Natar } from 'components/Interfaces/Natar';
 import { StaffMember } from 'components/Interfaces/StaffMember';
 import { getNatarsByIds } from 'actions/natars/natarsActions';
 import { handlePrint } from './eventsUtils';
+import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
+import { formatDateTime } from 'utils';
+import { MODE } from 'consts/mode.const';
 
 interface EventSummery {
     eventId: string;
+    event: EarthquakeEvent;
     destructionSites: DestructionSite[];
     recommendedNatars: Natar[];
 }
@@ -22,10 +26,9 @@ interface EventSummaryModalProps {
 }
 
 const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
-    const { t } = useTranslation();
-
     if (!summary) return null;
 
+    const { t } = useTranslation();
     const [natarsMap, setNatarsMap] = useState<Record<string, string>>({});
 
     useEffect(() => {
@@ -81,6 +84,24 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                 <Typography variant='h5' sx={{ mb: 2 }}>
                     {t('eventSummary.title')}
                 </Typography>
+
+                <Typography variant='subtitle1' sx={{ mt: 2, fontWeight: 'bold'}}>
+                    {t('eventSummary.eventDetails')}:
+                </Typography>
+                <Box sx={{ mr: 2 }}>
+                    <Typography variant='body1'>
+                        {t('manageEvents.columns.mode')}: {summary.event.mode == MODE.TRIAL ? t('trial') : t('emergency')}
+                    </Typography>
+                    <Typography variant='body1'>
+                        {t('manageEvents.columns.earthquakeMagnitude')}: {summary.event.earthquakeMagnitude}
+                    </Typography>
+                    <Typography variant='body1'>
+                        {t('manageEvents.columns.earthquakeTime')}: {formatDateTime(summary.event.earthquakeTime)}
+                    </Typography>
+                    <Typography variant='body1'>
+                        {t('manageEvents.columns.timeOpened')}: {formatDateTime(summary.event.timeOpened!)}
+                    </Typography>
+                </Box>
 
                 <Typography variant='subtitle1' sx={{ mt: 2, fontWeight: 'bold'}}>
                     {t('eventSummary.destructionSites')}:

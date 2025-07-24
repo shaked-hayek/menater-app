@@ -59,6 +59,7 @@ const ManageEvents = () => {
     const handleShowSummary = async (eventId: string) => {
         try {
             setShowLoadingPopup(true);
+
             const summary = await getEventSummaryAction(eventId);
             if (!summary) {
                 setShowLoadingPopup(false);
@@ -66,6 +67,13 @@ const ManageEvents = () => {
                 setShowErrorPopup(true);
                 return;
             }
+
+            // Add event data to summary
+            const event = events.find(e => e.id === eventId);
+            if (event) {
+                summary.event = event;
+            }
+
             setSummaryData(summary);
             setShowModal(true);
             setShowLoadingPopup(false);
