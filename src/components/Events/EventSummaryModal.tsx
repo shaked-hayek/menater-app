@@ -25,6 +25,21 @@ interface EventSummaryModalProps {
     onClose: () => void;
 }
 
+export const eventSummaryModalStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%',
+    height: '85%',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+    textAlign: 'center',
+    overflowY: 'auto',
+};
+
 const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
     if (!summary) return null;
 

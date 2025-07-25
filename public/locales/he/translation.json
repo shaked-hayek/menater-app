@@ -144,6 +144,7 @@
         "title": "נט\"רים מומלצים לפתיחה",
         "addDestructionSite": "הוספת אתר הרס",
         "loading": "טוען נט\"רים מומלצים",
+        "loadingSubmit": "יוצר סיכום אירוע",
         "errorMsgs": {
             "serverGetError": "קרתה תקלה בשרת",
             "fatherNotFound": "תקלה: לא נמצא נט\"ר אב",

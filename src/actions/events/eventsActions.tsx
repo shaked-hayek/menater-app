@@ -15,6 +15,17 @@ export async function getEventsAction() {
     return eventsList;
 };
 
+export async function getEventByIdAction(eventId : string) {
+    const response = await fetch(`${SERVER_IP}${ROUTES.EVENTS}?eventId=${eventId}`, {
+        method: 'GET',
+    });
+    if (!response.ok) {
+        throw new Error('Failed to get event');
+    }
+    const event = await response.json();
+    return event;
+};
+
 export async function addEventAction(event : EarthquakeEvent) {
     const response = await fetch(`${SERVER_IP}${ROUTES.EVENTS}`, {
         method: 'POST',

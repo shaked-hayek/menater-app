@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Modal, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,8 @@ import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { setEventDataForSystem } from 'utils';
 import { generateClosestNatarsAction } from 'actions/closestNatarsAction/closestNatarsAction';
-import { clearEventDataAction, createEventSummaryAction } from 'actions/events/eventSummaryActions';
+import { clearEventDataAction, createEventSummaryAction, getEventSummaryAction } from 'actions/events/eventSummaryActions';
+import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
 
 
 const modalStyle = {
@@ -41,6 +42,7 @@ const buttonsStyle = {
 const StartPage = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const [showNewEvent, setShowNewEvent] = useState(false);
     const [latestEvent, setLatestEvent] = useState<EarthquakeEvent>();
@@ -48,6 +50,8 @@ const StartPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
+    const [summaryData, setSummaryData] = useState<any>(null);
+    const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate();
 
@@ -66,9 +70,35 @@ const StartPage = () => {
             setShowErrorPopup(true);
           }
         };
-        
+
         fetchEvents();
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        const fetchSummaryIfRequested = async () => {
+            const eventIdForSummary = location.state?.showSummaryForEventId;
+
+            if (!eventIdForSummary) return;
+            navigate('.', { replace: true, state: null }); // Clear the state
+
+            try {
+                setLoadingMessage('');
+                setShowLoadingPopup(true);
+                const summary = await getEventSummaryAction(eventIdForSummary);
+                if (summary) {
+                    setSummaryData(summary);
+                    setShowModal(true);
+                }
+            } catch (err) {
+                setErrorMessage(t('startPage.errorMsgs.serverGetError'));
+                setShowErrorPopup(true);
+            } finally {
+                setShowLoadingPopup(false);
+            }
+        };
+
+        fetchSummaryIfRequested();
+    }, [location.state, latestEvent]);
 
     const handleClose = () => setShowNewEvent(false);
 
@@ -161,6 +191,14 @@ const StartPage = () => {
                     </Box>
                 </Box>
             </Modal>
+
+            {summaryData && (
+                <Modal open={showModal} onClose={() => setShowModal(false)}>
+                    <Box sx={eventSummaryModalStyle}>
+                        <EventSummaryModal summary={summaryData} onClose={() => setShowModal(false)} />
+                    </Box>
+                </Modal>
+            )}
 
             <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
             

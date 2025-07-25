@@ -5,27 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
-import EventSummaryModal from './EventSummaryModal';
+import EventSummaryModal, { eventSummaryModalStyle } from './EventSummaryModal';
 import { createEventSummaryAction, getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
 import EventsTable from './EventsTable';
 import { setEventDataForSystem } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 
-const modalStyle = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '70%',
-    height: '85%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2,
-    textAlign: 'center',
-    overflowY: 'auto',
-};
 
 const ManageEvents = () => {
     const { t } = useTranslation();
@@ -66,12 +52,6 @@ const ManageEvents = () => {
                 setErrorMessage(t('manageEvents.noSummary'));
                 setShowErrorPopup(true);
                 return;
-            }
-
-            // Add event data to summary
-            const event = events.find(e => e.id === eventId);
-            if (event) {
-                summary.event = event;
             }
 
             setSummaryData(summary);
@@ -117,7 +97,7 @@ const ManageEvents = () => {
             <EventsTable events={events} onViewSummary={handleShowSummary} onLoadEvent={handleLoadEventData} />
 
             <Modal open={showModal} onClose={() => setShowModal(false)}>
-                <Box sx={modalStyle}>
+                <Box sx={eventSummaryModalStyle}>
                     <EventSummaryModal summary={summaryData} onClose={() => setShowModal(false)} />
                 </Box>
             </Modal>

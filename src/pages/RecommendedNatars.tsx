@@ -61,12 +61,15 @@ const RecommendedNatars = () => {
         navigate(`/${PAGES.DESTRUCTION_SITES}`);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (earthquakeEvent?.id) {
-            createEventSummaryAction(earthquakeEvent.id);
+            setLoadingMessage(t('recommendedNatars.loadingSubmit'));
+            setShowLoadingPopup(true);
+            await createEventSummaryAction(earthquakeEvent.id);
+            navigate('/', { state: { showSummaryForEventId: earthquakeEvent.id } });
+        } else {
+            navigate(`/`);
         }
-        // todo: show summary
-        navigate(`/`);
     };
 
     const openNatar = (natar: Natar) => {

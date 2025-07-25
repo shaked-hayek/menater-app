@@ -1,5 +1,6 @@
 import { HTTP_HEADERS, SERVER_IP } from 'consts/settings.const';
 import { ROUTES } from 'actions/routes';
+import { getEventByIdAction } from './eventsActions';
 
 export async function getEventSummaryAction(eventId: string) {
     const response = await fetch(`${SERVER_IP}${ROUTES.EVENT_SUMMARY}?eventId=${eventId}`, {
@@ -13,7 +14,11 @@ export async function getEventSummaryAction(eventId: string) {
         throw new Error('Failed to get event summary');
     }
 
-    return await response.json();
+    const eventSummary =  await response.json();
+    const fetchedEvent = await getEventByIdAction(eventId);
+    eventSummary.event = fetchedEvent;
+
+    return eventSummary;
 }
 
 export async function createEventSummaryAction(eventId: string) {
