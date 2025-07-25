@@ -5,4 +5,5 @@ export enum PAGES {
     MANAGE_STAFF = 'manageStaff',
     MANAGE_NATARS = 'manageNatars',
     MANAGE_EVENTS = 'manageEvents',
+    OTHER_ACTIONS = 'otherActions',
 }

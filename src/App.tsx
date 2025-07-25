@@ -20,6 +20,7 @@ import ManageStaff from 'pages/ManageStaff';
 import ArcgisProvider from 'services/ArcgisProvider';
 import ManageNatars from 'pages/ManageNatars';
 import ManageEvents from 'components/Events/ManageEvents';
+import OtherActions from 'pages/OtherActions';
 
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
                 <Route path={PAGES.NEW_EVENT} element={<NewEvent />} />
                 <Route path={PAGES.DESTRUCTION_SITES} element={<DestructionSites />} />
                 <Route path={PAGES.RECOMMENDED_NATARS} element={<RecommendedNatars />} />
+                <Route path={PAGES.OTHER_ACTIONS} element={<OtherActions />} />
               </Route>
             </Routes>
           </Router>

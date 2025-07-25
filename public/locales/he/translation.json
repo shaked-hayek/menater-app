@@ -34,12 +34,17 @@
         "eventsHistory": "היסטוריית אירועים",
         "manageNatars": "ניהול נט\"רים",
         "manageStaffButton": "ניהול אנשי צוות",
-        "initialize": "אתחול",
-        "initializing": "מאתחל מערכת",
-        "settings": "הגדרות",
+        "otherActionsButton": "פעולות אחרות",
         "errorMsgs": {
             "serverGetError": "קרתה תקלה בשרת"
         }
+    },
+    "otherActions": {
+        "runNatarDistAlgorithm": "הרצת אלגוריתם מרחקי נט\"רים",
+        "loadingNatarDist": "מריץ אלגוריתם מרחקי נט\"רים",
+        "showErrors": "הצג שגיאות",
+        "initSystem": "אתחול מערכת",
+        "initWarning": "זהירות! פעולה זו תמחק את כל המידע במערכת והיא בלתי הפיכה!"
     },
     "manageStaff": {
         "existingStaff": "אנשי צוות קיימים",

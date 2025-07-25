@@ -126,20 +126,6 @@ const StartPage = () => {
         }
     }
 
-    const onInitialize = async() => {
-        setLoadingMessage(t('startPage.initializing'))
-        setShowLoadingPopup(true);
-        try {
-            await generateClosestNatarsAction();
-            setShowLoadingPopup(false);
-        } catch (error) {
-            setErrorMessage(t('startPage.errorMsgs.serverGetError'));
-            setShowLoadingPopup(false);
-            setShowErrorPopup(true);
-            return;
-        }
-    };
-
     const logo = require('../assets/Logo.png');
 
     return (
@@ -159,11 +145,8 @@ const StartPage = () => {
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_STAFF}`)}>
                         {t('startPage.manageStaffButton')}
                     </SecondaryButton>
-                    <SecondaryButton onClick={onInitialize}>
-                        {t('startPage.initialize')}
-                    </SecondaryButton>
-                    <SecondaryButton>
-                        {t('startPage.settings')}
+                    <SecondaryButton onClick={() => navigate(`/${PAGES.OTHER_ACTIONS}`)}>
+                        {t('startPage.otherActionsButton')}
                     </SecondaryButton>
                 </Box>
                 <Box sx={buttonsStyle}>
@@ -201,7 +184,7 @@ const StartPage = () => {
             )}
 
             <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
-            
+
             <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </>
     );
