@@ -146,8 +146,9 @@ const DestructionSitesMap = memo(({
 
         highlightLayerRef.current?.add(highlightGraphic);
 
-        const { Street_Name, House_Number } = result.graphic.attributes;
+        const { Street_Name, House_Number, OBJECTID } = result.graphic.attributes;
         onClickDestructionSite({
+          buildingId: OBJECTID,
           street: Street_Name,
           number: House_Number,
           casualties: 0,

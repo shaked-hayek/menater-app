@@ -28,7 +28,7 @@ export const getCasualtiesEstimate = async (
 
     const query = new Query({
         where: `Street_Name = '${streetName}' AND House_Number = '${number}'`,
-        outFields: ['Apartments', 'Floors', 'Residence'],
+        outFields: ['Apartments', 'Floors', 'Residence', 'OBJECTID'],
         returnGeometry: false,
     });
 
@@ -50,7 +50,7 @@ export const getCasualtiesEstimate = async (
             }
             const roundedEstimate = Math.ceil(estimate);
             setCasualtiesEstimate(roundedEstimate.toString());
-            return;
+            return attr.OBJECTID;
         }
     } catch (err) {
         console.error('Error fetching estimate', err);

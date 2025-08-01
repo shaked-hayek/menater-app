@@ -18,6 +18,7 @@ import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions'
 import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
 import { generateRecommendation } from 'actions/generateRecommendation/recommendationAction';
 import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
+import { getBuildingId } from 'actions/arcgis/getBuildingId';
 
 
 const DestructionSites = () => {
@@ -104,9 +105,10 @@ const DestructionSites = () => {
     }, [streetNames]);
     
     useEffect(() => {
-        const updateCasualtiesEstimate = () => {
+        const updateCasualtiesEstimate = async () => {
             if (!selectedStreet || !selectedNumber || earthquakeTimeIsDayTime === null) return;
-            getCasualtiesEstimate(selectedStreet, selectedNumber, setCasualtiesEstimate, earthquakeTimeIsDayTime);
+            const buildingId = await getCasualtiesEstimate(selectedStreet, selectedNumber, setCasualtiesEstimate, earthquakeTimeIsDayTime);
+            setSelectedBuildingId(buildingId)
         }
         updateCasualtiesEstimate();
     }, [selectedStreet, selectedNumber, earthquakeTimeIsDayTime]);
@@ -161,13 +163,23 @@ const DestructionSites = () => {
     const addFormDestructionSite = async () => {
         if (!selectedStreet || !selectedNumber) return;
 
+        if (!selectedBuildingId) {
+            const fetchedBuildingId = await getBuildingId(selectedStreet, selectedNumber);
+            if (!fetchedBuildingId) {
+                return;
+            }
+            setSelectedBuildingId(fetchedBuildingId);
+        }
+
         if (await addDestructionSite(
                 {
+                    buildingId: selectedBuildingId || 0,
                     street: selectedStreet,
                     number: selectedNumber,
                     casualties: Number(casualties ? casualties : casualtiesEstimate),
                 }
             )) {
+            setSelectedBuildingId(null)
             setSelectedStreet(null);
             setSelectedNumber('');
             setCasualties('');
@@ -176,6 +188,7 @@ const DestructionSites = () => {
     };
 
     const onSiteClick = (site: DestructionSite) => {
+        setSelectedBuildingId(site.buildingId);
         setSelectedStreet(site.street);
         setSelectedNumber(site.number);
         setCasualties('');

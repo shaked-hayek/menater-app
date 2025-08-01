@@ -1,6 +1,7 @@
 
 
 export interface DestructionSite {
+  buildingId: number;
   street: string;
   number: string;
   casualties: number;
