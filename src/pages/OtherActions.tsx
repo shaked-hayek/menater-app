@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import { generateClosestNatarsAction } from 'actions/closestNatarsAction/closestNatarsAction';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { useState } from 'react';
@@ -22,27 +21,9 @@ const OtherActions = () => {
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
 
-
-    const onRunDistAlgo = async() => {
-        setLoadingMessage(t('otherActions.loadingNatarDist'))
-        setShowLoadingPopup(true);
-        try {
-            await generateClosestNatarsAction();
-            setShowLoadingPopup(false);
-        } catch (error) {
-            setErrorMessage(t('startPage.errorMsgs.serverGetError'));
-            setShowLoadingPopup(false);
-            setShowErrorPopup(true);
-            return;
-        }
-    };
-
     return (
         <>
             <Box sx={buttonsStyle}>
-                <SecondaryButton onClick={onRunDistAlgo}>
-                    {t('otherActions.runNatarDistAlgorithm')}
-                </SecondaryButton>
                 <SecondaryButton onClick={() => {}}>
                     {t('otherActions.showErrors')}
                 </SecondaryButton>

@@ -12,7 +12,6 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
 import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
 import { setEventDataForSystem } from 'utils';
-import { generateClosestNatarsAction } from 'actions/closestNatarsAction/closestNatarsAction';
 import { clearEventDataAction, createEventSummaryAction, getEventSummaryAction } from 'actions/events/eventSummaryActions';
 import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
 
