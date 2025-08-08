@@ -3,7 +3,7 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { Natar } from 'components/Interfaces/Natar';
 import { NATAR_TYPE } from 'consts/natarType.const';
 import { setEarthquakeEvent, setMode } from 'store/store';
-import { sendErrorAction } from 'actions/errors/errorsActions';
+
 
 export const buildNestedNatars = (natars: Natar[]): Natar[] => {
     const mainNatars = natars.filter(n => n.type === NATAR_TYPE.MAIN);
@@ -54,10 +54,4 @@ export const formatDateTimeForFileName = (date: Date) => {
     const seconds = pad(date.getSeconds());
 
     return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
-};
-
-
-export const handleError = (message: String, error: Error) => {
-    sendErrorAction(message, error);
-
 };

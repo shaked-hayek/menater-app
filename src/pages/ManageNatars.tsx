@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Container, Typography, Box, Modal } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
+import { LoadingPopup } from 'components/atoms/Popups';
 import { Natar, getNatarTableFields } from 'components/Interfaces/Natar';
 import { getOptionalNatars } from 'actions/natars/natarsActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import EditNatarModal from 'components/natars/EditNatarModal';
 import FullNatarsTable from 'components/natars/FullNatarsTable';
+import { useDispatch } from 'react-redux';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const modalStyle = {
@@ -25,9 +27,9 @@ const modalStyle = {
 
 const ManageNatars = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [natars, setNatars] = useState<Natar[]>([]);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState<Natar>();
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
@@ -42,8 +44,7 @@ const ManageNatars = () => {
                 setShowLoadingPopup(false);
             } catch (error) {
                 setShowLoadingPopup(false);
-                setErrorMessage(t('manageNatars.errorMsgs.serverGetError') + `\nerror: ${error}`);
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('manageNatars.errorMsgs.serverGetError'), error);
             }
         };
 
@@ -88,11 +89,6 @@ const ManageNatars = () => {
 
             <LoadingPopup loadingMessage={t('manageNatars.gettingNatars')} showLoadingPopup={showLoadingPopup} />
 
-            <ErrorPopup
-                errorMessage={errorMessage}
-                showErrorPopup={showErrorPopup}
-                setShowErrorPopup={setShowErrorPopup}
-            />
         </Container>
     );
 };

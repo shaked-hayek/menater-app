@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { Container, Typography, TextField, Box, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import Grid from '@mui/material/Grid2';
@@ -13,17 +13,19 @@ import { MainButton, SecondaryButton } from 'components/atoms/Buttons';
 import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useNavigate } from 'react-router';
 import { PAGES } from 'consts/pages.const';
-import { ApprovePopup, ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
+import { ApprovePopup, LoadingPopup } from 'components/atoms/Popups';
 import { getCasualtiesEstimate } from 'actions/arcgis/casualtiesEstimateActions';
 import { addSiteAction, deleteSiteAction, getSites } from 'actions/sites/sitesActions';
 import { generateRecommendation } from 'actions/generateRecommendation/recommendationAction';
 import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
 import { getBuildingId } from 'actions/arcgis/getBuildingId';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const DestructionSites = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
@@ -39,8 +41,6 @@ const DestructionSites = () => {
     const [selectedBuildingId, setSelectedBuildingId] = useState<number | null>(null);
     const [casualties, setCasualties] = useState('');
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const isEarthquakeTimeIsDayTime = () => {
@@ -68,16 +68,13 @@ const DestructionSites = () => {
                     setConnectedToArcgis(true);
                 } else {
                     setConnectedToArcgis(false);
-                    setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
-                    setShowErrorPopup(true);
+                    errorHandler(dispatch, t('destructionSites.errorMsgs.serverGetError'));
                 }
             })
-            .catch(() => {
+            .catch((error) => {
                 if (!isMounted) return;
-    
                 setConnectedToArcgis(false);
-                setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('destructionSites.errorMsgs.serverGetError'), error);
             });
     
         return () => {
@@ -90,8 +87,7 @@ const DestructionSites = () => {
             try {
                 await getSites(setDestructionSites);
             } catch (error) {
-                setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('destructionSites.errorMsgs.serverGetError'), error);
             }
         };
 
@@ -122,9 +118,8 @@ const DestructionSites = () => {
         try {
             await generateRecommendation();
         } catch (error) {
-            setErrorMessage(t('destructionSites.errorMsgs.errorGettingRecommendation'));
             setShowLoadingPopup(false);
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageStaff.errorMsgs.errorGettingRecommendation'), error);
             return;
         }
         navigate(`/${PAGES.RECOMMENDED_NATARS}`);
@@ -132,8 +127,7 @@ const DestructionSites = () => {
 
     const handleShowRecommendation = () => {
         if (destructionSites.length === 0) {
-            setErrorMessage(t('destructionSites.errorMsgs.emptySites'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('destructionSites.errorMsgs.emptySites'));
             return;
         }
         setShowRecommendationPopup(true);
@@ -145,16 +139,14 @@ const DestructionSites = () => {
         );
     
         if (isDuplicate) {
-            setErrorMessage(t('destructionSites.errorMsgs.addressExists'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('destructionSites.errorMsgs.addressExists'));
             return false;
         }
         setDestructionSites([...destructionSites, site]);
         try {
             await addSiteAction(site);
         } catch (error) {
-            setErrorMessage(t('destructionSites.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('destructionSites.errorMsgs.serverGetError'), error);
             return false;
         }
         return true;
@@ -198,8 +190,7 @@ const DestructionSites = () => {
         try {
             await deleteSiteAction(site);
         } catch (error) {
-            setErrorMessage(t('destructionSites.errorMsgs.serverDeleteError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('destructionSites.errorMsgs.serverDeleteError'), error);
             return;
         }
         setDestructionSites(destructionSites.filter((_, i) => i !== index));
@@ -296,8 +287,6 @@ const DestructionSites = () => {
             </Grid>
         </Grid>
         
-        <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
-
         <ApprovePopup
             message={t('destructionSites.approveSites')}
             showPopup={showRecommendationPopup}

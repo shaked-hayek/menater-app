@@ -1,5 +1,6 @@
 import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
+import errorReducer from './slices/errorSlice';
 import { MODE } from 'consts/mode.const';
 
 interface AppState {
@@ -35,6 +36,7 @@ export const { setArcgisAuth, setMode, setEarthquakeEvent } = appSlice.actions;
 export const store = configureStore({
   reducer: {
     appState: appSlice.reducer,
+    error: errorReducer,
   },
 });
 

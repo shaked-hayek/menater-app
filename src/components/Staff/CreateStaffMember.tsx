@@ -5,11 +5,13 @@ import { formStyle, rtlStyle } from "style/muiStyles";
 import { StaffMember, StaffOccupation } from 'components/Interfaces/StaffMember';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { addStaffMemberAction } from 'actions/staff/staffActions';
-import { ErrorPopup } from 'components/atoms/Popups';
+import { useDispatch } from 'react-redux';
+import { errorHandler } from 'actions/errors/errorHandler';
+
 
 interface FormValues {
     name: string | null;
-    occupation: string | null;
+    occupation: string | null | undefined;
     phoneNumber?: string | null;
 }
 
@@ -32,12 +34,11 @@ interface CreateStaffMemberProps {
 
 const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
     const { t } = useTranslation();
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const dispatch = useDispatch();
 
     const defaultFormValues = {
         name: '',
-        occupation: null,
+        occupation: undefined,
         phoneNumber: '',
     };
     const [formValues, setFormValues] = useState<FormValues>(defaultFormValues);
@@ -62,13 +63,11 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
         e.preventDefault();
 
         if (!formValues.name || !formValues.occupation) {
-            setErrorMessage(t('manageStaff.errorMsgs.fieldMissing'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageStaff.errorMsgs.fieldMissing'));
             return;
         }
         if (formValues.phoneNumber && !isValidPhoneNumber(formValues.phoneNumber)) {
-            setErrorMessage(t('manageStaff.errorMsgs.phoneError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageStaff.errorMsgs.phoneError'));
             return;
         }
 
@@ -82,8 +81,7 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
         try {
             await addStaffMemberAction(staffMember as StaffMember);
         } catch (error) {
-            setErrorMessage(t('manageStaff.errorMsgs.serverAddError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageStaff.errorMsgs.serverAddError'));
             return;
         }
         if (onCreate) {
@@ -150,7 +148,6 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
                 <SecondaryButton onClick={handleSubmit}>{t('buttons.add')}</SecondaryButton>
             </Box>
             
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </Container>
     );
 };

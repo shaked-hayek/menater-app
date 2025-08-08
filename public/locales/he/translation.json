@@ -1,6 +1,7 @@
 {
     "trial": "תרגול",
     "emergency": "חירום",
+    "uncaughtErrorMsg": "קרתה תקלה לא צפויה במערכת",
     "header": {
         "home": "בית",
         "title": "מנט\"ר",

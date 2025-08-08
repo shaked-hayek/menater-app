@@ -7,8 +7,9 @@ import { useTranslation } from 'react-i18next';
 import ChooseStaff from './ChooseStaff';
 import { StaffMember } from 'components/Interfaces/StaffMember';
 import { getStaffMembersOfNatarAction } from 'actions/staff/staffActions';
-import { ErrorPopup } from 'components/atoms/Popups';
 import { SetStateAction, Dispatch } from 'react';
+import { errorHandler } from 'actions/errors/errorHandler';
+import { useDispatch } from 'react-redux';
 
 
 const modalStyle = {
@@ -33,9 +34,8 @@ interface AssignStaffToNatarProps {
 
 const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignStaffToNatarProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     
     useEffect(() => {
@@ -43,8 +43,7 @@ const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignSta
           try {
             await getStaffMembersOfNatarAction(natar.id, setStaffMembers);
           } catch (error) {
-            setErrorMessage(t('manageStaff.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageStaff.errorMsgs.serverGetError'), error);
           }
         };
         
@@ -93,8 +92,6 @@ const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignSta
                     />
                 </Box>
             </Modal>
-
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </>
     );
 }

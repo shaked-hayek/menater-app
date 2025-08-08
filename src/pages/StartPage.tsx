@@ -10,10 +10,11 @@ import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
-import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
+import { LoadingPopup } from 'components/atoms/Popups';
 import { setEventDataForSystem } from 'utils';
 import { clearEventDataAction, createEventSummaryAction, getEventSummaryAction } from 'actions/events/eventSummaryActions';
 import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const modalStyle = {
@@ -45,8 +46,6 @@ const StartPage = () => {
 
     const [showNewEvent, setShowNewEvent] = useState(false);
     const [latestEvent, setLatestEvent] = useState<EarthquakeEvent>();
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
     const [summaryData, setSummaryData] = useState<any>(null);
@@ -65,8 +64,7 @@ const StartPage = () => {
             });
             setLatestEvent(latestEventResponse);
           } catch (error) {
-            setErrorMessage(t('startPage.errorMsgs.serverGetError') + `\nerror: ${error}`);
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('startPage.errorMsgs.serverGetError'), error);
           }
         };
 
@@ -88,9 +86,8 @@ const StartPage = () => {
                     setSummaryData(summary);
                     setShowModal(true);
                 }
-            } catch (err) {
-                setErrorMessage(t('startPage.errorMsgs.serverGetError'));
-                setShowErrorPopup(true);
+            } catch (error) {
+                errorHandler(dispatch, t('startPage.errorMsgs.serverGetError'), error);
             } finally {
                 setShowLoadingPopup(false);
             }
@@ -181,8 +178,6 @@ const StartPage = () => {
                     </Box>
                 </Modal>
             )}
-
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
 
             <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </>

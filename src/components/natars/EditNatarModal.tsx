@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import { editNatarAction } from 'actions/natars/natarsActions';
-import { ErrorPopup } from 'components/atoms/Popups';
+import { errorHandler } from 'actions/errors/errorHandler';
+import { useDispatch } from 'react-redux';
 
 
 const textFieldBoxStyle = {
@@ -35,9 +36,8 @@ interface EditNatarModalProps {
 
 const EditNatarModal = ({ natar, fields, onClose } : EditNatarModalProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [editedNatar, setEditedNatar] = useState<Natar>(natar);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const editFields = fields.filter(field => field.key !== 'id');
 
@@ -49,8 +49,7 @@ const EditNatarModal = ({ natar, fields, onClose } : EditNatarModalProps) => {
         try {
             await editNatarAction(editedNatar);
         } catch (error) {
-            setErrorMessage(t('manageNatars.errorMsgs.serverGetError') + `error: ${error}`);
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageNatars.errorMsgs.serverGetError'), error);
         }
         onClose();
     }
@@ -105,8 +104,6 @@ const EditNatarModal = ({ natar, fields, onClose } : EditNatarModalProps) => {
                     </Box>
                 ))}
             </Box>
-
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </>
     );
 };

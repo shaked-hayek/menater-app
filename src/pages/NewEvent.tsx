@@ -11,9 +11,9 @@ import { RootState, setEarthquakeEvent } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { formStyle, rtlStyle } from 'style/muiStyles';
 import { PAGES } from 'consts/pages.const';
-import { ErrorPopup } from 'components/atoms/Popups';
 import { addEventAction } from 'actions/events/eventsActions';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 interface FormValues {
   magnitude: number | null | undefined;
@@ -25,7 +25,6 @@ const NewEvent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const mode = useSelector((state: RootState) => state.appState.mode);
-  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const [formValues, setFormValues] = useState<FormValues>({
     magnitude: undefined,
@@ -36,7 +35,7 @@ const NewEvent = () => {
     e.preventDefault();
 
     if (!formValues.magnitude || !formValues.dateTime) {
-      setShowErrorPopup(true);
+      errorHandler(dispatch, t('newEvent.invalidInput'));
       return;
     }
 
@@ -101,8 +100,6 @@ const NewEvent = () => {
           <SecondaryButton onClick={handleSubmit}>{t('buttons.next')}</SecondaryButton>
         </Box>
       </Box>
-
-      <ErrorPopup errorMessage={t('newEvent.invalidInput')} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
     </>
   );
 };

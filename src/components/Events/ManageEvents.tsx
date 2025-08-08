@@ -4,13 +4,14 @@ import { useTranslation } from 'react-i18next';
 
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
-import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
+import { LoadingPopup } from 'components/atoms/Popups';
 import EventSummaryModal, { eventSummaryModalStyle } from './EventSummaryModal';
 import { createEventSummaryAction, getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
 import EventsTable from './EventsTable';
 import { setEventDataForSystem } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const ManageEvents = () => {
@@ -19,8 +20,6 @@ const ManageEvents = () => {
     const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     const [events, setEvents] = useState<EarthquakeEvent[]>([]);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('manageEvents.loading'));
     const [showModal, setShowModal] = useState(false);
@@ -34,8 +33,7 @@ const ManageEvents = () => {
                 setShowLoadingPopup(false);
             } catch (error) {
                 setShowLoadingPopup(false);
-                setErrorMessage(t('manageEvents.errorMsgs.serverGetError') + `\nerror: ${error}`);
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('manageEvents.errorMsgs.serverGetError'), error);
             }
         };
 
@@ -49,8 +47,7 @@ const ManageEvents = () => {
             const summary = await getEventSummaryAction(eventId);
             if (!summary) {
                 setShowLoadingPopup(false);
-                setErrorMessage(t('manageEvents.noSummary'));
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('manageEvents.noSummary'));
                 return;
             }
 
@@ -59,8 +56,7 @@ const ManageEvents = () => {
             setShowLoadingPopup(false);
         } catch (error) {
             setShowLoadingPopup(false);
-            setErrorMessage(t('manageEvents.errorMsgs.serverSummaryError') + `\nerror: ${error}`);
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageEvents.errorMsgs.serverSummaryError'), error);
         }
     };
 
@@ -82,8 +78,7 @@ const ManageEvents = () => {
             setShowLoadingPopup(false);
         } catch (error) {
             setShowLoadingPopup(false);
-            setErrorMessage(t('manageEvents.errorMsgs.serverLoadEventError') + `\nerror: ${error}`);
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageEvents.errorMsgs.serverLoadEventError'), error);
         }
     };
 
@@ -103,12 +98,6 @@ const ManageEvents = () => {
             </Modal>
 
             <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
-
-            <ErrorPopup
-                errorMessage={errorMessage}
-                showErrorPopup={showErrorPopup}
-                setShowErrorPopup={setShowErrorPopup}
-            />
         </Container>
     );
 };

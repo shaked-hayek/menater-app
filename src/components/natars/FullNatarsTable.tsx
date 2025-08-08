@@ -15,8 +15,9 @@ import { Edit, Delete } from '@mui/icons-material';
 import { tableBgColor } from 'style/colors';
 import { deleteNatarAction } from 'actions/natars/natarsActions';
 import { Natar, NatarField } from 'components/Interfaces/Natar';
-import { ErrorPopup } from 'components/atoms/Popups';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 interface FullNatarsTableProps {
@@ -29,16 +30,14 @@ interface FullNatarsTableProps {
 
 const FullNatarsTable = ({ natars, setNatars, fields, setModalData, setShowModal } : FullNatarsTableProps) => {
     const { t } = useTranslation();
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const dispatch = useDispatch();
 
     const handleDelete = async (natar: Natar) => {
         try {
             await deleteNatarAction(natar);
             setNatars(prev => prev.filter(n => n.id !== natar.id));
         } catch (error) {
-            setErrorMessage(t('manageNatars.errorMsgs.serverDeleteError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageNatars.errorMsgs.serverDeleteError'), error);
         }
     };
 
@@ -96,12 +95,6 @@ const FullNatarsTable = ({ natars, setNatars, fields, setModalData, setShowModal
                     </Table>
                 </TableContainer>
             </Paper>
-
-            <ErrorPopup
-                errorMessage={errorMessage}
-                showErrorPopup={showErrorPopup}
-                setShowErrorPopup={setShowErrorPopup}
-            />
         </>
     );
 };

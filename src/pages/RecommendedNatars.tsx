@@ -8,14 +8,15 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { getRecommendedNatars } from 'actions/natars/natarsActions';
 import { Natar } from 'components/Interfaces/Natar';
-import { ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
+import { LoadingPopup } from 'components/atoms/Popups';
 import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
 import NatarNestedList from 'components/natars/NatarNestedList';
 import { NATAR_TYPE } from 'consts/natarType.const';
 import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -34,13 +35,13 @@ const modalStyle = {
 const RecommendedNatars = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [recommendedNatars, setRecommendedNatars] = useState<Natar[]>([]);
     const [selectedNatar, setSelectedNatar] = useState<Natar | null>(null);
     const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
-    const [errorMessage, setErrorMessage] = useState('');
     const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     useEffect(() => {
@@ -49,8 +50,7 @@ const RecommendedNatars = () => {
             await getRecommendedNatars(setRecommendedNatars);
             setShowLoadingPopup(false);
           } catch (error) {
-            setErrorMessage(t('recommendedNatars.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('recommendedNatars.errorMsgs.serverGetError'));
           }
         };
         
@@ -80,14 +80,12 @@ const RecommendedNatars = () => {
             const fatherNatar = recommendedNatars.find(n => n.id === natar.fatherNatar);
 
             if (!fatherNatar) {
-                setErrorMessage(t('recommendedNatars.errorMsgs.fatherNotFound'));
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('recommendedNatars.errorMsgs.fatherNotFound'));
                 return;
             }
 
             if (!fatherNatar.wasOpened) {
-                setErrorMessage(t('recommendedNatars.errorMsgs.fatherNotOpened'));
-                setShowErrorPopup(true);
+                errorHandler(dispatch, t('recommendedNatars.errorMsgs.fatherNotOpened'));
                 return;
             }
         }
@@ -142,7 +140,6 @@ const RecommendedNatars = () => {
                 </Box>
             </Modal>
             
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
             <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </Container>
     );

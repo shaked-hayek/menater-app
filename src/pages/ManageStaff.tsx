@@ -6,24 +6,23 @@ import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateStaffMember from 'components/Staff/CreateStaffMember';
 import { deleteStaffMemberAction, getStaffMembersAction } from 'actions/staff/staffActions';
-import { ErrorPopup } from 'components/atoms/Popups';
 import { StaffMember } from '../components/Interfaces/StaffMember';
+import { useDispatch } from 'react-redux';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const ManageStaff = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchStaff = async () => {
-          try {
-            await getStaffMembersAction(setStaffMembers);
-          } catch (error) {
-            setErrorMessage(t('manageStaff.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
-          }
+            try {
+                await getStaffMembersAction(setStaffMembers);
+            } catch (error) {
+                errorHandler(dispatch, t('manageStaff.errorMsgs.serverGetError'), error);
+            }
         };
         
         fetchStaff();
@@ -33,8 +32,7 @@ const ManageStaff = () => {
         try {
             await deleteStaffMemberAction(staffMember);
         } catch (error) {
-            setErrorMessage(t('manageStaff.errorMsgs.serverDeleteError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('manageStaff.errorMsgs.serverDeleteError'), error);
             return;
         }
         setStaffMembers(prev =>
@@ -82,8 +80,6 @@ const ManageStaff = () => {
                     <CreateStaffMember onCreate={onStaffCreate} />
                 </Grid>
             </Grid>
-
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </Container>
     );
 };

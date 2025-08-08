@@ -11,8 +11,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import SinglePointMap from 'actions/arcgis/SinglePointMap';
 import { StaffMember } from 'components/Interfaces/StaffMember';
-import { ErrorPopup } from 'components/atoms/Popups';
 import { updateNatarOpenedStatus } from 'actions/natars/serverNatarsActions';
+import { useDispatch } from 'react-redux';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const MIN_STAFF_NEEDED = 2;
@@ -25,23 +26,21 @@ interface AddNatarProps {
 
 const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const fields = getNatarFields(t);
 
     const handleSubmit = async () => {
         if (staffMembers.length < MIN_STAFF_NEEDED) {
-            setErrorMessage(t('openNatar.errorMsgs.notEnoughStaff', {amount: MIN_STAFF_NEEDED}));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('openNatar.errorMsgs.notEnoughStaff', {amount: MIN_STAFF_NEEDED}));
             return;
         }
         try {
             await updateNatarOpenedStatus(natarDetails.id, true);
         } catch(error) {
-            setErrorMessage(t('openNatar.errorMsgs.serverGetError', {amount: MIN_STAFF_NEEDED}));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('openNatar.errorMsgs.serverGetError'), error);
             return;
         }
         onMarkAsOpened(natarDetails.id);
@@ -98,8 +97,6 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
                 </Grid>
             </Box>
             <MainButton height={'40px'} onClick={handleSubmit}>{t('openNatar.openNatar')}</MainButton>
-
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
         </>
     );
 };

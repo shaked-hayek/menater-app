@@ -1,60 +1,30 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
+import React from 'react';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/he';
 
-import StartPage from 'pages/StartPage';
-import Layout from 'components/Layout';
-import NewEvent from 'pages/NewEvent';
 import theme from 'style/theme';
 import { store } from 'store/store';
-import DestructionSites from 'pages/DestructionSites';
-import { LANGUAGES } from 'consts/languages.const';
-import 'dayjs/locale/he';
-import RecommendedNatars from 'pages/RecommendedNatars';
-import { PAGES } from 'consts/pages.const';
-import ManageStaff from 'pages/ManageStaff';
 import ArcgisProvider from 'services/ArcgisProvider';
-import ManageNatars from 'pages/ManageNatars';
-import ManageEvents from 'components/Events/ManageEvents';
-import OtherActions from 'pages/OtherActions';
+import { LANGUAGES } from 'consts/languages.const';
+import ErrorBoundary from 'components/ErrorBoundary';
+import AppContent from 'AppContent';
 
+const currentLanguage = LANGUAGES.HE;
 
 const App = () => {
-  const { i18n } = useTranslation();
-  const appDir = i18n.dir();
-  const currentLanguage = LANGUAGES.HE; // TODO: when adding more languages, move this to store
-
-  useEffect(() => {
-    // https://material-ui.com/guides/right-to-left/
-    document.body.dir = appDir;
-    theme.direction = appDir;
-  }, [i18n, theme, theme.direction, appDir]);
-
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <ArcgisProvider />
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={currentLanguage}>
-          <Router>
-            <Routes>
-              <Route path='/' element={<Layout />}>
-                <Route index element={<StartPage />} />
-                <Route path={PAGES.MANAGE_STAFF} element={<ManageStaff />} />
-                <Route path={PAGES.MANAGE_EVENTS} element={<ManageEvents />} />
-                <Route path={PAGES.MANAGE_NATARS} element={<ManageNatars />} />
-                <Route path={PAGES.NEW_EVENT} element={<NewEvent />} />
-                <Route path={PAGES.DESTRUCTION_SITES} element={<DestructionSites />} />
-                <Route path={PAGES.RECOMMENDED_NATARS} element={<RecommendedNatars />} />
-                <Route path={PAGES.OTHER_ACTIONS} element={<OtherActions />} />
-              </Route>
-            </Routes>
-          </Router>
-        </LocalizationProvider>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider theme={theme}>
+          <ArcgisProvider />
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={currentLanguage}>
+            <AppContent />
+          </LocalizationProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
     </Provider>
   );
 };

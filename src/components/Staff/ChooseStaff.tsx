@@ -6,9 +6,10 @@ import ColoredSideBox from 'components/atoms/ColoredSideBox';
 import { useTranslation } from 'react-i18next';
 import { bulkUpdateStaffNatarAction, getStaffMembersAction } from 'actions/staff/staffActions';
 import { StaffMember } from 'components/Interfaces/StaffMember';
-import { ErrorPopup } from 'components/atoms/Popups';
 import { SecondaryButton } from 'components/atoms/Buttons';
 import CreateStaffMember from './CreateStaffMember';
+import { useDispatch } from 'react-redux';
+import { errorHandler } from 'actions/errors/errorHandler';
 
 
 const modalStyle = {
@@ -34,23 +35,22 @@ interface ChooseStaffProps {
 
 const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : ChooseStaffProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [searchText, setSearchText] = useState('');
     const [showCreateStaffModal, setShowCreateStaffModal] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchStaff = async () => {
-          try {
-            await getStaffMembersAction(setStaffMembers);
-            const initialIds = new Set(mainStaffMembers.map((s) => s.id));
-            setSelectedIds(initialIds);
-          } catch (error) {
-            setErrorMessage(t('manageStaff.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
-          }
+            try {
+                await getStaffMembersAction(setStaffMembers);
+                const initialIds = new Set(mainStaffMembers.map((s) => s.id));
+                setSelectedIds(initialIds);
+            } catch (error) {
+                errorHandler(dispatch, t('manageStaff.errorMsgs.serverGetError'), error);
+            }
         };
         
         fetchStaff();
@@ -158,12 +158,6 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
             <SecondaryButton onClick={onApprove}>
                 {t('buttons.submit')}
             </SecondaryButton>
-
-            <ErrorPopup
-                errorMessage={errorMessage}
-                showErrorPopup={showErrorPopup}
-                setShowErrorPopup={setShowErrorPopup}
-            />
 
             <Modal
                 open={showCreateStaffModal}

@@ -2,11 +2,13 @@ import { Box, Typography } from '@mui/material';
 import { getErrorsAction } from 'actions/errors/errorsActions';
 import { initializeDBAction } from 'actions/serverDB/serverDBActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
-import { ApprovePopup, ErrorPopup, LoadingPopup } from 'components/atoms/Popups';
+import { ApprovePopup, LoadingPopup } from 'components/atoms/Popups';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDateTimeForFileName } from 'utils';
 import { errorRed } from 'style/colors';
+import { errorHandler } from 'actions/errors/errorHandler';
+import { useDispatch } from 'react-redux';
 
 
 const buttonsStyle = {
@@ -21,13 +23,11 @@ const buttonsStyle = {
 
 const OtherActions = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
-    const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
     const [showApprovePopup, setShowApprovePopup] = useState(false);
-
 
     const downloadErrorsFile = async () => {
         try {
@@ -47,8 +47,7 @@ const OtherActions = () => {
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
         } catch (error) {
-            setErrorMessage(t('otherActions.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('otherActions.errorMsgs.serverGetError'), error);
         }
     };
 
@@ -59,8 +58,7 @@ const OtherActions = () => {
             await initializeDBAction();
             setShowLoadingPopup(false);
         } catch (error) {
-            setErrorMessage(t('otherActions.errorMsgs.serverGetError'));
-            setShowErrorPopup(true);
+            errorHandler(dispatch, t('otherActions.errorMsgs.serverGetError'), error);
         }
     };
 
@@ -80,8 +78,6 @@ const OtherActions = () => {
                     </SecondaryButton>
                 </Box>
             </Box>
-
-            <ErrorPopup errorMessage={errorMessage} showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />
 
             <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
 
