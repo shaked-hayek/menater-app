@@ -3,6 +3,7 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { Natar } from 'components/Interfaces/Natar';
 import { NATAR_TYPE } from 'consts/natarType.const';
 import { setEarthquakeEvent, setMode } from 'store/store';
+import { sendErrorAction } from 'actions/errors/errorsActions';
 
 export const buildNestedNatars = (natars: Natar[]): Natar[] => {
     const mainNatars = natars.filter(n => n.type === NATAR_TYPE.MAIN);
@@ -41,3 +42,22 @@ export const formatDateTime = (dateStr: Date) =>
         minute: '2-digit',
         hour12: false,
     });
+
+export const formatDateTimeForFileName = (date: Date) => {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+
+    return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+};
+
+
+export const handleError = (message: String, error: Error) => {
+    sendErrorAction(message, error);
+
+};

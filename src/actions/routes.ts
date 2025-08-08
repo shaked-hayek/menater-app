@@ -6,6 +6,8 @@ export enum ROUTES {
     STAFF_UPDATE = '/staff/bulk-update',
     SITES = '/sites',
     NATARS = '/natars',
+    ERRORS = '/errors',
+    INIT_DB = '/initializeDB',
     RECOMMENDED_NATARS = '/getRecommendedNatars',
     ARCGIS_TOKEN = '/arcgis/token',
     GENERATE_RECOMMENDATION = '/generateRecommendation',

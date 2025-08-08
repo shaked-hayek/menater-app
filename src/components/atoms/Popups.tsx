@@ -40,7 +40,7 @@ export const ApprovePopup = ({ message, showPopup, setShowPopup, onApprove, onRe
             <DialogTitle>{message}</DialogTitle>
             <DialogActions>
                 <Button onClick={onReject} color='error'>
-                    {t('buttons.edit')}
+                    {t('buttons.cancel')}
                 </Button>
                 <Button onClick={onApprove} color='primary'>
                     {t('buttons.submit')}

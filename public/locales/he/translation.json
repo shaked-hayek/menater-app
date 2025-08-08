@@ -17,7 +17,8 @@
         "add": "הוסף",
         "close": "סגור",
         "print": "הדפס",
-        "download": "הורד"
+        "download": "הורד",
+        "cancel": "ביטול"
     },
     "timer": {
         "days": "ימים",
@@ -40,11 +41,14 @@
         }
     },
     "otherActions": {
-        "runNatarDistAlgorithm": "הרצת אלגוריתם מרחקי נט\"רים",
-        "loadingNatarDist": "מריץ אלגוריתם מרחקי נט\"רים",
-        "showErrors": "הצג שגיאות",
+        "showErrors": "הורד קובץ שגיאות",
         "initSystem": "אתחול מערכת",
-        "initWarning": "זהירות! פעולה זו תמחק את כל המידע במערכת והיא בלתי הפיכה!"
+        "initWarning": "זהירות! פעולה זו תמחק את כל המידע במערכת והיא בלתי הפיכה!",
+        "initApprove": "זהירות! פעולה זו תמחק את כל המידע במערכת והיא בלתי הפיכה!\nנא לבצע רק אחרי התייעצות עם אחראי המערכת",
+        "loadingInit": "המערכת מבצעת אתחול",
+        "errorMsgs": {
+            "serverGetError": "קרתה תקלה בשרת"
+        }
     },
     "manageStaff": {
         "existingStaff": "אנשי צוות קיימים",
