@@ -120,7 +120,9 @@ export async function getRecommendedNatars(setNatars : Dispatch<SetStateAction<N
         };
     });
 
-    setNatars(mapNatars(mergedNatars));
+    const natars = mapNatars(mergedNatars);
+    setNatars(natars);
+    return natars;
 };
 
 export async function getNatarsByIds(idList : number[]) {

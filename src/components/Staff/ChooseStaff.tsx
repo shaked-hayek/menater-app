@@ -31,9 +31,10 @@ interface ChooseStaffProps {
     mainStaffMembers: StaffMember[];
     setMainStaffMembers: Dispatch<SetStateAction<StaffMember[]>>;
     onClose: () => void;
+    natarIdToNameMap: Record<number, string>;
 }
 
-const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : ChooseStaffProps) => {
+const ChooseStaff = ({ natar, mainStaffMembers, setMainStaffMembers, onClose, natarIdToNameMap } : ChooseStaffProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -143,7 +144,7 @@ const ChooseStaff = ({natar, mainStaffMembers, setMainStaffMembers, onClose} : C
                             <Box width='30%' textAlign='right'>
                                 <Typography variant='body2'>
                                     {isAssignedToOtherNatar
-                                        ? t('manageStaff.statusAssigned')
+                                        ? t('manageStaff.statusAssignedTo', { natarName: natarIdToNameMap[staff.natarId]})
                                         : t('manageStaff.statusNotAssigned')}
                                 </Typography>
                             </Box>

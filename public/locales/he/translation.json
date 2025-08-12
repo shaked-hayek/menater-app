@@ -69,6 +69,7 @@
         "staffPhone": "מספר טלפון",
         "staffStatus": "ססטוס",
         "statusAssigned": "משובץ",
+        "statusAssignedTo": "משובץ ל-{{natarName}}",
         "statusNotAssigned": "לא משובץ",
         "searchByName": "חיפוש לפי שם",
         "errorMsgs": {

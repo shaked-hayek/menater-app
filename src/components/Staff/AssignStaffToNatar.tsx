@@ -30,9 +30,10 @@ interface AssignStaffToNatarProps {
     natar: Natar;
     staffMembers: StaffMember[];
     setStaffMembers: Dispatch<SetStateAction<StaffMember[]>>;
+    natarIdToNameMap: Record<number, string>;
 }
 
-const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignStaffToNatarProps) => {
+const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers, natarIdToNameMap } : AssignStaffToNatarProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,6 +90,7 @@ const AssignStaffToNatar = ({ natar, staffMembers, setStaffMembers } : AssignSta
                         mainStaffMembers={staffMembers}
                         setMainStaffMembers={setStaffMembers}
                         onClose={closeModal}
+                        natarIdToNameMap={natarIdToNameMap}
                     />
                 </Box>
             </Modal>

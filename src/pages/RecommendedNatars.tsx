@@ -38,6 +38,7 @@ const RecommendedNatars = () => {
     const dispatch = useDispatch();
 
     const [recommendedNatars, setRecommendedNatars] = useState<Natar[]>([]);
+    const [natarIdToNameMap, setNatarIdToNameMap] = useState<Record<number, string>>({});
     const [selectedNatar, setSelectedNatar] = useState<Natar | null>(null);
     const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
@@ -47,8 +48,16 @@ const RecommendedNatars = () => {
     useEffect(() => {
         const fetchNatars = async () => {
           try {
-            await getRecommendedNatars(setRecommendedNatars);
+            const natarsResult = await getRecommendedNatars(setRecommendedNatars);
             setShowLoadingPopup(false);
+
+            // Generate map from the fetched natars
+            setNatarIdToNameMap(prevMap =>
+                Object.fromEntries(
+                    natarsResult.map(natar => [natar.id, natar.name])
+                )
+            );
+
           } catch (error) {
             errorHandler(dispatch, t('recommendedNatars.errorMsgs.serverGetError'));
           }
@@ -136,7 +145,14 @@ const RecommendedNatars = () => {
 
             <Modal open={isNatarModalOpen} onClose={closeModal}>
                 <Box sx={modalStyle}>
-                    {selectedNatar && <AddNatar natarDetails={selectedNatar} onClose={closeModal} onMarkAsOpened={markNatarAsOpen} />}
+                    {selectedNatar && 
+                        <AddNatar
+                            natarDetails={selectedNatar}
+                            onClose={closeModal}
+                            onMarkAsOpened={markNatarAsOpen}
+                            natarIdToNameMap={natarIdToNameMap}
+                        />
+                    }
                 </Box>
             </Modal>
             

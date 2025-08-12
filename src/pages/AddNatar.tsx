@@ -23,9 +23,10 @@ interface AddNatarProps {
     natarDetails: Natar;
     onClose: () => void;
     onMarkAsOpened: (id: number) => void;
+    natarIdToNameMap: Record<number, string>;
 }
 
-const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
+const AddNatar = ({ natarDetails, onClose, onMarkAsOpened, natarIdToNameMap }: AddNatarProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -100,6 +101,7 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
                             natar={natarDetails}
                             staffMembers={staffMembers}
                             setStaffMembers={setStaffMembers}
+                            natarIdToNameMap={natarIdToNameMap}
                         />
                     </Grid>
                 </Grid>
