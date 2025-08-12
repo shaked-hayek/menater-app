@@ -20,6 +20,8 @@ import { generateRecommendation } from 'actions/generateRecommendation/recommend
 import { waitForArcgisAuth } from 'actions/arcgis/waitForArcgisAuth';
 import { getBuildingId } from 'actions/arcgis/getBuildingId';
 import { errorHandler } from 'actions/errors/errorHandler';
+import { getRecommendedNatars } from 'actions/natars/natarsActions';
+import { Natar } from 'components/Interfaces/Natar';
 
 
 const DestructionSites = () => {
@@ -39,6 +41,7 @@ const DestructionSites = () => {
     const [selectedStreet, setSelectedStreet] = useState<string | null>(null);
     const [selectedNumber, setSelectedNumber] = useState<string | null>(null);
     const [selectedBuildingId, setSelectedBuildingId] = useState<number | null>(null);
+    const [recommendedNatars, setRecommendedNatars] = useState<Natar[]>([]);
     const [casualties, setCasualties] = useState('');
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
 
@@ -109,6 +112,17 @@ const DestructionSites = () => {
         updateCasualtiesEstimate();
     }, [selectedStreet, selectedNumber, earthquakeTimeIsDayTime]);
 
+    useEffect(() => {
+        const fetchRecommendedNatar = () => {
+            try {
+                getRecommendedNatars(setRecommendedNatars);
+            } catch (error) {
+                errorHandler(dispatch, t('recommendedNatars.errorMsgs.serverGetError'));
+            }
+        };
+
+        fetchRecommendedNatar();
+    }, []);
 
     const handleApproveSitesChoice = async () => {
         setShowRecommendationPopup(false);
@@ -268,9 +282,19 @@ const DestructionSites = () => {
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'center', 
-                    alignItems: 'flex-end',
+                    alignItems: 'center',
                     mt: 3,
+                    gap: 1,
                 }}>
+                    {recommendedNatars.length !== 0 && 
+                        <SecondaryButton 
+                            variant='contained'
+                            color='primary'
+                            onClick={() => navigate(`/${PAGES.RECOMMENDED_NATARS}`)}
+                        >
+                            {t('destructionSites.showOldRecommendation')}
+                        </SecondaryButton>
+                    }
                     <MainButton height={'40px'} onClick={handleShowRecommendation}>
                         {t('destructionSites.getRecommendation')}
                     </MainButton>

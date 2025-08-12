@@ -138,6 +138,7 @@
         "numberOfCasualties": "מספר נפגעים מדווח",
         "numberOfCasualtiesEst": "מספר נפגעים מוערך",
         "getRecommendation": "קבלת המלצה",
+        "showOldRecommendation": "הצגת ההמלצה הקודמת",
         "approveSites": "האם לאשר את אתרי ההרס ולעבור להמלצה?",
         "creatingRecommendation": "המלצה בתהליך יצירה",
         "connectingToMap": "טוען מפה",
