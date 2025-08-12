@@ -14,6 +14,7 @@ import { StaffMember } from 'components/Interfaces/StaffMember';
 import { updateNatarOpenedStatus } from 'actions/natars/serverNatarsActions';
 import { useDispatch } from 'react-redux';
 import { errorHandler } from 'actions/errors/errorHandler';
+import { bulkUpdateStaffNatarAction } from 'actions/staff/staffActions';
 
 
 const MIN_STAFF_NEEDED = 2;
@@ -35,6 +36,13 @@ const AddNatar = ({natarDetails, onClose, onMarkAsOpened}: AddNatarProps) => {
     const handleSubmit = async () => {
         if (staffMembers.length < MIN_STAFF_NEEDED) {
             errorHandler(dispatch, t('openNatar.errorMsgs.notEnoughStaff', {amount: MIN_STAFF_NEEDED}));
+            return;
+        }
+        try {
+            const selectedIdsArray: string[] = Array.from(staffMembers.map(member => member.id));
+            bulkUpdateStaffNatarAction(selectedIdsArray, natarDetails.id);
+        } catch(error) {
+            errorHandler(dispatch, t('openNatar.errorMsgs.assignStaffError'), error);
             return;
         }
         try {

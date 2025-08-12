@@ -176,7 +176,8 @@
         "openNatar": "פתיחת נט\"ר",
         "errorMsgs": {
             "serverGetError": "קרתה תקלה בשרת",
-            "notEnoughStaff": "יש לשבץ לפחות {{amount}} אנשי צוות"
+            "notEnoughStaff": "יש לשבץ לפחות {{amount}} אנשי צוות",
+            "assignStaffError": "קרתה תקלה בשיבוץ אנשי צוות"
         },
         "natarDetails": {
             "id": "מזהה",
