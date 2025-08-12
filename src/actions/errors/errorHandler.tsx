@@ -3,8 +3,14 @@ import { sendErrorAction } from './errorsActions';
 import { showError } from 'store/slices/errorSlice';
 
 
-export const errorHandler = (dispatch: Dispatch<UnknownAction>, message: string, error?: Error) => {
-    dispatch(showError({message, error}));
+export const errorHandler = (
+    dispatch: Dispatch<UnknownAction> | null,
+    message: string,
+    error?: Error
+) => {
+    if (dispatch) {
+        dispatch(showError({message, error}));
+    }
     sendErrorAction({message, error: error ?? null})
         .catch(() => console.log('Error in logging error to server'));
 };
