@@ -148,7 +148,10 @@
             "serverAddError": "שגיאה בהוספת אתר הרס",
             "serverDeleteError": "שגיאה במחיקת אתר הרס",
             "serverGetError": "קרתה תקלה בשרת",
-            "errorGettingRecommendation": "קרתה תקלה בשרת בקבלת ההמלצה"
+            "errorGettingRecommendation": "קרתה תקלה בשרת בקבלת ההמלצה",
+            "arcgisError": "קרתה שגיאה בטעינת האתרים במפה",
+            "arcgisAuthError": "קרתה שגיאה בהתחברות למפה",
+            "arcgisInfoError": "קרתה שגיאה בקבלת מידע מהמפה"
         }
     },
     "recommendedNatars": {

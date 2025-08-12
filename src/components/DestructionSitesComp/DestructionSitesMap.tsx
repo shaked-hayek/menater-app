@@ -15,6 +15,9 @@ import debounce from 'lodash/debounce';
 import { ARCGIS_SETTINGS, CITY_DATA } from 'consts/settings.const';
 import { MAP_SETTINGS } from 'consts/settings.const';
 import { DestructionSite } from '../Interfaces/DestructionSite';
+import { errorHandler } from 'actions/errors/errorHandler';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
 
 interface MapComponentProps {
@@ -31,7 +34,10 @@ const DestructionSitesMap = memo(({
   setStreetNames,
   setStreetNumbers,
   selectedStreet,
-}: MapComponentProps) => {
+}: MapComponentProps) => {  
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<MapView | null>(null);
   const featureLayerRef = useRef<FeatureLayer | null>(null);
@@ -47,8 +53,8 @@ const DestructionSitesMap = memo(({
       try {
         IdentityManager.checkSignInStatus(ARCGIS_SETTINGS.SERVER_URL)
           .then(() => console.log('ArcGIS authenticated'))
-          .catch(() => {
-            throw new Error('ArcGIS is not authenticated');
+          .catch((error) => {
+            errorHandler(dispatch, t('destructionSites.errorMsgs.arcgisAuthError'), error);
           });
         
         const basemapLayer = new WebTileLayer({
@@ -100,7 +106,8 @@ const DestructionSitesMap = memo(({
         fetchStreetNames();
 
       } catch (error) {
-        throw new Error('Error loading ArcGIS map: ' + error);
+        errorHandler(dispatch, t('destructionSites.errorMsgs.arcgisError'), error)
+        console.log('Error loading ArcGIS map: ' + error);
       }
     };
 
@@ -119,7 +126,7 @@ const DestructionSitesMap = memo(({
         const names = result.features.map(f => f.attributes['Street_Name']);
         setStreetNames(Array.from(new Set(names)));
       } catch (error) {
-        throw new Error('Failed to get information from ArcGIS: ' + error);
+        errorHandler(dispatch, t('destructionSites.errorMsgs.arcgisInfoError'), error);
       }
     };
 
@@ -241,7 +248,7 @@ const DestructionSitesMap = memo(({
       const sortedNumbers = numbers.sort((a, b) => Number(a) - Number(b));
       setStreetNumbers(sortedNumbers);
     } catch (error) {
-      throw new Error('Failed to get information from ArcGIS: ' + error);
+      errorHandler(dispatch, t('destructionSites.errorMsgs.arcgisInfoError'), error);
     }
   };
 
