@@ -54,6 +54,7 @@ const OtherActions = () => {
     const initSystemAction = async () => {
         try {
             setShowLoadingPopup(true);
+            setShowApprovePopup(false);
             setLoadingMessage(t('otherActions.loadingInit'));
             await initializeDBAction();
             setShowLoadingPopup(false);
