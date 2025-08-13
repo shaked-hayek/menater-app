@@ -5,6 +5,7 @@ export enum ROUTES {
     STAFF = '/staff',
     STAFF_UPDATE = '/staff/bulk-update',
     SITES = '/sites',
+    SITES_TOTAL_CASUALTIES = '/sites/total-casualties',
     NATARS = '/natars',
     ERRORS = '/errors',
     INIT_DB = '/initializeDB',

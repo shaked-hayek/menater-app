@@ -17,6 +17,7 @@ import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { errorHandler } from 'actions/errors/errorHandler';
+import { getSitesCasualtiesSum } from 'actions/sites/sitesActions';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -40,6 +41,7 @@ const RecommendedNatars = () => {
     const [recommendedNatars, setRecommendedNatars] = useState<Natar[]>([]);
     const [natarIdToNameMap, setNatarIdToNameMap] = useState<Record<number, string>>({});
     const [selectedNatar, setSelectedNatar] = useState<Natar | null>(null);
+    const [totalCasualties, setTotalCasualties] = useState<number>();
     const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
@@ -59,12 +61,25 @@ const RecommendedNatars = () => {
             );
 
           } catch (error) {
-            errorHandler(dispatch, t('recommendedNatars.errorMsgs.serverGetError'));
+            errorHandler(dispatch, t('recommendedNatars.errorMsgs.serverGetError'), error);
           }
         };
         
         fetchNatars();
       }, []);
+
+    useEffect(() => {
+        const fetchTotalCasualties = async () => {
+            try {
+                const casualties = await getSitesCasualtiesSum();
+                setTotalCasualties(casualties);
+            } catch (error) {
+                errorHandler(dispatch, t('recommendedNatars.errorMsgs.serverGetError'), error);
+            }
+        };
+
+        fetchTotalCasualties();
+    }, []);
 
     const handleAddSite = () => {
         navigate(`/${PAGES.DESTRUCTION_SITES}`);
@@ -129,6 +144,14 @@ const RecommendedNatars = () => {
                         <Typography variant='h4'>{t('recommendedNatars.title')}</Typography>
                     </Box>
                     <MultiPointMap natars={recommendedNatars} />
+                    <Box>
+                        <Typography variant='body2'>
+                            {t('recommendedNatars.casualtiesAndCapacity', {
+                                totalCasualties,
+                                capacity: recommendedNatars.reduce((sum, natar) => sum + (natar.capacity ?? 0), 0)
+                            })}
+                        </Typography>
+                    </Box>
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'flex-end',

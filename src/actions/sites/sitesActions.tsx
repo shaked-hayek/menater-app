@@ -39,3 +39,14 @@ export async function deleteSiteAction(site : DestructionSite) {
         throw new Error('Failed to delete site');
     }
 };
+
+export async function getSitesCasualtiesSum() {
+    const response = await fetch(`${SERVER_IP}${ROUTES.SITES_TOTAL_CASUALTIES}`, {
+        method: 'GET',
+    });
+    if (!response.ok) {
+        throw new Error('Failed to get sites casualties sum');
+    }
+    const data = await response.json();
+    return data.totalCasualties;
+};
