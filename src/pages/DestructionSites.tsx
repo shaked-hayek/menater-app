@@ -133,7 +133,7 @@ const DestructionSites = () => {
             await generateRecommendation();
         } catch (error) {
             setShowLoadingPopup(false);
-            errorHandler(dispatch, t('manageStaff.errorMsgs.errorGettingRecommendation'), error);
+            errorHandler(dispatch, t('destructionSites.errorMsgs.errorGettingRecommendation'), error);
             return;
         }
         navigate(`/${PAGES.RECOMMENDED_NATARS}`);
