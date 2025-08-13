@@ -57,6 +57,10 @@ const StartPage = () => {
         const fetchEvents = async () => {
           try {
             const oldEventsResponse = await getEventsAction();
+            if (oldEventsResponse.length == 0) {
+                setLatestEvent(undefined);
+                return;
+            }
             const latestEventResponse = oldEventsResponse.reduce((latest: EarthquakeEvent, current: EarthquakeEvent) => {
                 const latestTime = new Date(latest.timeOpened || 0).getTime();
                 const currentTime = new Date(current.timeOpened || 0).getTime();
