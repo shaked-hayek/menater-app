@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 
 
 interface ErrorState {
     message: string;
-    error: Error | null;
+    error: SerializedError | null;
     visible: boolean;
 }
 
@@ -15,7 +15,7 @@ const initialState: ErrorState = {
 
 interface ShowErrorPayload {
     message: string;
-    error?: Error | null;
+    error?: SerializedError | null;
 }
 
 const errorSlice = createSlice({
