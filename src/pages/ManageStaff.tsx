@@ -5,14 +5,8 @@ import {
     IconButton,
     Modal,
     Box,
-    Button,
-    Table,
-    TableBody,
     TableCell,
-    TableHead,
     TableRow,
-    TableContainer,
-    Paper,
     Stack,
     TextField,
     TableSortLabel,
@@ -26,7 +20,8 @@ import { errorHandler } from 'actions/errors/errorHandler';
 import { useDispatch } from 'react-redux';
 import CreateStaffMember from 'components/Staff/CreateStaffMember';
 import { SecondaryButton } from 'components/atoms/Buttons';
-import { tableBgColor } from 'style/colors';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ManageTable from 'components/atoms/ManageTable';
 
 const modalStyle = {
@@ -119,9 +114,19 @@ const ManageStaff = () => {
                 <SecondaryButton onClick={() => setShowModal(true)}>
                     {t('manageStaff.addStaffMember')}
                 </SecondaryButton>
+
                 <Typography variant='h4' sx={{ flexGrow: 1, textAlign: 'center' }}>
                     {t('manageStaff.title')}
                 </Typography>
+
+                <Stack direction='row' spacing={1}>
+                    <SecondaryButton onClick={() => {}}>
+                        <FileDownloadIcon color='primary' />
+                    </SecondaryButton>
+                    <SecondaryButton onClick={() => {}}>
+                        <FileUploadIcon color='primary' />
+                    </SecondaryButton>
+                </Stack>
             </Box>
 
             <TextField
@@ -171,20 +176,29 @@ const ManageStaff = () => {
                     </>
                 }
                 rows={
-                    <>
-                        {filteredStaff.map((staff, index) => (
-                            <TableRow key={index}>
-                                <TableCell align='right'>{staff.name}</TableCell>
-                                <TableCell align='right'>{staff.occupation}</TableCell>
-                                <TableCell align='right'>{staff.phoneNumber || '-'}</TableCell>
-                                <TableCell align='right' sx={{ padding: '0 8px' }}>
-                                    <IconButton onClick={() => deleteStaffMember(staff)}>
-                                        <DeleteIcon color='error' />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </>
+                    filteredStaff.length > 0 ? (
+                        <>
+                            {filteredStaff.map((staff, index) => (
+                                <TableRow key={index}>
+                                    <TableCell align='right'>{staff.name}</TableCell>
+                                    <TableCell align='right'>{staff.occupation}</TableCell>
+                                    <TableCell align='right'>{staff.phoneNumber || '-'}</TableCell>
+                                    <TableCell align='right' sx={{ padding: '0 8px' }}>
+                                        <IconButton onClick={() => deleteStaffMember(staff)}>
+                                            <DeleteIcon color='error' />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </>
+                    ) : (
+                        // 👇 No Rows Fallback
+                        <TableRow>
+                            <TableCell colSpan={4} align='center'>
+                                {t('manageStaff.noRowsFound')}
+                            </TableCell>
+                        </TableRow>
+                    )
                 }
             />
 
