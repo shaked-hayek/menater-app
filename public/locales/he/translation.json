@@ -160,7 +160,7 @@
         "addDestructionSite": "הוספת אתר הרס",
         "loading": "טוען נט\"רים מומלצים",
         "loadingSubmit": "יוצר סיכום אירוע",
-        "casualtiesAndCapacity": "סך נפגעים: {{totalCasualties}} / קיבולת: {{capacity}}",
+        "casualtiesAndCapacity": "סך נפגעים: {{totalCasualties}} / קיבולת: {{capacity}} / קיבולת אופציונלית: {{optionalCapacity}}",
         "errorMsgs": {
             "serverGetError": "קרתה תקלה בשרת",
             "fatherNotFound": "תקלה: לא נמצא נט\"ר אב",
