@@ -221,8 +221,15 @@ const DestructionSites = () => {
                                 key={index}
                                 disableGutters
                                 secondaryAction={
-                                    <IconButton edge="start" onClick={() => deleteDestructionSite(site, index)}>
-                                        <DeleteIcon color="error" />
+                                    <IconButton
+                                        edge="start"
+                                        onClick={() => deleteDestructionSite(site, index)}
+                                        disabled={site.wasUsedInRec === true}
+                                        sx={{
+                                            color: site.wasUsedInRec === true ? 'gray' : 'error.main',
+                                        }}
+                                    >
+                                        <DeleteIcon />
                                     </IconButton>
                                 }
                             >
