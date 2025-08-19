@@ -55,6 +55,23 @@ const ManageStaff = () => {
         setShowModal(false);
     };
 
+    const handleDownload = () => {
+        const rows = staffMembers.map(({ name, occupation, phoneNumber }) =>
+            [name, occupation, phoneNumber || ''].join(',')
+        );
+        const csvContent = rows.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'staff_members.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflow: 'hidden'}}>
             <Box display='flex' justifyContent='space-between' alignItems='center' dir='ltr'>
@@ -67,7 +84,7 @@ const ManageStaff = () => {
                 </Typography>
 
                 <Stack direction='row' spacing={1}>
-                    <SecondaryButton onClick={() => {}}>
+                    <SecondaryButton onClick={() => handleDownload()}>
                         <FileDownloadIcon color='primary' />
                     </SecondaryButton>
                     <SecondaryButton onClick={() => {}}>
