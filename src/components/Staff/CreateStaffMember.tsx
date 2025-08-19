@@ -74,7 +74,6 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
         const staffMember = {
             name: formValues.name, 
             occupation: formValues.occupation,
-            status: 'null',
             phoneNumber: formValues.phoneNumber ?? '',
             natarId: 0,
         };

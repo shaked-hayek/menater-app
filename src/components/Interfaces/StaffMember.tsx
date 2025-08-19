@@ -9,7 +9,6 @@ export interface StaffMember {
     id: string;
     name: string;
     occupation: StaffOccupation;
-    status?: string;
     phoneNumber?: string;
     natarId: number;
 }
