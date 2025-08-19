@@ -1,23 +1,18 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
-    Table,
-    TableBody,
     TableCell,
-    TableHead,
     TableRow,
     IconButton,
     Box,
-    Paper,
-    TableContainer,
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
-import { tableBgColor } from 'style/colors';
 import { deleteNatarAction } from 'actions/natars/natarsActions';
 import { Natar, NatarField } from 'components/Interfaces/Natar';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { errorHandler } from 'actions/errors/errorHandler';
+import ManageTable from 'components/atoms/ManageTable';
 
 
 interface FullNatarsTableProps {
@@ -47,55 +42,43 @@ const FullNatarsTable = ({ natars, setNatars, fields, setModalData, setShowModal
     };
 
     return (
-        <>
-            <Paper
-                elevation={2}
-                sx={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    bgcolor: tableBgColor,
-                }}
-            >
-                <TableContainer sx={{ maxHeight: '445px' }}>
-                    <Table stickyHeader>
-                        <TableHead>
-                            <TableRow>
-                                {fields.map(field => (
-                                    <TableCell key={field.key} align='right' sx={{ fontWeight: 'bold' }}>
-                                        {field.label}
-                                    </TableCell>
-                                ))}
-                                <TableCell align='right' sx={{ fontWeight: 'bold' }}>{t('manageNatars.actions')}</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {natars.map(natar => (
-                                <TableRow key={natar.id}>
-                                    {fields.map(({ key }) =>
-                                        <TableCell key={key} align='right'>
-                                            {typeof natar[key] === 'boolean'
-                                            ? t(natar[key] ? 'openNatar.exists' : 'openNatar.doesntExist')
-                                            : String(natar[key] ?? '')}
-                                        </TableCell>
-                                    )}
-                                    <TableCell align='right'>
-                                        <Box display='flex' gap={1} justifyContent='flex-end'>
-                                            <IconButton onClick={() => handleEdit(natar)}>
-                                                <Edit color='primary' />
-                                            </IconButton>
-                                            <IconButton onClick={() => handleDelete(natar)}>
-                                                <Delete color='error' />
-                                            </IconButton>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
-        </>
+        <ManageTable
+            headerFields={
+                <>
+                    {fields.map(field => (
+                        <TableCell key={field.key} align='right' sx={{ fontWeight: 'bold' }}>
+                            {field.label}
+                        </TableCell>
+                    ))}
+                    <TableCell align='right' sx={{ fontWeight: 'bold' }}>{t('manageNatars.actions')}</TableCell>
+                </>
+            }
+            rows={
+                <>
+                    {natars.map(natar => (
+                        <TableRow key={natar.id}>
+                            {fields.map(({ key }) =>
+                                <TableCell key={key} align='right'>
+                                    {typeof natar[key] === 'boolean'
+                                    ? t(natar[key] ? 'openNatar.exists' : 'openNatar.doesntExist')
+                                    : String(natar[key] ?? '')}
+                                </TableCell>
+                            )}
+                            <TableCell align='right'>
+                                <Box display='flex' gap={1} justifyContent='flex-end'>
+                                    <IconButton onClick={() => handleEdit(natar)}>
+                                        <Edit color='primary' />
+                                    </IconButton>
+                                    <IconButton onClick={() => handleDelete(natar)}>
+                                        <Delete color='error' />
+                                    </IconButton>
+                                </Box>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </>
+            }
+        />
     );
 };
 

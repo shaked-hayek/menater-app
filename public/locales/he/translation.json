@@ -52,6 +52,7 @@
         }
     },
     "manageStaff": {
+        "title": "אנשי צוות",
         "existingStaff": "אנשי צוות קיימים",
         "addStaffMember": "הוספת איש צוות",
         "assignStaff": "שיבוץ אנשי צוות",
@@ -72,6 +73,7 @@
         "statusAssignedTo": "משובץ ל-{{natarName}}",
         "statusNotAssigned": "לא משובץ",
         "searchByName": "חיפוש לפי שם",
+        "deleteStaff": "מחיקה",
         "errorMsgs": {
             "fieldMissing": "יש למלא שם מלא והכשרה",
             "phoneError": "מספר טלפון אינו תקין",

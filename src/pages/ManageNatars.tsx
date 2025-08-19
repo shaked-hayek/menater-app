@@ -66,7 +66,7 @@ const ManageNatars = () => {
                 <SecondaryButton onClick={handleAdd}>
                     {t('manageNatars.addNatar')}
                 </SecondaryButton>
-                <Typography variant='h5' sx={{ flexGrow: 1, textAlign: 'center' }}>
+                <Typography variant='h4' sx={{ flexGrow: 1, textAlign: 'center' }}>
                     {t('manageNatars.existingNatars')}
                 </Typography>
             </Box>
