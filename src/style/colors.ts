@@ -8,6 +8,7 @@ export const darkTextColor = '#373737';
 export const lightTextColor = '#fffdfc';
 
 export const mainButtonColor = '#131153';
+export const optionalButtonColor = '#6596b6';
 export const secondaryButtonColor = '#f1f1f1';
 export const trialBgColor = '#636363';
 

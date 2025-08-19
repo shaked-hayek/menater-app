@@ -29,7 +29,7 @@
     "startPage": {
         "title": "ברוכים הבאים למערכת המנט\"ר!",
         "openNewEvent": "פתיחת אירוע חדש",
-        "openExistingEvent": "המשך עם אירוע קיים",
+        "openExistingEvent": "המשך עם האירוע הנוכחי",
         "chooseEventType": "בחרו את סוג האירוע",
         "emergencyEvent": "אירוע חירום",
         "trialEvent": "אירוע תרגול",

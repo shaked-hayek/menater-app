@@ -15,6 +15,7 @@ import { setEventDataForSystem } from 'utils';
 import { clearEventDataAction, createEventSummaryAction, getEventSummaryAction } from 'actions/events/eventSummaryActions';
 import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
 import { errorHandler } from 'actions/errors/errorHandler';
+import { optionalButtonColor } from 'style/colors';
 
 
 const modalStyle = {
@@ -136,6 +137,16 @@ const StartPage = () => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                 <Box sx={buttonsStyle}>
+                    <MainButton onClick={onOpenNewEvent}>
+                        {t('startPage.openNewEvent')}
+                    </MainButton>
+                    {latestEvent &&
+                        <MainButton onClick={onOpenExistingEvent} bgcolor={optionalButtonColor}>
+                            {t('startPage.openExistingEvent')}
+                        </MainButton>
+                    }
+                </Box>
+                <Box sx={buttonsStyle}>
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_EVENTS}`)}>
                         {t('startPage.eventsHistory')}
                     </SecondaryButton>
@@ -148,16 +159,6 @@ const StartPage = () => {
                     <SecondaryButton onClick={() => navigate(`/${PAGES.OTHER_ACTIONS}`)}>
                         {t('startPage.otherActionsButton')}
                     </SecondaryButton>
-                </Box>
-                <Box sx={buttonsStyle}>
-                    {latestEvent &&
-                        <MainButton onClick={onOpenExistingEvent}>
-                            {t('startPage.openExistingEvent')}
-                        </MainButton>
-                    }
-                    <MainButton onClick={onOpenNewEvent}>
-                        {t('startPage.openNewEvent')}
-                    </MainButton>
                 </Box>
             </Box>
 

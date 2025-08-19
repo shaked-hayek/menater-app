@@ -5,14 +5,15 @@ import { darkTextColor, lightBgColor, lightTextColor, mainButtonColor, secondary
 interface CustomButtonProps extends ButtonProps {
   children?: React.ReactNode;
   height?: string | number;
+  bgcolor?: string;
 }
 
-export const MainButton = ({ children, height = '80px', ...props }: CustomButtonProps) => {
+export const MainButton = ({ children, height = '80px', bgcolor, ...props }: CustomButtonProps) => {
   return (
     <Button
       {...props}
       sx={{
-        bgcolor: mainButtonColor,
+        bgcolor: bgcolor || mainButtonColor,
         color: lightTextColor,
         flex: 1, 
         minHeight: height,
