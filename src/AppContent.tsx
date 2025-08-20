@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -16,14 +16,14 @@ import OtherActions from 'pages/OtherActions';
 import { RootState } from 'store/store';
 import { PAGES } from 'consts/pages.const';
 import { ErrorPopup } from 'components/atoms/Popups';
-import { hideError, showError } from 'store/slices/errorSlice';
+import { hideError } from 'store/slices/errorSlice';
 
 
 const AppContent = () => {
     const { i18n } = useTranslation();
     const appDir = i18n.dir();
     const dispatch = useDispatch();
-    const { message: errorMessage, visible: showErrorPopup } = useSelector(
+    const { message: errorMessage, error, visible: showErrorPopup } = useSelector(
         (state: RootState) => state.error
     );
 
@@ -50,6 +50,7 @@ const AppContent = () => {
 
             <ErrorPopup
                 errorMessage={errorMessage}
+                errorMessageOriginal={error?.message || null}
                 showErrorPopup={showErrorPopup}
                 onClose={() => dispatch(hideError())}
             />

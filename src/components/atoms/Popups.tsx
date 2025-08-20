@@ -1,25 +1,28 @@
 import { Box, Button, Dialog, DialogActions, DialogTitle, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from '@mui/material';
+import { SerializedError } from "actions/errors/errorHandler";
 
 
 interface ErrorPopupProps {
     errorMessage: string;
-    error?: Error | null;
+    errorMessageOriginal: string | null;
     showErrorPopup: boolean;
     onClose: () => void;
 }
 
-export const ErrorPopup = ({ errorMessage, error, showErrorPopup, onClose } : ErrorPopupProps) => {
+export const ErrorPopup = ({ errorMessage, errorMessageOriginal, showErrorPopup, onClose } : ErrorPopupProps) => {
     const { t } = useTranslation();
     
     return (
         <Dialog open={showErrorPopup} onClose={onClose}>
             <DialogTitle>{errorMessage}</DialogTitle>
-            {error && 
-                <Typography variant='body2'>
-                    {error.message}
-                </Typography>
+            {errorMessageOriginal && 
+                <Box textAlign='center'>
+                    <Typography variant='body2'>
+                        {errorMessageOriginal}
+                    </Typography>
+                </Box>
             }
             <DialogActions>
                 <Button onClick={onClose} color='primary'>
