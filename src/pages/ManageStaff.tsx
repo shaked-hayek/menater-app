@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Container,
     Typography,
@@ -17,6 +17,8 @@ import { SecondaryButton } from 'components/atoms/Buttons';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FullStaffTable from 'components/Staff/FullStaffTable';
+import { staffBulkUpload } from 'actions/staff/staffBulkUpload';
+import { LoadingPopup } from 'components/atoms/Popups';
 
 
 const modalStyle = {
@@ -35,18 +37,23 @@ const modalStyle = {
 const ManageStaff = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
     const [showModal, setShowModal] = useState(false);
+    const [showLoadingPopup, setShowLoadingPopup] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState('');
+
+    const fetchStaff = async () => {
+        try {
+            await getStaffMembersAction(setStaffMembers);
+            setShowLoadingPopup(false);
+        } catch (error) {
+            errorHandler(dispatch, t('manageStaff.errorMsgs.serverGetError'), error);
+        }
+    };
 
     useEffect(() => {
-        const fetchStaff = async () => {
-            try {
-                await getStaffMembersAction(setStaffMembers);
-            } catch (error) {
-                errorHandler(dispatch, t('manageStaff.errorMsgs.serverGetError'), error);
-            }
-        };
-
         fetchStaff();
     }, []);
 
@@ -71,6 +78,22 @@ const ManageStaff = () => {
         document.body.removeChild(link);
     };
 
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+            setShowLoadingPopup(true);
+            setLoadingMessage(t('manageStaff.uploading'));
+            const text = await file.text();
+            await staffBulkUpload(text);
+            await fetchStaff();
+        } catch (error) {
+            errorHandler(dispatch, t('manageStaff.errorMsgs.serverAddError'), error);
+        } finally {
+            setShowLoadingPopup(false);
+        }
+    };
+
 
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflow: 'hidden'}}>
@@ -87,9 +110,19 @@ const ManageStaff = () => {
                     <SecondaryButton onClick={() => handleDownload()}>
                         <FileDownloadIcon color='primary' />
                     </SecondaryButton>
-                    <SecondaryButton onClick={() => {}}>
-                        <FileUploadIcon color='primary' />
-                    </SecondaryButton>
+                    
+                    <>
+                        <SecondaryButton onClick={() => fileInputRef.current?.click()}>
+                            <FileUploadIcon color='primary' />
+                        </SecondaryButton>
+                        <input
+                            type='file'
+                            accept='.csv'
+                            hidden
+                            ref={fileInputRef}
+                            onChange={handleUpload}
+                        />
+                    </>
                 </Stack>
             </Box>
 
@@ -100,6 +133,8 @@ const ManageStaff = () => {
                     <CreateStaffMember onCreate={onStaffCreate} />
                 </Box>
             </Modal>
+
+            <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </Container>
     );
 };

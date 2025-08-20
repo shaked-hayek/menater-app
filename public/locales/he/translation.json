@@ -77,6 +77,7 @@
         "noRowsFound": "לא נמצאו אנשי צוות",
         "download": "הורדת csv אנשי צוות",
         "upload": "העלאת csv אנשי צוות",
+        "uploading": "מעלה אנשי צוות",
         "errorMsgs": {
             "fieldMissing": "יש למלא שם מלא והכשרה",
             "phoneError": "מספר טלפון אינו תקין",

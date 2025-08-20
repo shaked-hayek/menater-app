@@ -4,6 +4,7 @@ export enum ROUTES {
     EVENT_SUMMARY = '/eventSummery',
     STAFF = '/staff',
     STAFF_UPDATE = '/staff/bulk-update',
+    STAFF_BULK_UPLOAD = '/staff/bulk-add',
     SITES = '/sites',
     SITES_TOTAL_CASUALTIES = '/sites/total-casualties',
     NATARS = '/natars',
