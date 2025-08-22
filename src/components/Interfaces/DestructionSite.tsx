@@ -7,4 +7,5 @@ export interface DestructionSite {
   casualties: number;
   geometry?: __esri.GeometryUnion | null;
   wasUsedInRec?: boolean | null;
+  coupledNatarId?: number | null;
 }

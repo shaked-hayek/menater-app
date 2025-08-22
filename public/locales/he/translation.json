@@ -132,7 +132,8 @@
         "natar": "שם נט\"ר",
         "staff": "אנשי צוות",
         "casualties": "נפגעים",
-        "address": "כתובת"
+        "address": "כתובת",
+        "natarForSite": "מזהה נט\"ר מקושר"
     },
     "destructionSites": {
         "input": "הזנת אתרי הרס",
