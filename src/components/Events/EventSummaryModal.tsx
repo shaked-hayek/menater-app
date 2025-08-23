@@ -13,6 +13,7 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { formatDateTime } from 'utils';
 import { MODE } from 'consts/mode.const';
 
+
 interface EventSummery {
     eventId: string;
     event: EarthquakeEvent;
@@ -137,6 +138,11 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                         <Typography variant='body1'>
                             {natar.id} - {t('eventSummary.natar')}: {natarsMap[natar.id]}
                         </Typography>
+                        {natar.opened &&
+                            <Typography variant='body2' sx={{ mr: 2 }}>
+                                {t('eventSummary.wasOpened')}{formatDateTime(natar.time_updated)}
+                            </Typography>
+                        }
                         {natar.staff.length > 0 && (
                             <>
                                 <Typography variant='body2' sx={{ mr: 2 }}>
