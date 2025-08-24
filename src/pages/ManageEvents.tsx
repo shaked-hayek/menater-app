@@ -8,7 +8,7 @@ import { LoadingPopup } from 'components/atoms/Popups';
 import { createEventSummaryAction, getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
 import { setEventDataForSystem } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store/store';
+import { RootState, setDisplayEventId } from 'store/store';
 import { errorHandler } from 'actions/errors/errorHandler';
 import EventsTable from 'components/Events/EventsTable';
 import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
@@ -60,7 +60,7 @@ const ManageEvents = () => {
         }
     };
 
-    const handleLoadEventData = async (eventId: string) => {
+    const handleLoadEventData = async (eventId: string, index: number) => {
         try {
             setLoadingMessage(t('manageEvents.loadingEventData'));
             setShowLoadingPopup(true);
@@ -75,6 +75,8 @@ const ManageEvents = () => {
             // Load Earthquake event details to store
             const selectedEvent = events.find(event => event.id === eventId);
             setEventDataForSystem(selectedEvent!, dispatch);
+            setDisplayEventId(index);
+
             setShowLoadingPopup(false);
         } catch (error) {
             setShowLoadingPopup(false);

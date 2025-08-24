@@ -15,7 +15,7 @@ import ManageTable from 'components/atoms/ManageTable';
 interface EventsTableProps {
     events: EarthquakeEvent[];
     onViewSummary: (eventId: string) => void;
-    onLoadEvent: (eventId: string) => void;
+    onLoadEvent: (eventId: string, index: number) => void;
 }
 
 const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) => {
@@ -29,6 +29,9 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
         <ManageTable
             headerFields={
                 <>
+                    <TableCell align='right' sx={{ fontWeight: 'bold' }}>
+                        {t('manageEvents.columns.eventId')}
+                    </TableCell>
                     <TableCell align='right' sx={{ fontWeight: 'bold' }}>
                         {t('manageEvents.columns.mode')}
                     </TableCell>
@@ -56,8 +59,9 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
                 <>
                     {[...events]
                         .sort(sortDates)
-                        .map(event => (
+                        .map((event, index) => (
                             <TableRow key={event.id}>
+                                <TableCell align='right'>{index + 1}</TableCell>
                                 <TableCell align='right'>{event.mode == MODE.TRIAL ? t('trial') : t('emergency')}</TableCell>
                                 <TableCell align='right'>{event.earthquakeMagnitude}</TableCell>
                                 <TableCell align='right'>{formatDateTime(event.earthquakeTime)}</TableCell>
@@ -69,7 +73,7 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
                                     </IconButton>
                                 </TableCell>
                                 <TableCell align='center' sx={{ padding: '0 8px' }}>
-                                    <IconButton onClick={() => onLoadEvent(event.id!)}>
+                                    <IconButton onClick={() => onLoadEvent(event.id!, index)}>
                                         <FileUploadIcon color='primary' />
                                     </IconButton>
                                 </TableCell>

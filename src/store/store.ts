@@ -7,12 +7,14 @@ interface AppState {
   arcgisAuth: boolean | null;
   mode: MODE | null;
   earthquakeEvent: EarthquakeEvent | null;
+  displayEventId: number | null;
 }
 
 const initialState: AppState = {
   arcgisAuth: null,
   mode: null,
   earthquakeEvent: null,
+  displayEventId: null,
 };
 
 const appSlice = createSlice({
@@ -28,10 +30,13 @@ const appSlice = createSlice({
     setMode: (state, action: PayloadAction<MODE>) => {
         state.mode = action.payload;
     },
+    setDisplayEventId: (state, action: PayloadAction<number>) => {
+      state.displayEventId = action.payload;
+    },
   },
 });
 
-export const { setArcgisAuth, setMode, setEarthquakeEvent } = appSlice.actions;
+export const { setArcgisAuth, setMode, setEarthquakeEvent, setDisplayEventId } = appSlice.actions;
 
 export const store = configureStore({
   reducer: {

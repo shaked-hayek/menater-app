@@ -106,6 +106,7 @@
         "loadingEventData": "טוען אירוע למערכת",
         "noSummary": "עדיין לא קיים סיכום לאירוע זה",
         "columns": {
+            "eventId": "מזהה",
             "mode": "סוג אירוע",
             "earthquakeMagnitude": "עוצמת הרעש",
             "earthquakeTime": "זמן הרעש",
