@@ -110,6 +110,7 @@
             "earthquakeMagnitude": "עוצמת הרעש",
             "earthquakeTime": "זמן הרעש",
             "timeOpened": "זמן פתיחת האירוע",
+            "timeUpdated": "זמן עדכון אחרון",
             "showSummary": "סיכום אירוע",
             "loadEventData": "טען אירוע למערכת"
         },

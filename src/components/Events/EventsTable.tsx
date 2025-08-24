@@ -22,7 +22,7 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
     const { t } = useTranslation();
 
     const sortDates = (a : EarthquakeEvent, b : EarthquakeEvent) => {
-        return new Date(b.timeOpened || 0).getTime() - new Date(a.timeOpened || 0).getTime();
+        return new Date(b.timeUpdated || 0).getTime() - new Date(a.timeUpdated || 0).getTime();
     };
 
     return (
@@ -40,6 +40,9 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
                     </TableCell>
                     <TableCell align='right' sx={{ fontWeight: 'bold' }}>
                         {t('manageEvents.columns.timeOpened')}
+                    </TableCell>
+                    <TableCell align='right' sx={{ fontWeight: 'bold' }}>
+                        {t('manageEvents.columns.timeUpdated')}
                     </TableCell>
                     <TableCell align='center' sx={{ fontWeight: 'bold', padding: '0 8px' }}>
                         {t('manageEvents.columns.showSummary')}
@@ -59,6 +62,7 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
                                 <TableCell align='right'>{event.earthquakeMagnitude}</TableCell>
                                 <TableCell align='right'>{formatDateTime(event.earthquakeTime)}</TableCell>
                                 <TableCell align='right'>{event.timeOpened ? formatDateTime(event.timeOpened) : ''}</TableCell>
+                                <TableCell align='right'>{event.timeUpdated ? formatDateTime(event.timeUpdated) : ''}</TableCell>
                                 <TableCell align='center' sx={{ padding: '0 8px' }}>
                                     <IconButton onClick={() => onViewSummary(event.id!)}>
                                         <VisibilityIcon color='primary' />

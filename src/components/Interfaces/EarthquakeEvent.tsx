@@ -4,6 +4,7 @@ export interface EarthquakeEvent {
     id?: string;
     name?: string;
     timeOpened?: Date;
+    timeUpdated?: Date;
     mode: MODE;
     earthquakeTime: Date;
     earthquakeMagnitude: number;
