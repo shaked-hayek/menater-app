@@ -5,8 +5,8 @@ import { LoadingPopup } from 'components/atoms/Popups';
 import { Natar, getNatarTableFields } from 'components/Interfaces/Natar';
 import { getOptionalNatars } from 'actions/natars/natarsActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
-import EditNatarModal from 'components/natars/EditNatarModal';
-import FullNatarsTable from 'components/natars/FullNatarsTable';
+import EditNatarModal from 'components/Natars/EditNatarModal';
+import FullNatarsTable from 'components/Natars/FullNatarsTable';
 import { useDispatch } from 'react-redux';
 import { errorHandler } from 'actions/errors/errorHandler';
 

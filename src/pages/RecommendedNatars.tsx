@@ -11,7 +11,7 @@ import { Natar } from 'components/Interfaces/Natar';
 import { LoadingPopup } from 'components/atoms/Popups';
 import AddNatar from './AddNatar';
 import MultiPointMap from 'actions/arcgis/MultiPointMap';
-import NatarNestedList from 'components/natars/NatarNestedList';
+import NatarNestedList from 'components/Natars/NatarNestedList';
 import { NATAR_TYPE } from 'consts/natarType.const';
 import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
 import { useDispatch, useSelector } from 'react-redux';
