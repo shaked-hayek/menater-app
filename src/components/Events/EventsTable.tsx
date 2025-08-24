@@ -11,6 +11,8 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { MODE } from 'consts/mode.const';
 import { formatDateTime } from 'utils';
 import ManageTable from 'components/atoms/ManageTable';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 interface EventsTableProps {
     events: EarthquakeEvent[];
@@ -20,9 +22,10 @@ interface EventsTableProps {
 
 const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) => {
     const { t } = useTranslation();
+    const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     const sortDates = (a : EarthquakeEvent, b : EarthquakeEvent) => {
-        return new Date(b.timeUpdated || 0).getTime() - new Date(a.timeUpdated || 0).getTime();
+        return new Date(a.timeOpened || 0).getTime() - new Date(b.timeOpened || 0).getTime();
     };
 
     return (
@@ -60,7 +63,17 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
                     {[...events]
                         .sort(sortDates)
                         .map((event, index) => (
-                            <TableRow key={event.id}>
+                            <TableRow
+                                key={event.id}
+                                sx={{
+                                    backgroundColor: event.id === earthquakeEvent?.id ? 'action.selected' : 'inherit',
+                                    '&:hover': {
+                                        backgroundColor: event.id === earthquakeEvent?.id
+                                            ? 'action.selected'
+                                            : 'action.hover'
+                                    }
+                                }}
+                            >
                                 <TableCell align='right'>{index + 1}</TableCell>
                                 <TableCell align='right'>{event.mode == MODE.TRIAL ? t('trial') : t('emergency')}</TableCell>
                                 <TableCell align='right'>{event.earthquakeMagnitude}</TableCell>

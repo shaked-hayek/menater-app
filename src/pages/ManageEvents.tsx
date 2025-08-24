@@ -25,18 +25,18 @@ const ManageEvents = () => {
     const [showModal, setShowModal] = useState(false);
     const [summaryData, setSummaryData] = useState<any>(null);
 
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const eventsResponse = await getEventsAction();
-                setEvents(eventsResponse);
-                setShowLoadingPopup(false);
-            } catch (error) {
-                setShowLoadingPopup(false);
-                errorHandler(dispatch, t('manageEvents.errorMsgs.serverGetError'), error);
-            }
-        };
+    const fetchEvents = async () => {
+        try {
+            const eventsResponse = await getEventsAction();
+            setEvents(eventsResponse);
+            setShowLoadingPopup(false);
+        } catch (error) {
+            setShowLoadingPopup(false);
+            errorHandler(dispatch, t('manageEvents.errorMsgs.serverGetError'), error);
+        }
+    };
 
+    useEffect(() => {
         fetchEvents();
     }, []);
 
@@ -76,6 +76,7 @@ const ManageEvents = () => {
             const selectedEvent = events.find(event => event.id === eventId);
             setEventDataForSystem(selectedEvent!, dispatch);
             dispatch(setDisplayEventId(index));
+            fetchEvents();
 
             setShowLoadingPopup(false);
         } catch (error) {
