@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { getErrorsAction } from 'actions/errors/errorsActions';
 import { initializeDBAction } from 'actions/serverDB/serverDBActions';
 import { SecondaryButton } from 'components/atoms/Buttons';
-import { ApprovePopup, LoadingPopup } from 'components/atoms/Popups';
+import { ApprovePopup, ApprovePopupWithCode, LoadingPopup } from 'components/atoms/Popups';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDateTimeForFileName } from 'utils';
@@ -10,6 +10,8 @@ import { errorRed } from 'style/colors';
 import { errorHandler } from 'actions/errors/errorHandler';
 import { useDispatch } from 'react-redux';
 
+
+const INIT_CODE = "1234";
 
 const buttonsStyle = {
     p: 2,
@@ -82,12 +84,13 @@ const OtherActions = () => {
 
             <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
 
-            <ApprovePopup
+            <ApprovePopupWithCode
                 message={t('otherActions.initApprove')}
                 showPopup={showApprovePopup}
                 setShowPopup={setShowApprovePopup}
                 onApprove={initSystemAction}
                 onReject={() => setShowApprovePopup(false)}
+                correctCode={INIT_CODE}
             />
         </>
     );

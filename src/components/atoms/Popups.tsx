@@ -1,7 +1,8 @@
-import { Box, Button, Dialog, DialogActions, DialogTitle, Typography } from "@mui/material";
+import { useState } from 'react';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CircularProgress } from '@mui/material';
-import { SerializedError } from "actions/errors/errorHandler";
+import { rtlStyle } from 'style/muiStyles';
 
 
 interface ErrorPopupProps {
@@ -58,6 +59,67 @@ export const ApprovePopup = ({ message, showPopup, setShowPopup, onApprove, onRe
         </Dialog>
     );
 };
+
+
+interface ApprovePopupWithCodeProps {
+    message: string;
+    showPopup: boolean;
+    setShowPopup: (show: boolean) => void;
+    onApprove: () => void;
+    onReject: () => void;
+    correctCode: string;
+}
+
+export const ApprovePopupWithCode = ({
+    message,
+    showPopup,
+    setShowPopup,
+    onApprove,
+    onReject,
+    correctCode,
+}: ApprovePopupWithCodeProps) => {
+    const { t } = useTranslation();
+    const [inputCode, setInputCode] = useState('');
+
+    const handleClose = () => {
+        setInputCode('');
+        setShowPopup(false);
+    };
+
+    const isCodeCorrect = inputCode === correctCode;
+
+    return (
+        <Dialog open={showPopup} onClose={handleClose}>
+            <DialogTitle>{message}</DialogTitle>
+            <DialogContent>
+                <TextField
+                    autoFocus
+                    fullWidth
+                    label={t('otherActions.enterCode')}
+                    value={inputCode}
+                    onChange={(e) => setInputCode(e.target.value)}
+                    variant='outlined'
+                    type='password'
+                    margin='dense'
+                    sx={rtlStyle}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => { handleClose(); onReject(); }} color='error'>
+                    {t('buttons.cancel')}
+                </Button>
+                <Button
+                    onClick={() => { handleClose(); onApprove(); }}
+                    color='primary'
+                    disabled={!isCodeCorrect}
+                >
+                    {t('buttons.submit')}
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
+
 
 interface LoadingPopupProps {
     loadingMessage: string;
