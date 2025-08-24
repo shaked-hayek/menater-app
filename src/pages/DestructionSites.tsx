@@ -22,6 +22,7 @@ import { getBuildingId } from 'actions/arcgis/getBuildingId';
 import { errorHandler } from 'actions/errors/errorHandler';
 import { getRecommendedNatars } from 'actions/natars/natarsActions';
 import { Natar } from 'components/Interfaces/Natar';
+import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
 
 
 const DestructionSites = () => {
@@ -130,6 +131,7 @@ const DestructionSites = () => {
         setShowLoadingPopup(true);
 
         try {
+            await createEventSummaryAction(earthquakeEvent!.id!);
             await generateRecommendation();
         } catch (error) {
             setShowLoadingPopup(false);
