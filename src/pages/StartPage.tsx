@@ -8,14 +8,11 @@ import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'compo
 import { RootState, setEarthquakeEvent, setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
-import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
-import { getEventsAction } from 'actions/events/eventsActions';
 import { LoadingPopup } from 'components/atoms/Popups';
-import { setEventDataForSystem } from 'utils';
-import { clearEventDataAction, createEventSummaryAction, getEventSummaryAction } from 'actions/events/eventSummaryActions';
+import { clearEventDataAction, getEventSummaryAction } from 'actions/events/eventSummaryActions';
 import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
 import { errorHandler } from 'actions/errors/errorHandler';
-import { optionalButtonColor } from 'style/colors';
+import { emergencyOptionalButtonColor, trialOptionalButtonColor } from 'style/colors';
 
 
 const modalStyle = {
@@ -44,7 +41,7 @@ const StartPage = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const location = useLocation();
-    const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
+    const { earthquakeEvent, mode } = useSelector((state: RootState) => state.appState);
 
     const [showNewEvent, setShowNewEvent] = useState(false);
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
@@ -111,14 +108,14 @@ const StartPage = () => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                 <Box sx={buttonsStyle}>
-                    <MainButton onClick={onOpenNewEvent}>
-                        {t('startPage.openNewEvent')}
-                    </MainButton>
                     {earthquakeEvent?.id &&
-                        <MainButton onClick={onOpenExistingEvent} bgcolor={optionalButtonColor}>
+                        <MainButton onClick={onOpenExistingEvent} bgcolor={mode == MODE.TRIAL ? trialOptionalButtonColor : emergencyOptionalButtonColor}>
                             {t('startPage.openExistingEvent')}
                         </MainButton>
                     }
+                    <MainButton onClick={onOpenNewEvent}>
+                        {t('startPage.openNewEvent')}
+                    </MainButton>
                 </Box>
                 <Box sx={buttonsStyle}>
                     <SecondaryButton onClick={() => navigate(`/${PAGES.MANAGE_EVENTS}`)}>
