@@ -149,10 +149,18 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                     {t('eventSummary.destructionSites')}:
                 </Typography>
                 {summary.destructionSites.map((site: DestructionSite, idx: number) => (
-                    <Box key={idx} sx={{ mr: 2 }}>
+                    <Box key={idx} sx={{ mr: 2, mb: 2 }}>
                         <Typography variant='body1'>
-                            {t('eventSummary.address')}: {site.street} {site.number}, {t('eventSummary.casualties')}: {site.casualties}, {t('eventSummary.natarForSite')}: {site.coupledNatarId}
+                            {site.street} {site.number}
                         </Typography>
+                        <Typography variant='body2' sx={{ mr: 2 }}>
+                            {t('eventSummary.casualties')}: {site.casualties}
+                        </Typography>
+                        {site.coupledNatarId &&
+                            <Typography variant='body2' sx={{ mr: 2 }}>
+                                {t('eventSummary.natarForSite')}: {site.coupledNatarId}
+                            </Typography>
+                        }
                     </Box>
                 ))}
 
