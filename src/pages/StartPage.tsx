@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Modal, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'components/atoms/Buttons';
-import { setEarthquakeEvent, setMode } from 'store/store';
+import { RootState, setEarthquakeEvent, setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
@@ -44,37 +44,15 @@ const StartPage = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const location = useLocation();
+    const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
 
     const [showNewEvent, setShowNewEvent] = useState(false);
-    const [latestEvent, setLatestEvent] = useState<EarthquakeEvent>();
     const [showLoadingPopup, setShowLoadingPopup] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
     const [summaryData, setSummaryData] = useState<any>(null);
     const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchEvents = async () => {
-          try {
-            const oldEventsResponse = await getEventsAction();
-            if (oldEventsResponse.length == 0) {
-                setLatestEvent(undefined);
-                return;
-            }
-            const latestEventResponse = oldEventsResponse.reduce((latest: EarthquakeEvent, current: EarthquakeEvent) => {
-                const latestTime = new Date(latest.timeOpened || 0).getTime();
-                const currentTime = new Date(current.timeOpened || 0).getTime();
-                return currentTime > latestTime ? current : latest;
-            });
-            setLatestEvent(latestEventResponse);
-          } catch (error) {
-            errorHandler(dispatch, t('startPage.errorMsgs.serverGetError'), error);
-          }
-        };
-
-        fetchEvents();
-    }, []);
 
     useEffect(() => {
         const fetchSummaryIfRequested = async () => {
@@ -99,14 +77,11 @@ const StartPage = () => {
         };
 
         fetchSummaryIfRequested();
-    }, [location.state, latestEvent]);
+    }, [location.state]);
 
     const handleClose = () => setShowNewEvent(false);
 
     const handleEventChoice = (mode: MODE) => {
-        if (latestEvent?.id) {
-            createEventSummaryAction(latestEvent.id)
-        }
         clearEventDataAction();
 
         dispatch(setMode(mode));
@@ -121,8 +96,7 @@ const StartPage = () => {
     };
 
     const onOpenExistingEvent = () => {
-        if (latestEvent) {
-            setEventDataForSystem(latestEvent, dispatch);
+        if (earthquakeEvent?.id) {
             navigate(`/${PAGES.DESTRUCTION_SITES}`);
         }
     }
@@ -140,7 +114,7 @@ const StartPage = () => {
                     <MainButton onClick={onOpenNewEvent}>
                         {t('startPage.openNewEvent')}
                     </MainButton>
-                    {latestEvent &&
+                    {earthquakeEvent?.id &&
                         <MainButton onClick={onOpenExistingEvent} bgcolor={optionalButtonColor}>
                             {t('startPage.openExistingEvent')}
                         </MainButton>
