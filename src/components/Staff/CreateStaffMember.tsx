@@ -35,6 +35,7 @@ interface CreateStaffMemberProps {
 const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const defaultFormValues = {
         name: '',
@@ -61,6 +62,8 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
 
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
+        if (isSubmitting) return; // prevent duplicate clicks
+        setIsSubmitting(true);
 
         if (!formValues.name || !formValues.occupation) {
             errorHandler(dispatch, t('manageStaff.errorMsgs.fieldMissing'));
@@ -81,12 +84,14 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
             await addStaffMemberAction(staffMember as StaffMember);
         } catch (error) {
             errorHandler(dispatch, t('manageStaff.errorMsgs.serverAddError'));
+            setIsSubmitting(false);
             return;
         }
         if (onCreate) {
             onCreate(staffMember as StaffMember);
         }
         setFormValues(defaultFormValues);
+        setIsSubmitting(false);
     };
     
     return (
