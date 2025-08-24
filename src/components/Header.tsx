@@ -64,11 +64,11 @@ const Header = () => {
 
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
                     {displayEventId && (
-                        <Typography variant='body1'>{t('header.eventIdDisplay')} {displayEventId}</Typography>
+                        <Typography variant='body1'>🔍 {t('header.eventIdDisplay')} #{displayEventId}</Typography>
                     )}
                     {earthquakeEvent?.earthquakeTime && (
                         <>
-                            <Typography variant='body1'>{t('header.timeSince')}</Typography>
+                            <Typography variant='body1'>⏱️ {t('header.timeSince')}</Typography>
                             <TimeSince date={earthquakeEvent.earthquakeTime} />
                         </>
                     )}
