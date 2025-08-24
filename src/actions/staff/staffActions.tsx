@@ -23,6 +23,8 @@ export async function addStaffMemberAction(staffMember : StaffMember) {
     if (!response.ok) {
         throw new Error('Failed to add staff member');
     }
+    const data = await response.json();
+    return data.id;
 };
 
 export async function deleteStaffMemberAction(staffMember : StaffMember) {

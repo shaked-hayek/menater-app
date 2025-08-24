@@ -81,7 +81,8 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
             natarId: 0,
         };
         try {
-            await addStaffMemberAction(staffMember as StaffMember);
+            const createdStaffId = await addStaffMemberAction(staffMember as StaffMember);
+            (staffMember as StaffMember).id = createdStaffId;
         } catch (error) {
             errorHandler(dispatch, t('manageStaff.errorMsgs.serverAddError'));
             setIsSubmitting(false);
