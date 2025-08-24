@@ -97,7 +97,7 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
             {/* Top-left action icons */}
             <Box sx={{ position: 'absolute', top: 2, left: 8, display: 'flex', gap: 1 }}>
                 <Tooltip title={t('buttons.print')}>
-                    <IconButton onClick={handlePrint}>
+                    <IconButton onClick={() => handlePrint(`event-summary-${summary.eventId}`)}>
                         <PrintIcon />
                     </IconButton>
                 </Tooltip>
