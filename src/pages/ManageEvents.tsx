@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { getEventsAction } from 'actions/events/eventsActions';
 import { LoadingPopup } from 'components/atoms/Popups';
-import EventSummaryModal, { eventSummaryModalStyle } from './EventSummaryModal';
 import { createEventSummaryAction, getEventSummaryAction, loadEventDataFromSummaryAction } from 'actions/events/eventSummaryActions';
-import EventsTable from './EventsTable';
 import { setEventDataForSystem } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { errorHandler } from 'actions/errors/errorHandler';
+import EventsTable from 'components/Events/EventsTable';
+import EventSummaryModal, { eventSummaryModalStyle } from 'components/Events/EventSummaryModal';
 
 
 const ManageEvents = () => {

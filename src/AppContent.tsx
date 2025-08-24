@@ -10,7 +10,7 @@ import DestructionSites from 'pages/DestructionSites';
 import RecommendedNatars from 'pages/RecommendedNatars';
 import ManageStaff from 'pages/ManageStaff';
 import ManageNatars from 'pages/ManageNatars';
-import ManageEvents from 'components/Events/ManageEvents';
+import ManageEvents from 'pages/ManageEvents';
 import OtherActions from 'pages/OtherActions';
 
 import { RootState } from 'store/store';
