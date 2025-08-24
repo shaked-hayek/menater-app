@@ -55,3 +55,15 @@ export const formatDateTimeForFileName = (date: Date) => {
 
     return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
 };
+
+export const computeNatarCapacity = (recommendedNatars: Natar[]) => {
+    return recommendedNatars
+            .filter(natar => natar.type === NATAR_TYPE.MAIN && natar.wasOpened)
+            .reduce((sum, natar) => sum + (natar.capacity ?? 0), 0);
+};
+
+export const computeOptionalNatarCapacity = (recommendedNatars: Natar[]) => {
+    return recommendedNatars
+        .filter(natar => natar.type === NATAR_TYPE.MAIN)
+        .reduce((sum, natar) => sum + (natar.capacity ?? 0), 0);
+};

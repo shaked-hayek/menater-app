@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { errorHandler } from 'actions/errors/errorHandler';
 import { getSitesCasualtiesSum } from 'actions/sites/sitesActions';
+import { computeNatarCapacity, computeOptionalNatarCapacity } from 'utils';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -148,12 +149,8 @@ const RecommendedNatars = () => {
                         <Typography variant='body2'>
                             {t('recommendedNatars.casualtiesAndCapacity', {
                                 totalCasualties,
-                                capacity: recommendedNatars
-                                    .filter(natar => natar.type === NATAR_TYPE.MAIN && natar.wasOpened)
-                                    .reduce((sum, natar) => sum + (natar.capacity ?? 0), 0),
-                                optionalCapacity: recommendedNatars
-                                    .filter(natar => natar.type === NATAR_TYPE.MAIN)
-                                    .reduce((sum, natar) => sum + (natar.capacity ?? 0), 0),
+                                capacity: computeNatarCapacity(recommendedNatars),
+                                optionalCapacity: computeOptionalNatarCapacity(recommendedNatars),
                             })}
                         </Typography>
                     </Box>

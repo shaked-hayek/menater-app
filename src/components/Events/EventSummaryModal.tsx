@@ -5,12 +5,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import PrintIcon from '@mui/icons-material/Print';
 import { useTranslation } from 'react-i18next';
 import { DestructionSite } from 'components/Interfaces/DestructionSite';
-import { Natar } from 'components/Interfaces/Natar';
+import { Natar, RecommendedNatar, mapNatars } from 'components/Interfaces/Natar';
 import { StaffMember } from 'components/Interfaces/StaffMember';
 import { getNatarsByIds } from 'actions/natars/natarsActions';
 import { handlePrint } from './eventsUtils';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
-import { formatDateTime } from 'utils';
+import { computeNatarCapacity, computeOptionalNatarCapacity, formatDateTime } from 'utils';
 import { MODE } from 'consts/mode.const';
 
 
@@ -18,7 +18,7 @@ interface EventSummery {
     eventId: string;
     event: EarthquakeEvent;
     destructionSites: DestructionSite[];
-    recommendedNatars: Natar[];
+    recommendedNatars: RecommendedNatar[];
 }
 
 interface EventSummaryModalProps {
@@ -45,7 +45,8 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
     if (!summary) return null;
 
     const { t } = useTranslation();
-    const [natarsMap, setNatarsMap] = useState<Record<string, string>>({});
+    const [fullRecommendedNatars, setFullRecommendedNatars] = useState<Natar[]>([]);
+    const [natarIdToNameMap, setNatarIdToNameMap] = useState<Record<number, string>>({});
 
     useEffect(() => {
         const fetchNatars = async () => {
@@ -54,8 +55,24 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
 
             try {
                 const natars = await getNatarsByIds(natarIds);
-                const natarsMap = Object.fromEntries(natars.map(n => [n.attributes.OBJECTID, n.attributes.Name]));
-                setNatarsMap(natarsMap);
+                const mappedNatars = mapNatars(natars);
+
+                const wasOpenedMap = Object.fromEntries(
+                    summary.recommendedNatars.map(n => [n.id, n.opened])
+                  );
+                  
+                  const combinedNatars = mappedNatars.map(natar => ({
+                    ...natar,
+                    wasOpened: wasOpenedMap[natar.id] ?? false
+                  }));
+
+                setFullRecommendedNatars(combinedNatars);
+
+                setNatarIdToNameMap(prevMap =>
+                    Object.fromEntries(
+                        mappedNatars.map(natar => [natar.id, natar.name])
+                    )
+                );
             } catch (err) {
                 console.error('Failed to fetch natars:', err);
             }
@@ -117,6 +134,15 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                     <Typography variant='body1'>
                         {t('manageEvents.columns.timeOpened')}: {formatDateTime(summary.event.timeOpened!)}
                     </Typography>
+                    <Typography variant='body1'>
+                        {t('eventSummary.totalCasualties')}: {summary.destructionSites.reduce((sum, obj) => sum + obj.casualties, 0)}
+                    </Typography>
+                    <Typography variant='body1'>
+                        {t('eventSummary.natarCapacity')}: {computeNatarCapacity(fullRecommendedNatars)}
+                    </Typography>
+                    <Typography variant='body1'>
+                        {t('eventSummary.natarOptionalCapacity')}: {computeOptionalNatarCapacity(fullRecommendedNatars)}
+                    </Typography>
                 </Box>
 
                 <Typography variant='subtitle1' sx={{ mt: 2, fontWeight: 'bold'}}>
@@ -136,7 +162,7 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                 {summary.recommendedNatars.map((natar: any, idx: number) => (
                     <Box key={idx} sx={{ mr: 2, mb: 2 }}>
                         <Typography variant='body1'>
-                            {natar.id} - {t('eventSummary.natar')}: {natarsMap[natar.id]}
+                            {natar.id} - {t('eventSummary.natar')}: {natarIdToNameMap[natar.id]}
                         </Typography>
                         {natar.opened &&
                             <Typography variant='body2' sx={{ mr: 2 }}>
