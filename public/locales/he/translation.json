@@ -6,6 +6,7 @@
         "home": "בית",
         "title": "מנט\"ר",
         "timeSince": "זמן מהרעש:",
+        "eventIdDisplay": "מזהה אירוע:",
         "arcgisConnected": "מחובר למפה",
         "arcgisWaitingConnection": "ממתין להתחברות למפה",
         "arcgisConnectionError": "שגיאה בהתחברות למפה"

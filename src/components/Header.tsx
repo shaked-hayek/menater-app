@@ -17,7 +17,7 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const [ currentTimeString, setCurrentTimeString ] = useState('');
-    const { arcgisAuth, earthquakeEvent, mode } = useSelector((state: RootState) => state.appState);
+    const { arcgisAuth, earthquakeEvent, mode, displayEventId } = useSelector((state: RootState) => state.appState);
 
     useEffect(() => {
         const updateTime = () => {
@@ -62,15 +62,20 @@ const Header = () => {
                     </Typography>
                 </Box>
 
-                {earthquakeEvent?.earthquakeTime && (
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
-                        <Typography variant='body1'>{t('header.timeSince')}</Typography>
-                        <TimeSince date={earthquakeEvent.earthquakeTime} />
-                    </Box>
-                )}
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center', alignItems: 'center' }}>
+                    {displayEventId && (
+                        <Typography variant='body1'>{t('header.eventIdDisplay')} {displayEventId}</Typography>
+                    )}
+                    {earthquakeEvent?.earthquakeTime && (
+                        <>
+                            <Typography variant='body1'>{t('header.timeSince')}</Typography>
+                            <TimeSince date={earthquakeEvent.earthquakeTime} />
+                        </>
+                    )}
+                </Box>
 
                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2}}>
-                    <Typography variant='body2'>{currentTimeString}</Typography>
+                    <Typography variant='body1' sx={{ minWidth: '120px', textAlign: 'left' }}>{currentTimeString}</Typography>
                     {mode && (
                         mode == MODE.TRIAL ?
                         (<Box sx={{backgroundColor: trialColor, borderRadius: '10%', p: 1}}>

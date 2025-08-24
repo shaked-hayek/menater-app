@@ -75,7 +75,7 @@ const ManageEvents = () => {
             // Load Earthquake event details to store
             const selectedEvent = events.find(event => event.id === eventId);
             setEventDataForSystem(selectedEvent!, dispatch);
-            setDisplayEventId(index);
+            dispatch(setDisplayEventId(index));
 
             setShowLoadingPopup(false);
         } catch (error) {

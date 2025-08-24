@@ -73,7 +73,7 @@ const EventsTable = ({ events, onViewSummary, onLoadEvent }: EventsTableProps) =
                                     </IconButton>
                                 </TableCell>
                                 <TableCell align='center' sx={{ padding: '0 8px' }}>
-                                    <IconButton onClick={() => onLoadEvent(event.id!, index)}>
+                                    <IconButton onClick={() => onLoadEvent(event.id!, index + 1)}>
                                         <FileUploadIcon color='primary' />
                                     </IconButton>
                                 </TableCell>
