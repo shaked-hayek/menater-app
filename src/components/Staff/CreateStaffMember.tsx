@@ -39,7 +39,7 @@ const CreateStaffMember = ({ onCreate } : CreateStaffMemberProps) => {
 
     const defaultFormValues = {
         name: '',
-        occupation: undefined,
+        occupation: '',
         phoneNumber: '',
     };
     const [formValues, setFormValues] = useState<FormValues>(defaultFormValues);

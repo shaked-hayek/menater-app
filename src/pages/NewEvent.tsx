@@ -16,7 +16,7 @@ import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { errorHandler } from 'actions/errors/errorHandler';
 
 interface FormValues {
-  magnitude: number | null | undefined;
+  magnitude: string;
   dateTime: Dayjs | null;
 }
 
@@ -27,7 +27,7 @@ const NewEvent = () => {
   const mode = useSelector((state: RootState) => state.appState.mode);
 
   const [formValues, setFormValues] = useState<FormValues>({
-    magnitude: undefined,
+    magnitude: '',
     dateTime: dayjs(),
   });
 
@@ -41,7 +41,7 @@ const NewEvent = () => {
 
     const newEvent : EarthquakeEvent = {
       mode: mode!,
-      earthquakeMagnitude: formValues.magnitude, 
+      earthquakeMagnitude: parseFloat(formValues.magnitude), 
       earthquakeTime: formValues.dateTime.toDate()
     };
     const eventId = await addEventAction(newEvent);
@@ -52,7 +52,7 @@ const NewEvent = () => {
   };
 
   const generateRandomValues = () => {
-    const randomIntensity = parseFloat((Math.random() * 10).toFixed(1));
+    const randomIntensity = (Math.random() * 10).toFixed(1);
 
   const randomDateTime = dayjs()
     .subtract(Math.floor(Math.random() * 10), 'day')
@@ -79,7 +79,7 @@ const NewEvent = () => {
           variant='outlined'
           type='number'
           value={formValues.magnitude}
-          onChange={(e) => setFormValues({ ...formValues, magnitude: parseFloat(e.target.value) })}
+          onChange={(e) => setFormValues({ ...formValues, magnitude: e.target.value })}
           fullWidth
           sx={rtlStyle}
         />
