@@ -5,17 +5,22 @@ export const handlePrint = (title: string) => {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
     if (!printWindow) return;
 
-    const fontProperties = [
-        'font', 'font-family', 'font-size', 'font-weight', 'font-style', 'line-height', 'letter-spacing', 'word-spacing'
-    ];
-    
+    const styleProperties = [
+        'font', 'font-family', 'font-size', 'font-weight',
+        'font-style', 'line-height', 'letter-spacing', 'word-spacing',
+        'border', 'border-collapse', 'border-spacing',
+        'padding', 'text-align', 'vertical-align',
+        'background', 'background-color', 'width',
+        'margin', 'margin-bottom',
+      ];
+
     const styles = Array.from(document.styleSheets)
         .map(styleSheet => {
             try {
                 return Array.from(styleSheet.cssRules || [])
                     .filter(rule => {
                         if (rule instanceof CSSStyleRule) {
-                            return fontProperties.some(prop => rule.style.getPropertyValue(prop));
+                            return styleProperties.some(prop => rule.style.getPropertyValue(prop));
                         }
                         return false;
                     })
@@ -57,6 +62,17 @@ export const handlePrint = (title: string) => {
 
                         ul {
                             padding-right: 20px;
+                        }
+
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 16px;
+                        }
+
+                        th, td {
+                            border: 1px solid black;
+                            padding: 8px;
                         }
                     }
                     ${styles}

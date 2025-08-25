@@ -136,8 +136,11 @@
         "totalCasualties": "סה\"כ נפגעים",
         "natarCapacity": "קיבולת נט\"רים פתוחים",
         "natarOptionalCapacity": "קיבולת נט\"רים מומלצים",
+        "natarId": "מזהה",
         "natar": "שם נט\"ר",
         "wasOpened": "נפתח ב-",
+        "notOpened": "לא נפתח",
+        "address": "כתובת",
         "staff": "אנשי צוות",
         "casualties": "נפגעים",
         "natarForSite": "מזהה נט\"ר מקושר"

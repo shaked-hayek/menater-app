@@ -48,6 +48,37 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
     const [fullRecommendedNatars, setFullRecommendedNatars] = useState<Natar[]>([]);
     const [natarIdToNameMap, setNatarIdToNameMap] = useState<Record<number, string>>({});
 
+    const eventDetails = [
+        {
+          label: t('manageEvents.columns.mode'),
+          value: summary.event.mode === MODE.TRIAL ? t('trial') : t('emergency'),
+        },
+        {
+          label: t('manageEvents.columns.earthquakeMagnitude'),
+          value: summary.event.earthquakeMagnitude,
+        },
+        {
+          label: t('manageEvents.columns.earthquakeTime'),
+          value: formatDateTime(summary.event.earthquakeTime),
+        },
+        {
+          label: t('manageEvents.columns.timeOpened'),
+          value: formatDateTime(summary.event.timeOpened!),
+        },
+        {
+          label: t('eventSummary.totalCasualties'),
+          value: summary.destructionSites.reduce((sum, obj) => sum + obj.casualties, 0),
+        },
+        {
+          label: t('eventSummary.natarCapacity'),
+          value: computeNatarCapacity(fullRecommendedNatars),
+        },
+        {
+          label: t('eventSummary.natarOptionalCapacity'),
+          value: computeOptionalNatarCapacity(fullRecommendedNatars),
+        },
+      ];
+
     useEffect(() => {
         const fetchNatars = async () => {
             const natarIds = summary.recommendedNatars.map(n => n.id);
@@ -113,88 +144,137 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                 </Tooltip>
             </Box>
 
-            <Box className='printable'>
+            <Box
+                className='printable'
+                sx={{
+                    '& table, & th, & td': { border: '1px solid #ccc', padding: '8px' },
+                }}
+            >
                 <Typography variant='h5' sx={{ mb: 2 }}>
                     {t('eventSummary.title')}
                 </Typography>
 
-                <Typography variant='subtitle1' sx={{ mt: 2, fontWeight: 'bold'}}>
-                    {t('eventSummary.eventDetails')}:
+                <Typography variant='h6' sx={{ mt: 2, fontWeight: 'bold'}}>
+                    {t('eventSummary.eventDetails')}
                 </Typography>
                 <Box sx={{ mr: 2 }}>
-                    <Typography variant='body1'>
-                        {t('manageEvents.columns.mode')}: {summary.event.mode == MODE.TRIAL ? t('trial') : t('emergency')}
-                    </Typography>
-                    <Typography variant='body1'>
-                        {t('manageEvents.columns.earthquakeMagnitude')}: {summary.event.earthquakeMagnitude}
-                    </Typography>
-                    <Typography variant='body1'>
-                        {t('manageEvents.columns.earthquakeTime')}: {formatDateTime(summary.event.earthquakeTime)}
-                    </Typography>
-                    <Typography variant='body1'>
-                        {t('manageEvents.columns.timeOpened')}: {formatDateTime(summary.event.timeOpened!)}
-                    </Typography>
-                    <Typography variant='body1'>
-                        {t('eventSummary.totalCasualties')}: {summary.destructionSites.reduce((sum, obj) => sum + obj.casualties, 0)}
-                    </Typography>
-                    <Typography variant='body1'>
-                        {t('eventSummary.natarCapacity')}: {computeNatarCapacity(fullRecommendedNatars)}
-                    </Typography>
-                    <Typography variant='body1'>
-                        {t('eventSummary.natarOptionalCapacity')}: {computeOptionalNatarCapacity(fullRecommendedNatars)}
-                    </Typography>
+                    {eventDetails.map(({ label, value }, index) => (
+                        <Typography key={index} variant='body1'>
+                            <Box component='span' sx={{ fontWeight: 'bold' }}>
+                                {label}:
+                            </Box>{' '}
+                            {value}
+                        </Typography>
+                    ))}
                 </Box>
 
-                <Typography variant='subtitle1' sx={{ mt: 2, fontWeight: 'bold'}}>
-                    {t('eventSummary.destructionSites')}:
+                <Typography variant='h6' sx={{ mt: 2, fontWeight: 'bold'}}>
+                    {t('eventSummary.destructionSites')}
                 </Typography>
-                {summary.destructionSites.map((site: DestructionSite, idx: number) => (
-                    <Box key={idx} sx={{ mr: 2, mb: 2 }}>
-                        <Typography variant='body1'>
-                            {site.street} {site.number}
-                        </Typography>
-                        <Typography variant='body2' sx={{ mr: 2 }}>
-                            {t('eventSummary.casualties')}: {site.casualties}
-                        </Typography>
-                        {site.coupledNatarId &&
-                            <Typography variant='body2' sx={{ mr: 2 }}>
-                                {t('eventSummary.natarForSite')}: {site.coupledNatarId}
-                            </Typography>
-                        }
-                    </Box>
-                ))}
+                <Box sx={{ overflowX: 'auto', mt: 1 }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.address')}
+                                    </Typography>
+                                </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.casualties')}
+                                    </Typography>
+                                </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.natarForSite')}
+                                    </Typography>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {summary.destructionSites.map((site, idx) => (
+                                <tr key={idx}>
+                                    <td><Typography variant='body2'>{site.street} {site.number}</Typography></td>
+                                    <td><Typography variant='body2'>{site.casualties}</Typography></td>
+                                    <td><Typography variant='body2'>{site.coupledNatarId ?? '-'}</Typography></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Box>
 
-                <Typography variant='subtitle1' sx={{ mt: 2, fontWeight: 'bold'}}>
-                    {t('eventSummary.recommendedNatars')}:
+
+                <Typography variant='h6' sx={{ mt: 2, fontWeight: 'bold'}}>
+                    {t('eventSummary.recommendedNatars')}
                 </Typography>
-                {summary.recommendedNatars.map((natar: any, idx: number) => (
-                    <Box key={idx} sx={{ mr: 2, mb: 2 }}>
-                        <Typography variant='body1'>
-                            {natar.id} - {t('eventSummary.natar')}: {natarIdToNameMap[natar.id]}
-                        </Typography>
-                        {natar.opened &&
-                            <Typography variant='body2' sx={{ mr: 2 }}>
-                                {t('eventSummary.wasOpened')}{formatDateTime(natar.time_updated)}
-                            </Typography>
-                        }
-                        {natar.staff.length > 0 && (
-                            <>
-                                <Typography variant='body2' sx={{ mr: 2 }}>
-                                    {t('eventSummary.staff')} -
-                                </Typography>
-                                <ul style={{ marginTop: 0 }}>
-                                    {natar.staff.map((staff: StaffMember, sIdx: number) => (
-                                        <li key={sIdx}>
-                                            <Typography variant='body2'>
+                <Box sx={{ overflowX: 'auto', mt: 1 }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.natarId')}
+                                    </Typography>
+                                </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.natar')}
+                                    </Typography>
+                                </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.wasOpened')}
+                                    </Typography>
+                                </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.staff')}
+                                    </Typography>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {summary.recommendedNatars.map((natar: any, idx: number) => (
+                                <tr key={idx}>
+                                    <td>
+                                        <Typography variant='body2'>
+                                            {natar.id}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <Typography variant='body2'>
+                                            {natarIdToNameMap[natar.id]}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <Typography variant='body2'>
+                                            {natar.opened
+                                                ? formatDateTime(natar.time_updated)
+                                                : t('eventSummary.notOpened')}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        {natar.staff.length > 0 ? (
+                                        <ul style={{ margin: 0, paddingInlineStart: '1rem' }}>
+                                            {natar.staff.map((staff: StaffMember, sIdx: number) => (
+                                            <li key={sIdx}>
+                                                <Typography variant='body2'>
                                                 {staff.name} - {staff.occupation} {staff.phoneNumber}
-                                            </Typography>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
-                    </Box>
-                ))}
+                                                </Typography>
+                                            </li>
+                                            ))}
+                                        </ul>
+                                        ) : (
+                                        <Typography variant='body2'>-</Typography>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Box>
+
             </Box>
         </Box>
     );
