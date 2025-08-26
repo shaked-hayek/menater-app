@@ -30,7 +30,7 @@ const appSlice = createSlice({
     setMode: (state, action: PayloadAction<MODE>) => {
         state.mode = action.payload;
     },
-    setDisplayEventId: (state, action: PayloadAction<number>) => {
+    setDisplayEventId: (state, action: PayloadAction<number | null>) => {
       state.displayEventId = action.payload;
     },
   },

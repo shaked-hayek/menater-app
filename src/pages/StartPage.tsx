@@ -5,7 +5,7 @@ import { Box, Modal, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { EmergencyButton, MainButton, SecondaryButton, TrialButton } from 'components/atoms/Buttons';
-import { RootState, setEarthquakeEvent, setMode } from 'store/store';
+import { RootState, setDisplayEventId, setEarthquakeEvent, setMode } from 'store/store';
 import { MODE } from 'consts/mode.const';
 import { PAGES } from 'consts/pages.const';
 import { LoadingPopup } from 'components/atoms/Popups';
@@ -83,6 +83,7 @@ const StartPage = () => {
 
         dispatch(setMode(mode));
         dispatch(setEarthquakeEvent(null));
+        dispatch(setDisplayEventId(null));
 
         handleClose();
         navigate(`/${PAGES.NEW_EVENT}`);
