@@ -143,7 +143,8 @@
         "address": "כתובת",
         "staff": "אנשי צוות",
         "casualties": "נפגעים",
-        "natarForSite": "מזהה נט\"ר מקושר"
+        "natarIdForSite": "מזהה נט\"ר מקושר",
+        "natarForSite": "נט\"ר מקושר"
     },
     "destructionSites": {
         "input": "הזנת אתרי הרס",

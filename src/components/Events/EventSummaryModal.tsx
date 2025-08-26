@@ -187,6 +187,11 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                                 </th>
                                 <th>
                                     <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.natarIdForSite')}
+                                    </Typography>
+                                </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
                                         {t('eventSummary.natarForSite')}
                                     </Typography>
                                 </th>
@@ -198,6 +203,7 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                                     <td><Typography variant='body2'>{site.street} {site.number}</Typography></td>
                                     <td><Typography variant='body2'>{site.casualties}</Typography></td>
                                     <td><Typography variant='body2'>{site.coupledNatarId ?? '-'}</Typography></td>
+                                    <td><Typography variant='body2'>{site.coupledNatarId ? natarIdToNameMap[site.coupledNatarId] : '-'}</Typography></td>
                                 </tr>
                             ))}
                         </tbody>
