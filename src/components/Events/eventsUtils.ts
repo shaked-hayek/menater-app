@@ -1,4 +1,7 @@
+
 export const handlePrint = (title: string) => {
+    const logo = require('../../assets/Logo.png');
+
     const contentEl = document.querySelector('.printable');
     if (!contentEl) return;
 
@@ -74,11 +77,19 @@ export const handlePrint = (title: string) => {
                             border: 1px solid black;
                             padding: 8px;
                         }
+
+                        .print-logo {
+                            display: block;
+                            margin: 0 auto 20px auto;
+                            max-width: 150px;
+                            height: auto;
+                        }
                     }
                     ${styles}
                 </style>
             </head>
             <body>
+                <img src="${logo}" alt="Logo" class="print-logo" />
                 ${contentEl.innerHTML}
             </body>
         </html>
