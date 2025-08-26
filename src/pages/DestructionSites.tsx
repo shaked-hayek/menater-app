@@ -283,7 +283,12 @@ const DestructionSites = () => {
                         <Typography>{casualtiesEstimate ? casualtiesEstimate : '-'}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                        <SecondaryButton variant='contained' color='primary' onClick={addFormDestructionSite}>
+                        <SecondaryButton
+                            variant='contained'
+                            color='primary'
+                            onClick={addFormDestructionSite}
+                            disabled={!casualties && !casualtiesEstimate}
+                        >
                             {t('buttons.add')}
                         </SecondaryButton>
                     </Box>
