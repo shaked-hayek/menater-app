@@ -47,6 +47,7 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
     const { t } = useTranslation();
     const [fullRecommendedNatars, setFullRecommendedNatars] = useState<Natar[]>([]);
     const [natarIdToNameMap, setNatarIdToNameMap] = useState<Record<number, string>>({});
+    const [natarIdToOpenedMap, setNatarIdToOpenedMap] = useState<Record<number, boolean | undefined>>({});
 
     const eventDetails = [
         {
@@ -90,12 +91,13 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
 
                 const wasOpenedMap = Object.fromEntries(
                     summary.recommendedNatars.map(n => [n.id, n.opened])
-                  );
-                  
-                  const combinedNatars = mappedNatars.map(natar => ({
+                );
+                setNatarIdToOpenedMap(wasOpenedMap);
+
+                const combinedNatars = mappedNatars.map(natar => ({
                     ...natar,
                     wasOpened: wasOpenedMap[natar.id] ?? false
-                  }));
+                }));
 
                 setFullRecommendedNatars(combinedNatars);
 
@@ -195,6 +197,11 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                                         {t('eventSummary.natarForSite')}
                                     </Typography>
                                 </th>
+                                <th>
+                                    <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                                        {t('eventSummary.natarOpenForSite')}
+                                    </Typography>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -203,7 +210,18 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                                     <td><Typography variant='body2'>{site.street} {site.number}</Typography></td>
                                     <td><Typography variant='body2'>{site.casualties}</Typography></td>
                                     <td><Typography variant='body2'>{site.coupledNatarId ?? '-'}</Typography></td>
-                                    <td><Typography variant='body2'>{site.coupledNatarId ? natarIdToNameMap[site.coupledNatarId] : '-'}</Typography></td>
+                                    <td>
+                                        <Typography variant='body2'>
+                                            {site.coupledNatarId ? natarIdToNameMap[site.coupledNatarId] : '-'}
+                                        </Typography>
+                                    </td>
+                                    <td>
+                                        <Typography variant='body2'>
+                                            {site.coupledNatarId ? (
+                                                natarIdToOpenedMap[site.coupledNatarId] ? t('eventSummary.natarOpen') : t('eventSummary.natarClose')
+                                            ) : '-'}
+                                        </Typography>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

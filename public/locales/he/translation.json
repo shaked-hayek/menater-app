@@ -144,7 +144,10 @@
         "staff": "אנשי צוות",
         "casualties": "נפגעים",
         "natarIdForSite": "מזהה נט\"ר מקושר",
-        "natarForSite": "נט\"ר מקושר"
+        "natarForSite": "נט\"ר מקושר",
+        "natarOpenForSite": "נט\"ר פתוח?",
+        "natarOpen": "כן",
+        "natarClose": "לא"
     },
     "destructionSites": {
         "input": "הזנת אתרי הרס",
