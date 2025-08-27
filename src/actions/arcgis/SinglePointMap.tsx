@@ -15,10 +15,11 @@ import { ARCGIS_SETTINGS, MAP_SETTINGS } from 'consts/settings.const';
 interface SinglePointMapProps {
     lat: number;
     long: number;
+    natarIndicatorColor?: string;
     zoom?: number;
 }
 
-const SinglePointMap = ({ lat, long, zoom = 15 } : SinglePointMapProps) => {
+const SinglePointMap = ({ lat, long, natarIndicatorColor, zoom = 15 } : SinglePointMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<MapView | null>(null);
 
@@ -51,11 +52,11 @@ const SinglePointMap = ({ lat, long, zoom = 15 } : SinglePointMapProps) => {
         const point = new Point({ latitude: lat, longitude: long });
 
         const markerSymbol = new SimpleMarkerSymbol({
-          color: [226, 119, 40],
+          color: [255, 255, 255],
           size: 10,
           outline: {
-            color: [255, 255, 255],
-            width: 2,
+            color: natarIndicatorColor,
+            width: 3,
           },
         });
 

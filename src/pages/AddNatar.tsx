@@ -15,6 +15,7 @@ import { updateNatarOpenedStatus } from 'actions/natars/serverNatarsActions';
 import { useDispatch } from 'react-redux';
 import { errorHandler } from 'actions/errors/errorHandler';
 import { bulkUpdateStaffNatarAction } from 'actions/staff/staffActions';
+import { mainNatarColor, secondaryNatarColor } from 'style/colors';
 
 
 const MIN_STAFF_NEEDED = 2;
@@ -96,7 +97,11 @@ const AddNatar = ({ natarDetails, onClose, onMarkAsOpened, natarIdToNameMap }: A
                         </ColoredSideBox>
                     </Grid>
                     <Grid size={6}>
-                        <SinglePointMap lat={natarDetails.lat} long={natarDetails.long} />
+                        <SinglePointMap
+                            lat={natarDetails.lat}
+                            long={natarDetails.long}
+                            natarIndicatorColor={natarDetails.type == NATAR_TYPE.MAIN ? mainNatarColor : secondaryNatarColor}
+                        />
                         <AssignStaffToNatar
                             natar={natarDetails}
                             staffMembers={staffMembers}
