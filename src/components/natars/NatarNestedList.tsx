@@ -9,9 +9,10 @@ import { NATAR_TYPE } from 'consts/natarType.const';
 interface NatarNestedListProps {
     recommendedNatars: Natar[];
     openNatar: (natar: Natar) => void;
+    onHoverNatar?: (id: number | null) => void;
 }
 
-const NatarNestedList = ({recommendedNatars, openNatar} : NatarNestedListProps) => {
+const NatarNestedList = ({recommendedNatars, openNatar, onHoverNatar} : NatarNestedListProps) => {
     return (
         <List>
             {buildNestedNatars(recommendedNatars).map((natar, index) => {
@@ -22,6 +23,8 @@ const NatarNestedList = ({recommendedNatars, openNatar} : NatarNestedListProps) 
                     <ListItem
                         key={index}
                         disableGutters
+                        onMouseEnter={() => onHoverNatar?.(natar.id)}
+                        onMouseLeave={() => onHoverNatar?.(null)}
                         sx={{ mr: isChild ? 4 : 0 }} // indent child natars
                         secondaryAction={
                             <IconButton edge='start' onClick={() => openNatar(natar)}>

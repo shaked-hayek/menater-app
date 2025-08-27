@@ -46,6 +46,7 @@ const RecommendedNatars = () => {
     const [totalCasualties, setTotalCasualties] = useState<number>();
     const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
     const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
+    const [hoveredNatarId, setHoveredNatarId] = useState<number | null>(null);
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
     const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
@@ -151,14 +152,22 @@ const RecommendedNatars = () => {
             <Grid container spacing={3}>
                 <Grid size={4}>
                     <ColoredSideBox disableOverflowX>
-                        <NatarNestedList recommendedNatars={recommendedNatars} openNatar={openNatar} />
+                        <NatarNestedList
+                            recommendedNatars={recommendedNatars}
+                            openNatar={openNatar}
+                            onHoverNatar={(id) => setHoveredNatarId(id)}
+                        />
                     </ColoredSideBox>
                 </Grid>
                 <Grid size={8}>
                     <Box mb={2}>
                         <Typography variant='h4'>{t('recommendedNatars.title')}</Typography>
                     </Box>
-                    <MultiPointMap natars={recommendedNatars} destructionSites={destructionSites} />
+                    <MultiPointMap
+                        natars={recommendedNatars}
+                        destructionSites={destructionSites}
+                        hoveredNatarId={hoveredNatarId}
+                    />
                     <Box>
                         <Typography variant='body2'>
                             {t('recommendedNatars.casualtiesAndCapacity', {

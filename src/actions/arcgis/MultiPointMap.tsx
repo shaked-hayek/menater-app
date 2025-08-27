@@ -21,13 +21,18 @@ import { mainNatarColor, secondaryNatarColor } from 'style/colors';
 
 interface MultiPointMapProps {
   natars: Natar[];
-  destructionSites?: DestructionSite[];
+  destructionSites: DestructionSite[];
+  hoveredNatarId?: number | null;
   zoom?: number;
 }
 
-const MultiPointMap = ({ natars, destructionSites = [], zoom = 12 }: MultiPointMapProps) => {
+const MultiPointMap = ({ natars, destructionSites = [], hoveredNatarId = null, zoom = 12 }: MultiPointMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<MapView | null>(null);
+
+  const hoverLayerRef = useRef<GraphicsLayer | null>(null);
+  const getNatarColor = (natarType: NATAR_TYPE) => natarType === NATAR_TYPE.MAIN ? mainNatarColor : secondaryNatarColor;
+
 
   useEffect(() => {
     if (viewRef.current || !mapRef.current || natars.length === 0) return;
@@ -62,13 +67,13 @@ const MultiPointMap = ({ natars, destructionSites = [], zoom = 12 }: MultiPointM
         const natarsLayer = new GraphicsLayer();
         natars.forEach(({ lat, long, wasOpened, type }) => {
           const point = new Point({ latitude: lat, longitude: long });
-          const color = type === NATAR_TYPE.MAIN ? mainNatarColor : secondaryNatarColor;
+          const natarColor : string = getNatarColor(type);
 
           const markerSymbol = new SimpleMarkerSymbol({
-            color: wasOpened ? color : [255, 255, 255, 0],
+            color: wasOpened ? natarColor : [255, 255, 255, 0],
             size: 10,
             style: 'circle',
-            outline: { color, width: 2 },
+            outline: { color: natarColor, width: 2 },
           });
 
           natarsLayer.add(new Graphic({ geometry: point, symbol: markerSymbol }));
@@ -119,6 +124,35 @@ const MultiPointMap = ({ natars, destructionSites = [], zoom = 12 }: MultiPointM
       viewRef.current = null;
     };
   }, [natars, destructionSites, zoom]);
+
+  useEffect(() => {
+    if (!viewRef.current) return;
+  
+    if (!hoverLayerRef.current) {
+      const hoverLayer = new GraphicsLayer();
+      hoverLayerRef.current = hoverLayer;
+      viewRef.current.map.add(hoverLayer);
+    }
+  
+    hoverLayerRef.current.removeAll();
+  
+    if (hoveredNatarId) {
+      const natar = natars.find(n => n.id === hoveredNatarId);
+      if (natar) {
+        const point = new Point({ latitude: natar.lat, longitude: natar.long });
+        const natarColor : string = getNatarColor(natar.type);
+
+        const symbol = new SimpleMarkerSymbol({
+          color: [255, 255, 0, 0.7],
+          size: 14,
+          style: 'circle',
+          outline: { color: natarColor, width: 2 },
+        });
+  
+        hoverLayerRef.current.add(new Graphic({ geometry: point, symbol }));
+      }
+    }
+  }, [hoveredNatarId, natars]);
 
   return (
     <div
