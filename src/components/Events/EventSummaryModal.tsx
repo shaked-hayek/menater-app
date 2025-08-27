@@ -12,6 +12,9 @@ import { handlePrint } from './eventsUtils';
 import { EarthquakeEvent } from 'components/Interfaces/EarthquakeEvent';
 import { computeNatarCapacity, computeOptionalNatarCapacity, formatDateTime } from 'utils';
 import { MODE } from 'consts/mode.const';
+import { LoadingPopup } from 'components/atoms/Popups';
+import { errorHandler } from 'actions/errors/errorHandler';
+import { useDispatch } from 'react-redux';
 
 
 interface EventSummery {
@@ -45,6 +48,10 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
     if (!summary) return null;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    const [showLoadingPopup, setShowLoadingPopup] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState('');
     const [fullRecommendedNatars, setFullRecommendedNatars] = useState<Natar[]>([]);
     const [natarIdToNameMap, setNatarIdToNameMap] = useState<Record<number, string>>({});
     const [natarIdToOpenedMap, setNatarIdToOpenedMap] = useState<Record<number, boolean | undefined>>({});
@@ -106,8 +113,10 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                         mappedNatars.map(natar => [natar.id, natar.name])
                     )
                 );
-            } catch (err) {
-                console.error('Failed to fetch natars:', err);
+            } catch (error) {
+                errorHandler(dispatch, t('manageEvents.errorMsgs.serverGetError'), error);
+            } finally {
+                setShowLoadingPopup(false);
             }
         };
 
@@ -298,8 +307,9 @@ const EventSummaryModal = ({ summary, onClose } : EventSummaryModalProps) => {
                         </tbody>
                     </table>
                 </Box>
-
             </Box>
+
+            <LoadingPopup loadingMessage={loadingMessage} showLoadingPopup={showLoadingPopup} />
         </Box>
     );
 };
