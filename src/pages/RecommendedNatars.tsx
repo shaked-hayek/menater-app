@@ -17,8 +17,9 @@ import { createEventSummaryAction } from 'actions/events/eventSummaryActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { errorHandler } from 'actions/errors/errorHandler';
-import { getSitesCasualtiesSum } from 'actions/sites/sitesActions';
+import { getSites, getSitesCasualtiesSum } from 'actions/sites/sitesActions';
 import { computeNatarCapacity, computeOptionalNatarCapacity } from 'utils';
+import { DestructionSite } from 'components/Interfaces/DestructionSite';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -44,6 +45,7 @@ const RecommendedNatars = () => {
     const [selectedNatar, setSelectedNatar] = useState<Natar | null>(null);
     const [totalCasualties, setTotalCasualties] = useState<number>();
     const [isNatarModalOpen, setIsNatarModalOpen] = useState(false);
+    const [destructionSites, setDestructionSites] = useState<DestructionSite[]>([]);
     const [showLoadingPopup, setShowLoadingPopup] = useState(true);
     const [loadingMessage, setLoadingMessage] = useState(t('recommendedNatars.loading'));
     const { earthquakeEvent } = useSelector((state: RootState) => state.appState);
@@ -80,6 +82,18 @@ const RecommendedNatars = () => {
         };
 
         fetchTotalCasualties();
+    }, []);
+
+    useEffect(() => {
+        const fetchSites = async () => {
+            try {
+                await getSites(setDestructionSites);
+            } catch (error) {
+                errorHandler(dispatch, t('destructionSites.errorMsgs.serverGetError'), error);
+            }
+        };
+
+        fetchSites();
     }, []);
 
     const handleAddSite = () => {
@@ -144,7 +158,7 @@ const RecommendedNatars = () => {
                     <Box mb={2}>
                         <Typography variant='h4'>{t('recommendedNatars.title')}</Typography>
                     </Box>
-                    <MultiPointMap natars={recommendedNatars} />
+                    <MultiPointMap natars={recommendedNatars} destructionSites={destructionSites} />
                     <Box>
                         <Typography variant='body2'>
                             {t('recommendedNatars.casualtiesAndCapacity', {

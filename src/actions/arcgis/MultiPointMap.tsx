@@ -7,20 +7,25 @@ import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Basemap from '@arcgis/core/Basemap';
 import Point from '@arcgis/core/geometry/Point';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import IdentityManager from '@arcgis/core/identity/IdentityManager';
+import Query from '@arcgis/core/rest/support/Query';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import '@arcgis/core/assets/esri/css/main.css';
-import { ARCGIS_SETTINGS, MAP_SETTINGS } from 'consts/settings.const';
+
+import { ARCGIS_SETTINGS, MAP_SETTINGS, CITY_DATA } from 'consts/settings.const';
 import { Natar } from 'components/Interfaces/Natar';
+import { DestructionSite } from 'components/Interfaces/DestructionSite';
 import { NATAR_TYPE } from 'consts/natarType.const';
 import { mainNatarColor, secondaryNatarColor } from 'style/colors';
 
-
 interface MultiPointMapProps {
   natars: Natar[];
+  destructionSites?: DestructionSite[];
   zoom?: number;
 }
 
-const MultiPointMap = ({ natars, zoom = 12 }: MultiPointMapProps) => {
+const MultiPointMap = ({ natars, destructionSites = [], zoom = 12 }: MultiPointMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<MapView | null>(null);
 
@@ -53,32 +58,55 @@ const MultiPointMap = ({ natars, zoom = 12 }: MultiPointMapProps) => {
 
         viewRef.current = view;
 
-        const graphicsLayer = new GraphicsLayer();
-
+        // --- Natars Layer ---
+        const natarsLayer = new GraphicsLayer();
         natars.forEach(({ lat, long, wasOpened, type }) => {
           const point = new Point({ latitude: lat, longitude: long });
-
           const color = type === NATAR_TYPE.MAIN ? mainNatarColor : secondaryNatarColor;
 
           const markerSymbol = new SimpleMarkerSymbol({
             color: wasOpened ? color : [255, 255, 255, 0],
             size: 10,
             style: 'circle',
-            outline: {
-              color,
-              width: 2,
-            },
+            outline: { color, width: 2 },
           });
 
-          const graphic = new Graphic({
-            geometry: point,
-            symbol: markerSymbol,
-          });
-
-          graphicsLayer.add(graphic);
+          natarsLayer.add(new Graphic({ geometry: point, symbol: markerSymbol }));
         });
+        map.add(natarsLayer);
 
-        map.add(graphicsLayer);
+        // --- Destruction Sites Layer ---
+        if (destructionSites.length > 0) {
+          const sitesLayer = new GraphicsLayer();
+          map.add(sitesLayer);
+
+          const featureLayer = new FeatureLayer({
+            url: `${ARCGIS_SETTINGS.SERVER_URL}/rest/services${CITY_DATA.CITY_MAP_LOC}`,
+            outFields: ['*'],
+          });
+
+          const whereClause = destructionSites
+            .map(site => `OBJECTID = ${site.buildingId}`)
+            .join(' OR ');
+
+          const query = new Query({
+            where: whereClause,
+            outFields: ['*'],
+            returnGeometry: true,
+          });
+
+          const result = await featureLayer.queryFeatures(query);
+
+          result.features.forEach(f => {
+            sitesLayer.add(new Graphic({
+              geometry: f.geometry,
+              symbol: new SimpleFillSymbol({
+                color: [255, 0, 0, 0.5],
+                outline: { color: [255, 0, 0], width: 1 },
+              }),
+            }));
+          });
+        }
       } catch (error) {
         console.error('Failed to load map:', error);
       }
@@ -90,7 +118,7 @@ const MultiPointMap = ({ natars, zoom = 12 }: MultiPointMapProps) => {
       viewRef.current?.destroy();
       viewRef.current = null;
     };
-  }, [natars, zoom]);
+  }, [natars, destructionSites, zoom]);
 
   return (
     <div
