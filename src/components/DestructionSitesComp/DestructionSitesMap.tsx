@@ -159,7 +159,6 @@ const DestructionSitesMap = memo(({
           street: Street_Name,
           number: House_Number,
           casualties: 0,
-          geometry: result.graphic.geometry,
         });
       }
     }, 250);
