@@ -126,7 +126,7 @@ const MultiPointMap = ({ natars, destructionSites = [], hoveredNatarId = null, z
   }, [natars, destructionSites, zoom]);
 
   useEffect(() => {
-    if (!viewRef.current) return;
+    if (!viewRef.current?.map) return;
   
     if (!hoverLayerRef.current) {
       const hoverLayer = new GraphicsLayer();
