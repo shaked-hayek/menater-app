@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Typography, Box, Modal, Stack } from '@mui/material';
+import { Container, Typography, Box, Modal } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { LoadingPopup } from 'components/atoms/Popups';
 import { Natar, getNatarTableFields } from 'components/Interfaces/Natar';
@@ -52,11 +52,6 @@ const ManageNatars = () => {
         fetchNatars();
     }, []);
 
-    const handleAdd = () => {
-        // setModalData();
-        // setShowModal(true);
-    };
-
     const closeModal = () => {
         setShowModal(false);
     }
@@ -94,14 +89,9 @@ const ManageNatars = () => {
     return (
         <Container sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflow: 'hidden'}}>
             <Box display='flex' justifyContent='space-between' alignItems='center' dir='ltr'>
-                <Stack direction='row' spacing={1}>
-                    <SecondaryButton onClick={handleAdd}>
-                        {t('manageNatars.addNatar')}
-                    </SecondaryButton>
-                    <SecondaryButton onClick={handleDownloadCSV}>
-                        <DownloadIcon color='primary' />
-                    </SecondaryButton>
-                </Stack>
+                <SecondaryButton onClick={handleDownloadCSV}>
+                    <DownloadIcon color='primary' />
+                </SecondaryButton>
                 <Typography variant='h4' sx={{ flexGrow: 1, textAlign: 'center' }}>
                     {t('manageNatars.existingNatars')}
                 </Typography>
