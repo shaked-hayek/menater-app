@@ -20,7 +20,8 @@
         "close": "סגור",
         "print": "הדפס",
         "download": "הורד",
-        "cancel": "ביטול"
+        "cancel": "ביטול",
+        "search": "חיפוש..."
     },
     "timer": {
         "days": "ימים",

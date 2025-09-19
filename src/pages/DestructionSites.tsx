@@ -45,6 +45,7 @@ const DestructionSites = () => {
     const [recommendedNatars, setRecommendedNatars] = useState<Natar[]>([]);
     const [casualties, setCasualties] = useState('');
     const [casualtiesEstimate, setCasualtiesEstimate] = useState('');
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         const isEarthquakeTimeIsDayTime = () => {
@@ -216,32 +217,43 @@ const DestructionSites = () => {
     <Container>
         <Grid container spacing={3}>
             <Grid size={3.6}>
-                <ColoredSideBox title={t('destructionSites.sites')} >
+                <ColoredSideBox
+                    title={t("destructionSites.sites")}
+                    withSearch
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                >
                     <List>
-                        {destructionSites.map((site, index) => (
-                            <ListItem
-                                key={index}
-                                disableGutters
-                                secondaryAction={
-                                    <IconButton
-                                        edge="start"
-                                        onClick={() => deleteDestructionSite(site, index)}
-                                        disabled={site.wasUsedInRec === true}
-                                        sx={{
-                                            color: site.wasUsedInRec === true ? 'gray' : 'error.main',
-                                        }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                }
-                            >
-                                <ListItemText
-                                    primary={`${site.street} ${site.number}`}
-                                    secondary={`${t('destructionSites.casualties')}: ${site.casualties}`}
-                                    sx={{ textAlign: 'right' }}
-                                />
-                            </ListItem>
-                        ))}
+                        {destructionSites
+                            .filter((site) =>
+                                site.street.toLowerCase().includes(searchQuery.toLowerCase())
+                            )
+                            .sort((a, b) => a.street.localeCompare(b.street, 'he'))
+                            .map((site, index) => (
+                                <ListItem
+                                    key={index}
+                                    disableGutters
+                                    secondaryAction={
+                                        <IconButton
+                                            edge="start"
+                                            onClick={() => deleteDestructionSite(site, index)}
+                                            disabled={site.wasUsedInRec === true}
+                                            sx={{
+                                                color: site.wasUsedInRec === true ? 'gray' : 'error.main',
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    }
+                                >
+                                    <ListItemText
+                                        primary={`${site.street} ${site.number}`}
+                                        secondary={`${t('destructionSites.casualties')}: ${site.casualties}`}
+                                        sx={{ textAlign: 'right' }}
+                                    />
+                                </ListItem>
+                            ))
+                        }
                     </List>
                 </ColoredSideBox>
             </Grid>
