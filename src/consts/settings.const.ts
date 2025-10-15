@@ -2,7 +2,7 @@
 export const SERVER_IP = 'http://localhost:5000';
 
 export const ARCGIS_SETTINGS = {
-    SERVER_URL: 'https://menater-server.localdomain:6443/arcgis',
+    SERVER_URL: 'https://menater-server.localdomain/server',
     PORTAL_URL: 'https://menater-server.localdomain/portal',
     USERNAME: 'admin',
     PASSWORD: 'Password1',
